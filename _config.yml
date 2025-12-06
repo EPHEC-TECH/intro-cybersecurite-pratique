@@ -1,0 +1,14 @@
+title: Sécurité des Systèmes et Réseaux
+description: Support de cours pour la 2ème année - EPHEC
+theme: jekyll-theme-minimal
+url: "https://votre-orga.github.io" # Change ceci
+
+# Configuration de la collection pour les cours
+collections:
+  seances:
+    output: true
+    sort_by: order # On triera par un champ 'order' dans le fichier
+
+# Menu de navigation (optionnel selon le thème, mais utile)
+header_pages:
+  - index.md
