@@ -4,6 +4,8 @@ theme: jekyll-theme-minimal
 url: "https://ephec-tech.github.io" 
 baseurl: "/intro-cybersecurite-pratique"
 
+repository: echec-tech/intro-cybersecurite-pratique
+
 # Configuration de la collection pour les cours
 collections:
   seances:
