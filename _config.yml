@@ -6,12 +6,6 @@ baseurl: "/intro-cybersecurite-pratique"
 
 repository: echec-tech/intro-cybersecurite-pratique
 
-# Configuration de la collection pour les cours
-collections:
-  seances:
-    output: true
-    sort_by: order # On triera par un champ 'order' dans le fichier
-
 # Menu de navigation (optionnel selon le thème, mais utile)
 header_pages:
   - index.md
