@@ -1,7 +1,8 @@
-title: Sécurité des Systèmes et Réseaux
-description: Support de cours pour la 2ème année - EPHEC
+title: Introduction à la Cybersécurité - partie pratique
+description: Énoncés des TP d'intro à la Cybersécurité 
 theme: jekyll-theme-minimal
-url: "https://votre-orga.github.io" # Change ceci
+url: "https://ephec-tech.github.io" 
+baseurl: "/intro-cybersecurite-pratique"
 
 # Configuration de la collection pour les cours
 collections:
