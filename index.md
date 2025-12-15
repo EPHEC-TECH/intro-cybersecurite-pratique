@@ -13,16 +13,8 @@ Voici le déroulé du quadrimestre. Cliquez sur une séance pour accéder au con
 
 | # | Sujet | Thèmes clés |
 |:--|:------|:------------|
-{% comment %}
-    Utilisation de 'capture' pour générer toutes les lignes d'un coup.
-    Ceci permet de présenter un seul bloc de texte au moteur Markdown.
-{% endcomment %}
-{% capture table_rows %}
-{% assign sorted_seances = site.seances | sort: 'order' %}
-{% for seance in sorted_seances %}
+{% capture table_rows %}{% assign sorted_seances = site.seances | sort: 'order' %}{% for seance in sorted_seances %}
 | {{ seance.order }} | [**{{ seance.title }}**]({{ seance.url | relative_url }}) | {{ seance.description }} |
-{% endfor %}
-{% endcapture %}
-{{ table_rows }}
+{% endfor %}{% endcapture %}{{ table_rows }}
 
 
