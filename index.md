@@ -11,16 +11,13 @@ Bienvenue sur le site du cours, vous y trouverez les énoncés des séances prat
 ## 📚 Programme des Séances
 Voici le déroulé du quadrimestre. Cliquez sur une séance pour accéder au contenu.
 
-<table class="table-seances">
-  <thead>
-    <tr>
-      </tr>
-  </thead>
-  <tbody>
-    {% assign sorted_seances = site.seances | sort: 'order' %}
-    {% for seance in sorted_seances %}
-    <tr>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+
+| # | Sujet | Thèmes clés |
+|:--|:------|:------------|
+{% assign sorted_seances = site.seances | sort: 'order' %}
+{% for seance in sorted_seances %}
+| {{ seance.order }} | [**{{ seance.title }}**]({{ seance.url | relative_url }}) | {{ seance.description }} |
+{% endfor %}
+
+
+
