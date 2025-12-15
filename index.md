@@ -20,5 +20,5 @@ Voici le déroulé du quadrimestre. Cliquez sur une séance pour accéder au con
 |:--|:------|:------------|
 {% assign sorted_seances = site.seances | sort: 'order' %}
 {% for seance in sorted_seances %}
-| {{ seance.order }} | [**{{ seance.title }}**]({{ seance.url }}) | {{ seance.description }} |
+| {{ seance.order }} | [**{{ seance.title }}**]({{ seance.url | relative_url }}) | {{ seance.description }} |
 {% endfor %}
