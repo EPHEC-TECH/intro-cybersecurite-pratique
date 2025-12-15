@@ -5,7 +5,7 @@
 
 Ce dépôt contient le code source et le contenu du site de cours de **Introduction à la cybersécurité**. Le site est généré statiquement via [Jekyll](https://jekyllrb.com/) et hébergé sur GitHub Pages.
 
-🔗 **Accéder au site du cours :** [https://[NOM-ORGANISATION].github.io](https://[NOM-ORGANISATION].github.io)
+🔗 **Accéder au site du cours :** [https://ephec-tech.github.io/intro-cybersecurite-pratique/](https://ephec-tech.github.io/intro-cybersecurite-pratique/)
 
 
 
