@@ -25,3 +25,12 @@ Comment casser une substitution simple en analysant la langue française/anglais
 
 ## 5. AES (Advanced Encryption Standard)
 Le standard actuel.
+
+
+---
+
+Suggestion Wassim: les faire faire le code césar à la main et le le passer à leur voisin.
+
+- Un exercice sur l'annalyse fréquenciel (et un code avec substitution) pourrait aussi être sympa de le faire par "à la main" mais probablment moins réaliste pour une question de temps...
+
+- Note: Laurent a ses slides prêt pour la partie symetrique: on peu voir si on couvre dans les tp, une assez bonne partie de son contenu ?
