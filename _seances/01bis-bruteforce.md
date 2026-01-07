@@ -5,6 +5,8 @@ order: 6
 description: Fuzzing, John the Ripper
 ---
 
+outils pour cette séance: vm ubuntu ;;
+
 # Séance 6 : Brute Force & Cracking
 
 ## 1. Fuzzing
