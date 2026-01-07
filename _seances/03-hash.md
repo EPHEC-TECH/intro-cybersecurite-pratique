@@ -17,7 +17,7 @@ description: Hash, Sel, Rainbow tables
 * **Salage (Salt) :** Contre-mesure aux Rainbow Tables.
 
 ## 3. Utilisations
-* **Déduplication** de données.
+* **Déduplication** de données.( outil linux pour comparaison de fichiers ==> fdues-- et d'autres exemple possible)
 * **Vérification d'intégrité** (Checksums).
 
 ### Signature (gpg)
