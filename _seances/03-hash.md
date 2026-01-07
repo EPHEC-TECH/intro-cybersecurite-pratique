@@ -19,3 +19,5 @@ description: Hash, Sel, Rainbow tables
 ## 3. Utilisations
 * **Déduplication** de données.
 * **Vérification d'intégrité** (Checksums).
+
+### Signature (gpg)
