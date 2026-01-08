@@ -18,3 +18,6 @@ Assurer l'**authentification** et la **non-répudiation**.
 
 ## 3. Échange de clés
 Introduction au problème de l'échange de clés (préparation pour Diffie-Hellman).
+
+
+rajouter les cerificats ici ?
