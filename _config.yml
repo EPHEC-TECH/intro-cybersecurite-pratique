@@ -3,7 +3,7 @@ description: Énoncés des TP d'intro à la Cybersécurité
 # theme: jekyll-theme-minimal
 remote_theme: just-the-docs/just-the-docs
 url: "https://ephec-tech.github.io" 
-# baseurl: "/intro-cybersecurite-pratique"
+baseurl: "/intro-cybersecurite-pratique"
 
 repository: echec-tech/intro-cybersecurite-pratique
 
