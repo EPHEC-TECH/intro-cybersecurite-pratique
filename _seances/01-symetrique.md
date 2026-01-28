@@ -1,6 +1,6 @@
 ---
 layout: default
-title: TP1 - Introduction Crypto
+title: Chiffrement symétrique
 nav_order: 1
 has_children: false
 ---
@@ -17,33 +17,44 @@ Vous intégrez aujourd'hui la **Division de Sécurité Offensive**. Votre missio
 Dans ce TP, nous n'allons pas faire de mathématiques complexes. Nous allons manipuler la matière première de l'informatique : l'information.
 
 **Outils requis :**
-* [CyberChef](https://gchq.github.io/CyberChef/) (Le "Couteau Suisse" du chiffrement)
+* [CyberChef](https://gchq.github.io/CyberChef/) (Un outil "Couteau Suisse" pour le chiffrement)
 * Microsoft Teams (Canal de classe) pour l'échange de données.
 
 ---
 
-## 1. Encodage vs Chiffrement : Le piège classique
+## 1. L'Illusion de la Sécurité (Encodage)
 {: .d-inline-block }
-Durée : 10 min
+Durée : 10-15 min
 {: .label .label-yellow }
 
-L'erreur numéro 1 du débutant est de confondre "transporter" et "protéger". Si vous utilisez un code que tout le monde connaît sans avoir besoin de clé, ce n'est pas de la sécurité.
+Dans le monde de la cybersécurité, la première règle est de savoir distinguer ce qui est **protégé** de ce qui est simplement **transporté**.
 
 ### Objectif Pédagogique
-Comprendre la différence entre l'encodage (rendre les données lisibles par une machine) et le chiffrement (rendre les données illisibles sans secret).
+Comprendre par la pratique la différence entre **Encodage** (formatage publique) et **Chiffrement** (secret mathématique).
 
-### Mission
-Vous avez intercepté cette chaîne de caractères sur le réseau :
-`QXR0ZW50aW9uOiBjZWNpIG4nZXN0IHBhcyBkdSBjaGlmZnJlbWVudC4gQydlc3QganVzdGUgZHUgdHJhbnNwb3J0IQ==`
+### Phase A : L'Investigation
+Vous avez intercepté cette étrange chaîne de caractères sur le réseau interne de l'école :
 
-1.  Ouvrez **CyberChef**.
-2.  Copiez la chaîne dans la case **Input**.
-3.  Utilisez la "Baguette Magique" (Magic) ou cherchez `From Base64` dans les opérations.
-4.  Quel est le message ?
+`TW9uIG1vdCBkZSBwYXNzZSBlc3QgOiAxMjM0NTY=`
 
-### Question de réflexion
-Si vous changez une lettre dans le message décodé (dans l'Input), est-ce que le résultat redevient illisible ou est-ce qu'il change légèrement ?
+**Votre mission :**
+Trouvez ce que signifie ce message sans qu'on vous dise quel outil utiliser.
+* *Indice 1 :* Observez la fin de la chaîne. Ce caractère `=` est souvent une signature.
+* *Indice 2 :* Dans CyberChef, il existe un outil nommé "Magic" (la baguette magique) qui tente de deviner le format pour vous. Ou alors, demandez à une IA quel est ce format.
 
+### Phase B : L'Intrusion
+Maintenant que vous avez compris comment traduire ce langage machine :
+1.  Utilisez CyberChef pour **Encoder** (Attention, pas chiffrer!) une phrase contenant : `VotrePrénom : VotrePlatPréféré`.
+2.  Postez cette chaîne incompréhensible dans le canal **Teams** de la classe.
+3.  Copiez la chaîne d'un **autre étudiant** et décodez-la pour découvrir ce qu'il mange.
+
+### ❓ Question de réflexion (Délivrable)
+Pourquoi est-ce une **terrible** idée d'utiliser cette méthode pour stocker des mots de passe ?
+
+> **À rendre sur Moodle :**
+> 1. Le message caché de la Phase A.
+> 2. Le plat préféré de l'étudiant que vous avez "espionné" (indiquez son prénom).
+> 3. Votre réponse à la question de réflexion en une phrase.
 ---
 
 ## 2. L'Attaque Statistique : La langue vous trahit
