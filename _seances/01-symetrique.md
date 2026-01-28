@@ -49,9 +49,9 @@ Maintenant que vous avez compris comment traduire ce langage machine :
 3.  Copiez la chaîne d'un **autre étudiant** et décodez-la pour découvrir ce qu'il mange.
 
 
-> **À rendre sur Moodle :**
-> 1. Le plat préféré de l'étudiant que vous avez "espionné" (indiquez son prénom).
-> 2. Est-ce une bonne méthode de chiffrage ?
+> **À rendre sur Moodle 📝 (EXO 1) :**
+> a. Le plat préféré de l'étudiant que vous avez "espionné" (indiquez son prénom).
+> b. Est-ce une bonne méthode de chiffrage ?
 
 
 ---
@@ -87,13 +87,8 @@ Maintenant que vous avez identifié quelles lettres remplacent quelles autres (v
 2.  Postez ce message chiffré dans le chat **Teams**.
 3.  Si vos camarades ont réussi la Phase A, ils devraient être capables de lire votre message instantanément.
 
-### 📝 Le Délivrable
-Pour prouver que vous avez cassé le code, vous devez rendre **votre propre Prénom chiffré** avec cet alphabet spécifique.
-
-> **À rendre sur la plateforme :**
-> * Votre Prénom chiffré (Exemple : si *Paul* devient *Gxwj*, rendez *Gxwj*).
-> * 
----
+> **À rendre sur Moodle 📝 (EXO 2) :**
+> Pour prouver que vous avez cassé le code, marquez **votre propre Prénom chiffré** 
 
 ## 3. La Collaboration (Vigenère)
 {: .d-inline-block }
