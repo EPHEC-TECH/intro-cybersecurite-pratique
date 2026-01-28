@@ -1,18 +1,18 @@
 title: Introduction à la Cybersécurité - partie pratique
-description: Énoncés des TP d'intro à la Cybersécurité 
-# theme: jekyll-theme-minimal
+description: Énoncés des TP d'intro à la Cybersécurité
 remote_theme: just-the-docs/just-the-docs
-url: "https://ephec-tech.github.io" 
+
+# Configuration des URLs
+url: "https://ephec-tech.github.io"
 baseurl: "/intro-cybersecurite-pratique"
 
-repository: echec-tech/intro-cybersecurite-pratique
+repository: ephec-tech/intro-cybersecurite-pratique
 
-# Configuration de la collection pour les cours
 collections:
   seances:
     output: true
-    sort_by: order # On triera par un champ 'order' dans le fichier
+    sort_by: order
 
-# Menu de navigation (optionnel selon le thème, mais utile)
-header_pages:
-  - index.md
+# Si tu as un dossier _sass ou des assets personnalisés
+sass:
+  style: compressed
