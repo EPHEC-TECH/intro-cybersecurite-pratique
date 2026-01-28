@@ -5,7 +5,7 @@ nav_order: 1
 has_children: false
 ---
 
-# TP 1 : Opération "Black Chamber"
+# TP 1 : De Jules César à l'AES
 {: .no_toc }
 
 ## Introduction à la Cryptographie Symétrique
@@ -19,6 +19,9 @@ Dans ce TP, nous n'allons pas faire de mathématiques complexes. Nous allons man
 **Outils requis :**
 * [CyberChef](https://gchq.github.io/CyberChef/) (Un outil "Couteau Suisse" pour le chiffrement)
 * Microsoft Teams (Canal de classe) pour l'échange de données.
+
+**Consignes pour le livrable :**
+Vous devez créer et compléter un **fichier texte (.txt)** tout au long de la séance. Pour chaque exercice, vous devrez y noter une réponse courte (maximum une phrase ou un mot-clé). Ce fichier est à déposer sur la plateforme **Moodle** avant le début du prochain TP.
 
 ---
 
@@ -121,6 +124,8 @@ Le Quartier Général Ennemi (le Professeur) a envoyé ce long message chiffré 
 2.  Utilisez l'outil `Vigenère Solver` (cet outil tente de deviner la longueur de la clé mathématiquement).
 3.  Regardez si CyberChef arrive à trouver la clé et le message.
 
+> **À rendre sur Moodle 📝 (EXO 3) :**
+> Le contenu du message
 ---
 
 ## 4. Le Standard Moderne : AES & L'Effet Avalanche
@@ -146,14 +151,15 @@ Vous allez simuler le comportement d'un coffre-fort numérique.
 
 **Question :** Est-ce que seule la première lettre du code a changé (comme dans Vigenère) ou est-ce que **tout** le code est devenu totalement différent ?
 
-**Livrable Final :** Copiez dans votre rendu les deux chaînes hexadécimales obtenues pour prouver que vous avez constaté l'effet avalanche.
+> **À rendre sur Moodle 📝 (EXO 4) :**
+> Copiez dans votre rendu les deux chaînes hexadécimales obtenues pour prouver que vous avez constaté l'effet avalanche.
 
 ---
 
-## Devoir Maison : Le Dossier Snowden
+## Devoir Maison (Optionnel!): Le Dossier Snowden
 {: .label .label-purple }
 
-*(Disponible sur la plateforme de cours)*
+*(Bientôt isponible sur Moodle)*
 
 Vous avez récupéré un fichier étrange laissé par un lanceur d'alerte. Il contient une succession d'énigmes :
 1.  Un code binaire à déchiffrer via une opération **XOR** (Indice : la clé est une date importante).
