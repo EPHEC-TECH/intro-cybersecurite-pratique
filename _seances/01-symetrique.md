@@ -48,40 +48,51 @@ Maintenant que vous avez compris comment traduire ce langage machine :
 2.  Postez cette chaîne incompréhensible dans le canal **Teams** de la classe.
 3.  Copiez la chaîne d'un **autre étudiant** et décodez-la pour découvrir ce qu'il mange.
 
-### ❓ Question de réflexion (Délivrable)
-Pourquoi est-ce une **terrible** idée d'utiliser cette méthode pour stocker des mots de passe ?
 
 > **À rendre sur Moodle :**
-> 1. Le message caché de la Phase A.
-> 2. Le plat préféré de l'étudiant que vous avez "espionné" (indiquez son prénom).
-> 3. Votre réponse à la question de réflexion en une phrase.
+> 1. Le plat préféré de l'étudiant que vous avez "espionné" (indiquez son prénom).
+> 2. Est-ce une bonne méthode de chiffrage ?
+
+
 ---
 
-## 2. L'Attaque Statistique : La langue vous trahit
+## 2. L'Attaque Fréquentielle : La langue laisse des traces
 {: .d-inline-block }
 Durée : 15 min
-{: .label .label-yellow }
+{: .label .label-red }
 
-Pendant des siècles, on pensait qu'il suffisait de remplacer une lettre par une autre (Substitution) pour être en sécurité. Vous allez prouver que c'est faux.
+Les méthodes simples de chiffrement (remplacer une lettre par une autre) ont été utilisées pendant des siècles. Mais elles ont une faille fatale : la structure même de la langue française.
 
 ### Objectif Pédagogique
-Comprendre l'analyse fréquentielle. Tant que la structure de la langue (les lettres les plus utilisées comme E, A, S) est conservée, le code est cassable sans la clé.
+Comprendre intuitivement comment casser un code sans avoir la clé, simplement en analysant les statistiques du texte (Analyse Fréquentielle).
 
-### Mission
-Nous avons intercepté ce message chiffré par une méthode de substitution inconnue (ce n'est pas un simple décalage de César). La clé est inconnue.
+### Phase A : Le Déchiffrement (Cassage de Code)
+Le QG a intercepté un message crypté provenant d'un ancien système. Ce n'est pas du César (le décalage n'est pas constant), c'est une **Substitution Mono-alphabétique** (chaque lettre a été remplacée par une autre de façon mélangée).
 
-**Message intercepté :**
-`RQ QRCCQR GTRGTQR RQ XQCCQUQ. CX VGXUNQ QRU UXRQ. CX QRTTQR QRU MTRNTQR. C'XKXCYCR WTQNTQRUTQCCQ QRU IBUTQ XTCQ.`
+**Texte intercepté :**
+`X'PUPXZKX KRXVWXUJTXXXX GXLUXJ CX CXYTUXL CXK XJJJLXK. KT YBUK XTKXW ZX UXKKPUX, YBUK PYXW ZBVFCLK CX GLTYZTGX. GBU ZBQITLWXL : CXK VBWK CXK GXDK VBVLTUJK KBUJ YBJJLX GBUUBCX.`
 
-1.  Collez ce texte dans l'Input de CyberChef.
-2.  Utilisez l'opération `Frequency Analysis`. Regardez le graphique. Quelle est la lettre la plus présente dans le texte chiffré ? (Probablement le **Q** ou le **R**).
-3.  En français, quelle est la lettre la plus fréquente ? (Le **E**).
-4.  Utilisez l'opération `Substitute`. Configurez-la pour remplacer la lettre chiffrée la plus fréquente par "E".
-    * *Exemple :* Dans "Plaintext", mettez `Q`. Dans "Ciphertext", mettez `E`.
-5.  Continuez à deviner les autres lettres (C'est comme un jeu du pendu) jusqu'à ce que la phrase ait du sens.
+**Votre mission :** Retrouvez le texte original.
 
-**Livrable :** Une capture d'écran de votre CyberChef montrant le texte (même partiellement) déchiffré.
+**Conseils d'investigation :**
+1.  Utilisez l'outil `Frequency Analysis` dans CyberChef.
+2.  Repérez la lettre qui revient le plus souvent dans le code (le pic le plus haut). En français, quelle est la lettre la plus courante ? (C'est probablement elle !).
+3.  Utilisez l'outil `Substitute` pour remplacer les lettres codées par les lettres réelles.
+    * *Astuce :* Commencez par remplacer la plus fréquente. Puis regardez les mots courts de 2 ou 3 lettres (LE, LA, DE, LES...) pour deviner la suite. C'est comme le jeu du pendu.
 
+### Phase B : L'Infiltration (Envoi de message)
+Maintenant que vous avez identifié quelles lettres remplacent quelles autres (vous avez "cassé" l'alphabet de substitution), vous devez vous faire passer pour l'ennemi.
+
+1.  Utilisez l'alphabet de substitution que vous venez de découvrir pour **chiffrer** un court message (ex: "La cible est ici").
+2.  Postez ce message chiffré dans le chat **Teams**.
+3.  Si vos camarades ont réussi la Phase A, ils devraient être capables de lire votre message instantanément.
+
+### 📝 Le Délivrable
+Pour prouver que vous avez cassé le code, vous devez rendre **votre propre Prénom chiffré** avec cet alphabet spécifique.
+
+> **À rendre sur la plateforme :**
+> * Votre Prénom chiffré (Exemple : si *Paul* devient *Gxwj*, rendez *Gxwj*).
+> * 
 ---
 
 ## 3. La Collaboration (Vigenère)
