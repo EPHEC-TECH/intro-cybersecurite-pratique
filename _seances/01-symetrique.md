@@ -14,14 +14,11 @@ has_children: false
 Bienvenue, Recrues. 
 Vous intégrez aujourd'hui la **Division de Sécurité Offensive**. Votre mission : comprendre comment protéger des informations critiques et, surtout, comment les attaquants brisent les protections obsolètes.
 
-Dans ce TP, nous n'allons pas faire de mathématiques complexes. Nous allons manipuler la matière première de l'informatique : l'information.
 
 **Outils requis :**
 * [CyberChef](https://gchq.github.io/CyberChef/) (Un outil "Couteau Suisse" pour le chiffrement)
 * Microsoft Teams (Canal de classe) pour l'échange de données.
 
-**Consignes pour le livrable :**
-Vous devez créer et compléter un **fichier texte (.txt)** tout au long de la séance. Pour chaque exercice, vous devrez y noter une réponse courte (maximum une phrase ou un mot-clé). Ce fichier est à déposer sur la plateforme **Moodle** avant le début du prochain TP.
 
 ---
 
@@ -58,8 +55,51 @@ Maintenant que vous avez compris comment traduire ce langage machine :
 
 
 ---
+## 2.  Chiffrement de César
 
-## 2. L'Attaque Fréquentielle : La langue laisse des traces
+**Un informateur anonyme a déposé un pli scellé dans votre casier numérique. Il contient les preuves d'une fuite de données imminente, mais le contenu est illisible. Votre mission est de percer ce secret avant qu'il ne soit trop tard.**
+
+### 1. Le Code César (Théorie)
+Depuis l’antiquité, les hommes ont toujours éprouvé le besoin de modifier un texte afin de le dissimuler. Le code de César consiste à décaler chaque lettre de l’alphabet d’un certain nombre de rangs (la **clé**). 
+
+Par exemple, avec une clé de 3, A devient D, B devient E, et ainsi de suite.
+
+### 2. Manipulation avec CyberChef
+Pour cet exercice, nous allons utiliser l'outil **CyberChef**, un "couteau suisse" de la cryptographie.
+
+1. Ouvrez [CyberChef](https://gchq.github.io/CyberChef/).
+2. Dans la barre de recherche "Operations" (en haut à gauche), tapez **"Caesar"**.
+3. Glissez l'opération **"Caesar Decode"** dans la zone centrale "Recipe".
+
+### Mission A : Interceptions de routine
+* **Décodage (Clé 3) :** Retrouvez le sens de cette consigne de sécurité :  
+  `GDQV OD YLH LO IDXW VDYRLU FRPSWHU PDLV SDV VXU OHV DXWUHV`
+* **Codage (Clé 17) :** Chiffrez le message suivant pour le transmettre en toute discrétion :  
+  `LES PETITS RUISSEAUX FONT DE GRANDES RIVIERES`
+
+### Mission B : Analyse de la Fuite (Cryptanalyse)
+Vous avez intercepté ce mémo circulant sur un canal non sécurisé. Le décalage utilisé est inconnu :
+
+`VO WOCCKQO AEO FYEC VYCOJ OCDC ZBYDOQO ZKB EX MYNO KXDSAEO WKSC FYDBO MEBSYCSDO OCDC ZVEC PYBDO.`  
+`KOKC FYEC NOFOJ PBKSCOXD PBKDMKCC OB MO COMBOD ZYEB MYWZB OXNBO VK PYBMO NO V'KOKV ICB PBOM EODDS OVVO.`
+
+**Indices pour la Mission B :**
+* Vous ne connaissez pas la clé (le shift).
+* **L'indice de fréquence :** Mais vous savez que le message est en francais et qu'elle pourrait être la lettre la plus fréequente en francais ? et dans ce message ?  
+* Testez votre calcul dans CyberChef en ajustant le "Shift Amount".
+
+---
+
+## Questions d’analyse
+
+1. **Fiabilité statistique :** Pourquoi l'analyse fréquentielle (chercher la lettre la plus commune) est-elle beaucoup plus efficace sur un long texte que sur un message de seulement deux ou trois mots ?
+2. **Structure du langage :** Le chiffrement de César ne modifie ni les espaces ni la ponctuation. En quoi la conservation de la longueur des mots et de la structure des phrases aide-t-elle un cryptanalyste à casser le code ?
+3. **Complexité :** Si l'alphabet compte 26 lettres, quel est le nombre maximum d'essais nécessaires pour trouver la clé par "Force Brute" ? Pourquoi ce nombre est-il considéré comme dérisoire pour un ordinateur moderne ?
+4. **Vulnérabilité :** Une fois que vous avez identifié qu'une seule lettre (par exemple le 'E') a été décalée d'une valeur X, est-il nécessaire d'analyser le reste des lettres pour connaître la clé ? Pourquoi ?
+
+
+
+## 2b. (Bonus) L'Attaque Fréquentielle : La langue laisse des traces
 {: .d-inline-block }
 Durée : 15 min
 {: .label .label-red }
@@ -90,10 +130,11 @@ Maintenant que vous avez identifié quelles lettres remplacent quelles autres (v
 2.  Postez ce message chiffré dans le chat **Teams**.
 3.  Si vos camarades ont réussi la Phase A, ils devraient être capables de lire votre message instantanément.
 
-> **À rendre sur Moodle 📝 (EXO 2) :**
-> Pour prouver que vous avez cassé le code, marquez **votre propre Prénom chiffré** 
 
-## 3. La Collaboration (Vigenère)
+
+
+
+## 3 (Bonus) La Collaboration (Vigenère)
 {: .d-inline-block }
 Durée : 20 min
 {: .label .label-yellow }
@@ -127,6 +168,62 @@ Le Quartier Général Ennemi (le Professeur) a envoyé ce long message chiffré 
 > **À rendre sur Moodle 📝 (EXO 3) :**
 > Le contenu du message
 ---
+
+
+
+
+## 3.b  Le chiffrement XOR et le One-Time Pad (OTP)
+
+**Objectif :** Découvrir l'opération logique XOR (OU exclusif) et comprendre le principe du masque jetable, l'un des rares systèmes de chiffrement théoriquement incassables.
+
+
+
+## 1. Le principe du XOR
+En cryptographie, l'opération **XOR** est fondamentale. Elle compare les bits de deux données (le texte et la clé) selon une règle simple : si les bits sont identiques, le résultat est 0 ; s'ils sont différents, le résultat est 1.
+
+Pour cet exercice, nous allons utiliser des chaînes de caractères comme clés.
+
+* **Exercice N°1 : Manipulation simple**
+  En utilisant CyberChef, chiffrez le mot `SECRET` avec la clé `KEY`. Notez le résultat obtenu (qui peut contenir des caractères non imprimables ou des symboles étranges).
+  
+* **Exercice N°2 : Le Masque Jetable (One-Time Pad)**
+  Le principe du One-Time Pad est d'utiliser une clé de la même longueur que le message, utilisée une seule fois.
+  Chiffrez le message : `INCASSABLE`
+  Avec la clé : `XQZRTPLMKB`
+  Observez le résultat. Tentez maintenant de déchiffrer ce résultat en utilisant la même opération et la même clé.
+
+* **Exercice N°3 : Le mystère du texte hexadécial**
+  On vous intercepte le message suivant (en format Hexadécimal) : `0b1c0c1b1f13`
+  On sait que la clé utilisée est le mot : `BRAVO`
+  Retrouvez le message original.
+
+---
+
+## Étapes à suivre avec CyberChef
+
+1.  Ouvrez [CyberChef](https://gchq.github.io/CyberChef/).
+2.  Dans la liste des opérations, cherchez **"XOR"**.
+3.  Configurez l'opération :
+    * **Key** : Saisissez votre clé (Format : UTF8 par défaut).
+    * **Input Format** : UTF8 (sauf pour l'exercice 3 où vous devrez peut-être traiter de l'Hexadécimal).
+4.  Pour l'exercice 3, vous devrez peut-être ajouter l'opération **"From Hex"** avant l'opération **XOR** dans votre "Recipe".
+
+---
+
+## Questions d’analyse
+
+1. Que remarquez-vous après avoir chiffré puis déchiffré avec la même clé ?
+2. Pourquoi XOR permet-il de récupérer le texte original ?
+3. Quel est l’impact du choix de la clé sur le résultat ?
+4. Un chiffrement XOR avec une clé trop simple est-il sûr ? (expliquez)
+
+
+
+
+
+
+
+
 
 ## 4. Le Standard Moderne : AES & L'Effet Avalanche
 {: .d-inline-block }
