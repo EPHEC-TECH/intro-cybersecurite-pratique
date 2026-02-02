@@ -49,10 +49,6 @@ Maintenant que vous avez compris comment traduire ce langage machine :
 3.  Copiez la chaîne d'un **autre étudiant** et décodez-la pour découvrir ce qu'il mange.
 
 
-> **À rendre sur Moodle 📝 (EXO 1) :**
-> a. Le plat préféré de l'étudiant que vous avez "espionné" (indiquez son prénom).
-> b. Est-ce une bonne méthode de chiffrage ?
-
 
 ---
 ## 2.  Chiffrement de César
@@ -99,7 +95,7 @@ Vous avez intercepté ce mémo circulant sur un canal non sécurisé. Le décala
 
 
 
-## 2b. (Bonus) L'Attaque Fréquentielle : La langue laisse des traces
+## [Exercice Bonus]  L'Attaque Fréquentielle : La langue laisse des traces
 {: .d-inline-block }
 Durée : 15 min
 {: .label .label-red }
@@ -134,7 +130,7 @@ Maintenant que vous avez identifié quelles lettres remplacent quelles autres (v
 
 
 
-## 3 (Bonus) La Collaboration (Vigenère)
+## [Exercice Bonus]  (Vigenère)
 {: .d-inline-block }
 Durée : 20 min
 {: .label .label-yellow }
@@ -165,14 +161,12 @@ Le Quartier Général Ennemi (le Professeur) a envoyé ce long message chiffré 
 2.  Utilisez l'outil `Vigenère Solver` (cet outil tente de deviner la longueur de la clé mathématiquement).
 3.  Regardez si CyberChef arrive à trouver la clé et le message.
 
-> **À rendre sur Moodle 📝 (EXO 3) :**
-> Le contenu du message
 ---
 
 
 
 
-## 3.b  Le chiffrement XOR et le One-Time Pad (OTP)
+## 3.  Le chiffrement XOR et le One-Time Pad (OTP)
 
 **Objectif :** Découvrir l'opération logique XOR (OU exclusif) et comprendre le principe du masque jetable, l'un des rares systèmes de chiffrement théoriquement incassables.
 
@@ -222,9 +216,6 @@ Pour cet exercice, nous allons utiliser des chaînes de caractères comme clés.
 
 
 
-
-
-
 ## 4. Le Standard Moderne : AES & L'Effet Avalanche
 {: .d-inline-block }
 Durée : 15 min
@@ -248,18 +239,4 @@ Vous allez simuler le comportement d'un coffre-fort numérique.
 
 **Question :** Est-ce que seule la première lettre du code a changé (comme dans Vigenère) ou est-ce que **tout** le code est devenu totalement différent ?
 
-> **À rendre sur Moodle 📝 (EXO 4) :**
-> Copiez dans votre rendu les deux chaînes hexadécimales obtenues pour prouver que vous avez constaté l'effet avalanche.
 
----
-
-## Devoir Maison (Optionnel!): Le Dossier Snowden
-{: .label .label-purple }
-
-*(Bientôt isponible sur Moodle)*
-
-Vous avez récupéré un fichier étrange laissé par un lanceur d'alerte. Il contient une succession d'énigmes :
-1.  Un code binaire à déchiffrer via une opération **XOR** (Indice : la clé est une date importante).
-2.  Une "Poupée Russe" cryptographique : Du Base64 qui contient du Vigenère, qui contient le message final.
-
-Bonne chance, agents.
