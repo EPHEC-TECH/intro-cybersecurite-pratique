@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Chiffrement symétrique
+order: 1
+description: De Jules César à l'AES
 nav_order: 1
 has_children: false
 ---
