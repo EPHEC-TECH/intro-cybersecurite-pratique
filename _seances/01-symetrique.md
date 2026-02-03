@@ -59,6 +59,10 @@ Durée : 10-15 min
 
 ## Exercice 2 : Chiffrement de César
 
+{: .d-inline-block }
+Durée : 20-30 min
+{: .label .label-yellow }
+
 **Contexte**
 > Un informateur anonyme a déposé un pli scellé dans votre casier numérique. Il contient les preuves d'une fuite de données imminente, mais le contenu est illisible. Votre mission est de percer ce secret avant qu'il ne soit trop tard.
 
@@ -80,7 +84,7 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 4.  Collez le texte dans la zone **Input**.
 5.  Ajustez le décalage (le "Amount") selon la clé demandée.
 
-> ⚠️ L'opération "ROT13" est un cas particulier du Chiffre de César avec un décalage fixe de 13. Pour cet exercice, vous devez utiliser l'opération **"ROT13"** et ajuster le décalage (le "Amount") selon la clé demandée (positif pour chiffrer, négatif pour déchiffrer).
+> ⚠️ Pour cet exercice, vous devez utiliser l'opération **"ROT13"** de cyberchef, et ajuster le décalage (le "Amount") selon la clé demandée (positif pour chiffrer, négatif pour déchiffrer).
 
 ---
 
@@ -94,7 +98,7 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 **Indices pour la Mission :**
 *   Vous ne connaissez pas la clé (le décalage).
 *   Vous savez que le message est en **français**.
-*   Pensez à l’**analyse fréquentielle** (l'outil dans cyberchef s'appel **frequency distribution**) : quelle est la lettre la plus fréquente en français ? Est-elle aussi dominante dans ce message ?
+*   Pensez à l’**analyse fréquentielle** (l'outil dans CyberChef s'appel **frequency distribution**) : quelle est la lettre la plus fréquente en français ? Est-elle aussi dominante dans ce message ?
 
 
 ---
@@ -109,7 +113,7 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 
 ---
 
-## Exercice 3 [Bonus] : L'Attaque Fréquentielle 
+## Exercice 3 **[à faire en autonomie]** : L'Attaque Fréquentielle 
 
 {: .d-inline-block }
 Durée estimée : 15 min
@@ -147,7 +151,7 @@ Durée estimée : 15 min
 
 ---
 
-## Exercice 4 [Bonus] : Le Chiffre de Vigenère
+## Exercice 4 **[à faire en autonomie]** : Le Chiffre de Vigenère
 
 {: .d-inline-block }
 Durée : 20 min
@@ -177,7 +181,11 @@ Durée : 20 min
 >
 > Le Quartier Général Ennemi (le Professeur) a envoyé ce long message chiffré avec une clé trop faible :
 >
-> `ZRWXSM KIO IWE SIVV EMJ. KIO IWE SIVV EMJ. KIO IWE SIVV EMJ. VW WIXZI FM GLMSQ QW EIVZQ. RW AWKZMJ I WWZI KIVWE.`
+> `So rymeacvyoeowt lgi bb sbsa wsgwéhjlz tuhgl qtbl fbw ryésca ztz qdksh lh rlim xix ssh ifxzsca. Rtwixz ztz atzgpnsh zsrysiz rt Jégpy, gxtdalatuh séjoaéz rt xitsejlg alhiysh, qihxi'pbl uvfilftzgtz bjtéfxxitz qdtat s'OTZ,
+  qwhejl okhbrél o éié bbt yéddugt à bbt moxiztzgt llescxaés. Al qwptuys sl Jxnscèys, pbhgltdpg hbfcvabé 'ss rowumft pbséjvxmtghpal', o xuhgvrjph a'prét k'icl qaé wcafoawvpiéhxxit, ysckoca z'puoafgt ks uyéejlbrl qahghpejl
+  cqzcaèas. Evigaoca, aêbl qtaht pbvéuwtbgt téhwvrt h gjjqdtpé uhqt à s'ochznzs haoipgipejl atués ehf slg tzdgphh ifxszpuhh jcbts Roogssh Ioqiovl si Mfxlrgpqw Rohpgzp. Ojqcjyr'wbw, ah gérbfxaé rt uch jcbticpqpawdug glddzs hbf
+  slg psudywioatz apavébhhxxittsca qdtdalltz ejp, hts ic ltulh pcoahbros, iyocztdyatuh ah adpbsys bvrxmwrhhxvb sb atzgpns tu ic yégjshpa fpkwrhzttsca rxmtéglbi. Jcbwfturgl qtaht owhacxys, r'lgi jcbwfturgl ejl zp zéqjywié hphvzjl
+  sha ic tmios ta ejl zp zsjss rvbhaocas tzh ah bérlghphé s'bbt cwvpzpuqt lh s'bbt pbcvjpawdu dtyapuscash.`
 >
 > **Votre mission :**
 > 1. Découvir le message originel
@@ -186,6 +194,10 @@ Durée : 20 min
 
 ## Exercice 5 : Le Chiffrement XOR et le One-Time Pad (OTP)
 
+{: .d-inline-block }
+Durée : 15-20 min
+{: .label .label-green }
+
 ### Contexte
 > L'opération logique **XOR** (OU exclusif) est un pilier de la cryptographie moderne. Elle opère au niveau des bits du texte et de la clé en suivant une règle simple : le bit résultant est 1 si les bits d'entrée sont différents, et 0 s'ils sont identiques. Sa propriété magique est d'être réversible : `(Texte XOR Clé) XOR Clé = Texte`. C'est ce qui permet de chiffrer et déchiffrer avec la même clé.
 
@@ -193,13 +205,12 @@ Durée : 20 min
 
 ---
 
-### Mission 5.A : Manipulation simple
-> *   En utilisant CyberChef, chiffrez le mot `SECRET` avec la clé `KEY` en utilisant l'opération **XOR**. Notez le résultat.
+### Mission 5 Le Masque Jetable (One-Time Pad)
 
----
 
-### Mission 5.B : Le Masque Jetable (One-Time Pad)
 > Le principe du One-Time Pad est d'utiliser une clé **de la même longueur que le message**, et de ne l'utiliser **qu'une seule fois**.
+> *   En utilisant CyberChef, utilisant l'opération **XOR** (mode HEX, Scheme standard)
+
 >
 > *   Chiffrez le message : `INCASSABLE`
 > *   Avec la clé : `XQZRTPLMKB`
@@ -207,16 +218,12 @@ Durée : 20 min
 
 ---
 
-### Mission 5.C : Le mystère du texte hexadécimal
-> On vous intercepte le message suivant (en format Hexadécimal) : `0b1c0c1b1f13`
-> On sait que la clé utilisée est le mot : `BRAVO`
+### Mission 5.B : Le mystère du texte hexadécimal
+> On vous intercepte le message suivant : `pFdd[`
+> On sait que la clé utilisée est le mot : `12345`
 >
 > Retrouvez le message original.
 
-**Instructions pour CyberChef (XOR)**
-1.  Pour la Mission 5.C, vous devrez d'abord convertir l'input avec **"From Hex"** avant d'appliquer le **"XOR"**.
-2.  Configurez l'opération XOR :
-    *   **Key** : Saisissez votre clé (Format : UTF8 par défaut).
 
 ---
 
