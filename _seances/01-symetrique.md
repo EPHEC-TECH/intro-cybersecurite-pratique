@@ -29,7 +29,7 @@ Durée : 10-15 min
 
 ### Contexte
 
-> Dans le monde de la cybersécurité, la première règle est de savoir distinguer ce qui est **protégé** de ce qui est simplement **transporté**. L'objectif de cet exercice est de comprendre par la pratique la différence entre **Encodage** (un formatage public) et **Chiffrement** (un secret mathématique).
+> L'objectif de cet exercice est de comprendre par la pratique la différence entre **Encodage** (un formatage public) et **Chiffrement** (un secret mathématique).
 
 ---
 
@@ -94,8 +94,8 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 **Indices pour la Mission :**
 *   Vous ne connaissez pas la clé (le décalage).
 *   Vous savez que le message est en **français**.
-*   Pensez à l’**analyse fréquentielle** : quelle est la lettre la plus fréquente en français ? Est-elle aussi dominante dans ce message ?
-*   Testez différentes rotations (de 1 à 25) dans CyberChef pour identifier le décalage correct.
+*   Pensez à l’**analyse fréquentielle** (l'outil dans cyberchef s'appel **frequency distribution**) : quelle est la lettre la plus fréquente en français ? Est-elle aussi dominante dans ce message ?
+
 
 ---
 
@@ -105,17 +105,18 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 2.  **Structure du langage :** Le chiffrement de César ne modifie ni les espaces ni la ponctuation. En quoi la conservation de la longueur des mots et de la structure des phrases aide-t-elle un cryptanalyste à casser le code ?
 3.  **Complexité :** Si l'alphabet compte 26 lettres, quel est le nombre maximum d'essais nécessaires pour trouver la clé par "Force Brute" ? Pourquoi ce nombre est-il considéré comme dérisoire pour un ordinateur moderne ?
 4.  **Vulnérabilité :** Une fois que vous avez identifié qu'une seule lettre (par exemple le 'E') a été décalée d'une valeur X, est-il nécessaire d'analyser le reste des lettres pour connaître la clé ? Pourquoi ?
+5.  **Rot13 :**  Rot13 est un cas particulier de Ceasar. Pourquoi?
 
 ---
 
-## Exercice 3 [Bonus] : L'Attaque Fréquentielle
+## Exercice 3 [Bonus] : L'Attaque Fréquentielle 
 
 {: .d-inline-block }
-Durée : 15 min
+Durée estimée : 15 min
 {: .label .label-red }
 
 ### Contexte
-> Les méthodes de chiffrement par substitution simple (remplacer une lettre par une autre) ont une faille fatale : elles ne masquent pas les statistiques de la langue utilisée.
+> Les méthodes de chiffrement par substitution monoalphabetique (remplacer une lettre par une autre) ont une faille fatale : elles ne masquent pas les statistiques de la langue utilisée.
 
 **Objectif :** Comprendre intuitivement comment casser un code sans avoir la clé, simplement en analysant la fréquence des lettres.
 
@@ -146,7 +147,7 @@ Durée : 15 min
 
 ---
 
-## Exercice 4 [Bonus!] : Le Chiffre de Vigenère
+## Exercice 4 [Bonus] : Le Chiffre de Vigenère
 
 {: .d-inline-block }
 Durée : 20 min
@@ -164,7 +165,7 @@ Durée : 20 min
 > 2.  **Accordez-vous sur une CLÉ secrète** (un mot simple, ex: "LINUX"). Ne l'écrivez pas dans le chat public !
 > 3.  Chacun écrit un message secret pour l'autre.
 > 4.  Utilisez l'opération `Vigenère Encode` avec votre clé.
-> 5.  Postez **uniquement le résultat chiffré** dans le canal Teams.
+> 5.  Postez **uniquement le résultat chiffré** dans le canal Teams (ou autre).
 > 6.  Récupérez le message de votre partenaire et déchiffrez-le avec `Vigenère Decode`.
 
 ---
@@ -223,6 +224,7 @@ Durée : 20 min
 1.  Que remarquez-vous après avoir chiffré puis déchiffré avec la même clé XOR ?
 2.  Pourquoi l'opération XOR permet-elle de récupérer le texte original ?
 3.  Un chiffrement XOR avec une clé trop simple (ex: "abc") est-il sûr ? Expliquez.
+4.  Idéalement, une clé doit être utilisé qu'une fois, pourquoi ?
 
 ---
 
@@ -251,4 +253,5 @@ Durée : 15 min
 ---
 
 ### Question d'analyse
-> Est-ce que seule une partie du code a changé (comme avec César) ou est-ce que **tout** le code est devenu totalement différent ?
+1. Est-ce que seule une partie du code a changé (comme avec César) ou est-ce que **tout** le code est devenu totalement différent ? ==> faux
+2. Que ce passe t'il si on change que le vecteur d'initialisation ?
