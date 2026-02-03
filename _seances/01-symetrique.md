@@ -75,12 +75,12 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 
 **Instructions pour CyberChef :**
 1.  Ouvrez [CyberChef](https://gchq.github.io/CyberChef/).
-2.  Dans la barre de recherche, tapez **"Caesar Cipher"**.
+2.  Dans la barre de recherche, tapez **"ROT13"**.
 3.  Glissez l'opération dans la zone "Recipe".
 4.  Collez le texte dans la zone **Input**.
 5.  Ajustez le décalage (le "Amount") selon la clé demandée.
 
-> ⚠️ L'opération "ROT13" est un cas particulier du Chiffre de César avec un décalage fixe de 13. Pour cet exercice, vous devez utiliser **"Caesar Cipher"** qui vous permet de choisir le décalage (positif pour chiffrer, négatif pour déchiffrer).
+> ⚠️ L'opération "ROT13" est un cas particulier du Chiffre de César avec un décalage fixe de 13. Pour cet exercice, vous devez utiliser l'opération **"ROT13"** et ajuster le décalage (le "Amount") selon la clé demandée (positif pour chiffrer, négatif pour déchiffrer).
 
 ---
 
