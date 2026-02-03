@@ -1,0 +1,11 @@
+# IDE configuration
+.idea/
+
+# Build output
+_site/
+
+# Dependency lock file
+Gemfile.lock
+
+# Gemini file
+GEMINI.md
