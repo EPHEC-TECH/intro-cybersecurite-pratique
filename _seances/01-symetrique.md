@@ -5,7 +5,7 @@ nav_order: 1
 has_children: false
 ---
 
-# TP 1 : De Jules César à l'AES
+# Séance 1 : De Jules César à l'AES
 
 {: .no_toc }
 
@@ -146,7 +146,7 @@ Durée : 15 min
 
 ---
 
-## Exercice 4 [Bonus] : Le Chiffre de Vigenère
+## Exercice 4 [Bonus!] : Le Chiffre de Vigenère
 
 {: .d-inline-block }
 Durée : 20 min
@@ -179,9 +179,7 @@ Durée : 20 min
 > `ZRWXSM KIO IWE SIVV EMJ. KIO IWE SIVV EMJ. KIO IWE SIVV EMJ. VW WIXZI FM GLMSQ QW EIVZQ. RW AWKZMJ I WWZI KIVWE.`
 >
 > **Votre mission :**
-> 1.  Ouvrez un nouvel onglet CyberChef.
-> 2.  Utilisez l'outil `Vigenère Solver` (cet outil tente de deviner la longueur de la clé mathématiquement).
-> 3.  Regardez si CyberChef arrive à trouver la clé et le message.
+> 1. Découvir le message originel
 
 ---
 
@@ -243,8 +241,8 @@ Durée : 15 min
 
 ### Mission : Simulation d'un coffre-fort numérique
 > 1.  Dans CyberChef, ajoutez l'opération `AES Encrypt`.
-> 2.  **Clé (Key) :** `0123456789abcdef0123456789abcdef` (Hex, 16 octets / 128 bits).
-> 3.  **IV (Initialization Vector) :** `00000000000000000000000000000000` (Hex, 16 octets).
+> 2.  **Clé (Key) :** `0123456789abcdef0123456789abcdef` (en Hex). *C'est une clé de 128 bits (16 octets), un standard pour l'AES.*
+> 3.  **IV (Initialization Vector) :** `00000000000000000000000000000000` (en Hex). *Ce vecteur initialise le chiffrement pour garantir que des messages identiques ne produisent pas le même résultat chiffré.*
 > 4.  **Input 1 :** Écrivez le mot `DANGER`
 >     *   *Observez l'Output (en Hex).* Notez les 4 premiers caractères.
 > 5.  **Input 2 :** Changez juste une lettre : `MANGER`
