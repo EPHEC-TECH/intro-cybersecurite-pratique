@@ -260,5 +260,7 @@ Durée : 15 min
 ---
 
 ### Question d'analyse
-1. Est-ce que seule une partie du code a changé (comme avec César) ou est-ce que **tout** le code est devenu totalement différent ? ==> faux
+1. Qu'observez vous entre les deux output ? Si ont avait utilisé ROT13, est-ce qu'on aurait eu la même observation ?   En quoi est-ce important ?
 2. Que ce passe t'il si on change que le vecteur d'initialisation ?
+3. Est-ce AES est encore utilisé aujourd'hui ?  des exemples ?
+4. 
