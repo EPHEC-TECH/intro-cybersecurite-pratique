@@ -3,6 +3,7 @@ layout: default
 title: Hachage & Intégrité
 order: 4
 description: Hash, Sel, Rainbow tables
+published: false
 ---
 
 # Séance 3 : Fonctions de Hachage

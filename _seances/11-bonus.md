@@ -3,6 +3,7 @@ layout: default
 title: Bonus & Avenir
 order: 11
 description: IA, Hardware Hacking
+published: false
 ---
 
 # Séance 11 : Sujets Avancés

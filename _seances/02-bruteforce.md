@@ -3,6 +3,7 @@ layout: default
 title: Attaques par Force Brute
 order: 2
 description: Fuzzing, John the Ripper
+published: false
 ---
 
 outils pour cette séance: vm ubuntu(dispo grace au cour d'os)

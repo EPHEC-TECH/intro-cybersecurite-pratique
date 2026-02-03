@@ -3,6 +3,7 @@ layout: default
 title: Pratique & Certificats
 order: 5
 description: Diffie-Hellman, SSH, TLS, Wireshark
+published: false
 ---
 
 # Séance 4 : Mise en pratique et Certificats
