@@ -11,8 +11,6 @@ has_children: false
 
 ## Introduction à la Cryptographie Symétrique
 
-{: .fs-9 }
-
 Bienvenue, Recrues.
 Vous intégrez aujourd'hui la **Division de Sécurité Offensive**. Votre mission : comprendre comment protéger des informations critiques et, surtout, comment les attaquants brisent les protections obsolètes.
 
@@ -77,11 +75,12 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 
 **Instructions pour CyberChef :**
 1.  Ouvrez [CyberChef](https://gchq.github.io/CyberChef/).
-2.  Dans la barre de recherche, tapez **"ROT13"**.
+2.  Dans la barre de recherche, tapez **"Caesar Cipher"**.
 3.  Glissez l'opération dans la zone "Recipe".
 4.  Collez le texte dans la zone **Input**.
+5.  Ajustez le décalage (le "Amount") selon la clé demandée.
 
-> ⚠️ Dans CyberChef, l’opération correspondant au chiffre de César est **ROT13** (et non "Caesar Decode"). Vous pouvez ajuster le décalage dans les options de l'opération.
+> ⚠️ L'opération "ROT13" est un cas particulier du Chiffre de César avec un décalage fixe de 13. Pour cet exercice, vous devez utiliser **"Caesar Cipher"** qui vous permet de choisir le décalage (positif pour chiffrer, négatif pour déchiffrer).
 
 ---
 
@@ -189,7 +188,7 @@ Durée : 20 min
 ## Exercice 5 : Le Chiffrement XOR et le One-Time Pad (OTP)
 
 ### Contexte
-> L'opération logique **XOR** (OU exclusif) est fondamentale en cryptographie. Elle compare les bits de deux données (le texte et la clé). Si les bits sont identiques, le résultat est 0 ; s'ils sont différents, le résultat est 1. Appliquer deux fois la même clé XOR redonne le message original.
+> L'opération logique **XOR** (OU exclusif) est un pilier de la cryptographie moderne. Elle opère au niveau des bits du texte et de la clé en suivant une règle simple : le bit résultant est 1 si les bits d'entrée sont différents, et 0 s'ils sont identiques. Sa propriété magique est d'être réversible : `(Texte XOR Clé) XOR Clé = Texte`. C'est ce qui permet de chiffrer et déchiffrer avec la même clé.
 
 **Objectif :** Découvrir l'opération XOR et comprendre le principe du **masque jetable (OTP)**, l'un des rares systèmes de chiffrement théoriquement incassables.
 
@@ -244,8 +243,8 @@ Durée : 15 min
 
 ### Mission : Simulation d'un coffre-fort numérique
 > 1.  Dans CyberChef, ajoutez l'opération `AES Encrypt`.
-> 2.  **Clé (Key) :** `0123456789abcdef0123456789abcdef` (Hex, 32 octets).
-> 3.  **IV (Initialization Vector) :** `00000000000000000000000000000000` (Hex).
+> 2.  **Clé (Key) :** `0123456789abcdef0123456789abcdef` (Hex, 16 octets / 128 bits).
+> 3.  **IV (Initialization Vector) :** `00000000000000000000000000000000` (Hex, 16 octets).
 > 4.  **Input 1 :** Écrivez le mot `DANGER`
 >     *   *Observez l'Output (en Hex).* Notez les 4 premiers caractères.
 > 5.  **Input 2 :** Changez juste une lettre : `MANGER`
