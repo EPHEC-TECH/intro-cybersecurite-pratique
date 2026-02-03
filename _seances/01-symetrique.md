@@ -220,7 +220,7 @@ Durée : 15-20 min
 
 ### Mission 5.B : Le mystère du texte hexadécimal
 > On vous intercepte le message suivant : `pFdd[`
-> On sait que la clé utilisée est le mot : `12345`
+> On sait que la clé utilisée est : `12345`
 >
 > Retrouvez le message original.
 
@@ -230,7 +230,7 @@ Durée : 15-20 min
 ### Questions d’analyse
 1.  Que remarquez-vous après avoir chiffré puis déchiffré avec la même clé XOR ?
 2.  Pourquoi l'opération XOR permet-elle de récupérer le texte original ?
-3.  Un chiffrement XOR avec une clé trop simple (ex: "abc") est-il sûr ? Expliquez.
+3.  Un chiffrement XOR avec une clé trop simple (ex: "abc") est-il sûr ? Expliquez pourquoi.
 4.  Idéalement, une clé doit être utilisé qu'une fois, pourquoi ?
 
 ---
