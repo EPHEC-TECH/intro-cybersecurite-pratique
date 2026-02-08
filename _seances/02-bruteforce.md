@@ -7,81 +7,77 @@ nav_order: 2
 has_children: false
 ---
 
-# Séance 2 : Analyse et compréhension d'une attaque par dictionnaire sur DVWA
+# Séance 2 : Analyse et compréhension d'une attaque par dictionnaire
 
 {: .no_toc }
 
 ## Objectif
 {: .no_toc .text-delta }
 
-Apprendre à analyser et comprendre comment fonctionne une attaque par dictionnaire sur une application web vulnérable (DVWA), en utilisant un environnement isolé et sécurisé. Ce laboratoire a pour but d’expliquer les concepts et la démarche, dans une optique défensive et pédagogique.
+Apprendre à analyser et comprendre le fonctionnement d'une attaque par dictionnaire sur une application web. Vous allez utiliser un environnement sécurisé pour observer comment un attaquant peut automatiser des milliers d'essais de mots de passe pour forcer un accès.
 
 ---
 
-## 1. Présentation du laboratoire
+## 1. Architecture du laboratoire
 
-Dans ce laboratoire, vous travaillez sur une machine Linux vulnérable appelée **Metasploitable**, sur laquelle tourne l’application web **DVWA** (Damn Vulnerable Web Application). 
-DVWA est une application volontairement vulnérable, destinée à la formation et à la recherche en cybersécurité. Elle contient de nombreuses failles simulées, dont des faiblesses au niveau du formulaire d’authentification.
+Pour ce TP, nous allons utiliser une architecture spécifique car les PC de l'école ne permettent pas de lancer directement les outils d'attaque.
 
-L’objectif principal du lab est de comprendre comment une attaque par dictionnaire peut fonctionner, en étudiant :
-*   Le fonctionnement d’un formulaire d’authentification web
-*   Les mesures de sécurité absentes ou insuffisantes
-*   Le rôle d’outils de tests de sécurité comme Burp Suite
-*   Le comportement d’un outil d’automatisation d’essais (**Hydra**)
+1.  **Votre PC (Windows) :** L'hôte physique.
+2.  **La VM (Linux Ubuntu) :** Votre poste de travail. C'est ici que vous lancerez vos outils (Navigateur, Hydra).
+3.  **Le Conteneur Docker (DVWA) :** Une "mini-machine" isolée qui tourne *à l'intérieur* de votre VM et qui contient le site web vulnérable que nous allons attaquer.
 
-Ce lab fait partie d’une série consacrée aux fondamentaux de la cybersécurité réseaux.
+> **Note sur Docker :** Considérez Docker comme un système permettant de lancer une application (ici, un site web) avec toutes ses dépendances en une seule ligne de commande, sans rien installer de complexe sur la VM.
 
 ---
 
-## 2. Objectifs pédagogiques
+## 2. Préparation de l’environnement
+> **Note 1:** On utilisera ce setup pour de prochain TP également, donc assurez vous de comprendre ce que vous faites (pour le reproduire aux prochains TP)
 
-À la fin de ce laboratoire, vous serez capable de :
+> **Note 2:** Si vous voulez utiliser votre ordinateur, on vous conseille d'installer docker (ne le faite pas au TP, vous n'avez pas le temps) ou d'utiliser une VM linux qui a déjà docker installé (docker sera vu en profondeur l'année prochaine, en Admin 2)
 
-*   ✔️ **Comprendre** comment un attaquant explore un formulaire de connexion via l’interception et l’analyse des requêtes avec Burp Suite.
-*   ✔️ **Décrire** les principes d’une attaque par dictionnaire et expliquer pourquoi les mots de passe faibles sont vulnérables.
-*   ✔️ **Analyser** comment un outil automatisé (Hydra) cible un service web (dans un environnement isolé), afin de comprendre les risques.
-*   ✔️ **Identifier** les contre-mesures essentielles pour stopper ces attaques :
-    *   Mots de passe robustes
-    *   Limitation des tentatives
-    *   Verrouillage temporaire
-    *   Filtres CAPTCHA
-    *   Authentification multifactorielle (MFA)
-    *   Gestion sécurisée des sessions
 
----
+### 2.1. Lancer votre poste de travail (VM)
 
-## 3. Préparation de l’environnement
+1.  Sur le PC Windows, lancez votre logiciel de virtualisation (VMware) comme vous avez déjà fait en TP d'OS.
+2.  Démarrez la VM appelée **“system admin 2024”** (ou celle indiquée par votre professeur).
 
-### 3.1. Cloner et configurer la machine
+TODO: je ne connais pas les identifiants de cette VM ni si il faut la dezip avant...
+4. Ouvrez une session. C'est depuis cette VM que vous ferez tout le travail.
 
-1.  Cloner la machine **“system admin 2024”**.
-2.  Ouvrir **Manage** → **Clone** et renommer la nouvelle VM.
-3.  Vérifier que **Docker** est installé dans cette VM.
+### 2.2. Lancer la cible (DVWA via Docker)
 
----
-
-## 4. Lancement de DVWA
-
-Ouvrez un terminal dans la machine, puis exécutez :
+Dans la VM, ouvrez un terminal et lancez le serveur vulnérable avec la commande suivante :
 
 ```bash
-docker run -it -p 80:80 vulnerables/web-dvwa
+docker run -d -p 80:80 vulnerables/web-dvwa
 ```
+*(L'option `-d` permet de lancer le serveur en arrière-plan pour garder votre terminal libre).*
 
-Ensuite :
-1.  Lancer **Firefox**
-2.  Accéder à : [http://localhost/setup](http://localhost/setup)
-3.  Cliquer sur **Create / Reset Database**
-
-**Identifiants DVWA par défaut :**
-*   **Username :** `admin`
-*   **Password :** `password`
-
-Vous pouvez maintenant accéder au menu principal.
+**Vérification :**
+Pour vérifier que le serveur tourne bien, tapez :
+```bash
+docker ps
+```
+Vous devriez voir une ligne avec `vulnerables/web-dvwa`. Si la liste est vide, demandez de l'aide.
 
 ---
 
-## 5. Réglage du niveau de sécurité
+## 3. Premier accès à la cible
+
+Même si le site tourne "dans Docker", il est accessible depuis le navigateur de votre VM.
+
+1.  Ouvrez **Firefox** dans votre VM.
+2.  Accédez à l'adresse : [http://localhost](http://localhost)
+3.  Si c'est votre première connexion, allez sur [http://localhost/setup](http://localhost/setup) et cliquez sur le bouton **"Create / Reset Database"** en bas de page.
+4.  Connectez-vous avec les identifiants par défaut :
+    *   **Username :** `admin`
+    *   **Password :** `password`
+
+Une fois connecté, allez dans l'onglet **"DVWA Security"** dans le menu de gauche et vérifiez que le niveau est sur **"Low"**. Cliquez sur "Submit" pour valider.
+
+---
+
+## 4. Réglage du niveau de sécurité
 
 Dans le menu de gauche → **DVWA Security**
 
