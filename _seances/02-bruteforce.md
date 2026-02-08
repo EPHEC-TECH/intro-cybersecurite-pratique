@@ -97,19 +97,45 @@ Dans l'onglet Réseau, une nouvelle ligne est apparue (nommée `index.php?...`).
 
 ## 4. Préparation du dictionnaire (Liste de mots de passe)
 
-Une attaque par dictionnaire consiste à tester une liste prédéfinie de mots de passe. Dans la réalité, les attaquants utilisent des listes de millions de mots issues de fuites de données réelles.
+Une attaque par dictionnaire consiste à tester une liste prédéfinie de mots de passe. Plus la liste est "intelligente" et ciblée, plus l'attaque a de chances de réussir rapidement.
 
-> **Le saviez-vous ?** Le dictionnaire le plus célèbre s'appelle **rockyou.txt**. Il contient plus de 14 millions de mots de passe récupérés lors d'une fuite de données en 2009. C'est encore aujourd'hui une référence pour tester la solidité des mots de passe. Pour ce TP, nous n'utiliserons pas ce fichier car il est trop volumineux, mais il est souvent pré-installé sur les distributions comme Kali Linux.
+### 4.1. L'Ingénierie Sociale et le "Profiling"
+Dans la réalité, un attaquant ne choisit pas ses mots au hasard. Il utilise l'**Ingénierie Sociale** pour profiler sa cible :
+*   Il observe le vocabulaire utilisé sur le site web de l'entreprise.
+*   Il cherche les noms des projets, des slogans, ou des dirigeants sur LinkedIn.
+*   **Pourquoi ?** Car les humains ont tendance à choisir des mots de passe liés à leur environnement quotidien (ex: le nom d'un logiciel interne, le slogan de l'entreprise, etc.). Un dictionnaire de 500 mots "locaux" est souvent plus efficace qu'un dictionnaire générique de 10 millions de mots.
 
-### 4.1. Créer une liste ciblée
-Pour ce TP, nous allons créer notre propre micro-dictionnaire :
-1. Ouvrez un terminal dans votre VM.
-2. Créez un fichier nommé `pass.txt` avec l'éditeur `nano` :
+> **Le saviez-vous ?** Le dictionnaire générique le plus célèbre s'appelle **rockyou.txt**. Il contient 14 millions de mots de passe issus d'une fuite réelle de 2009. C'est une base, mais le "profiling" sur mesure reste plus redoutable.
+
+### 4.2. Générer un dictionnaire automatique avec CeWL
+**CeWL** (Custom Word List generator) est un outil qui "aspire" un site web pour en extraire tous les mots uniques et créer un dictionnaire sur mesure.
+
+1. **Installer CeWL dans votre VM :**
    ```bash
-   nano pass.txt
+   sudo apt update && sudo apt install cewl -y
    ```
-3. Tapez une dizaine de mots de passe courants (un par ligne), en incluant le mot de passe **"password"** pour que le test puisse réussir.
-4. Sauvegardez et quittez (`Ctrl+O`, `Entrée`, puis `Ctrl+X`).
+
+2. **Aspirer les mots du site DVWA :**
+   Nous allons demander à CeWL de créer un fichier `custom_pass.txt` à partir des mots présents sur la page d'accueil :
+   ```bash
+   cewl -w custom_pass.txt -d 1 -m 5 http://localhost
+   ```
+   *   `-w custom_pass.txt` : Enregistre le résultat dans ce fichier.
+   *   `-d 1` : Profondeur de recherche (s'arrête à la première page).
+   *   `-m 5` : Ne récupère que les mots d'au moins 5 lettres.
+
+3. **Vérifier le résultat :**
+   Affichez le contenu de votre nouveau dictionnaire :
+   ```bash
+   cat custom_pass.txt
+   ```
+   Vous verrez des mots comme `vulnerable`, `database`, `security`. Ce sont des mots que vous testeriez en priorité si vous étiez un attaquant.
+
+4. **Préparer le test :**
+   Pour être certain que notre attaque Hydra réussisse, ajoutez manuellement le vrai mot de passe à votre liste :
+   ```bash
+   echo "password" >> custom_pass.txt
+   ```
 
 ---
 
