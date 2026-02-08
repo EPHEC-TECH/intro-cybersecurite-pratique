@@ -95,7 +95,8 @@ Dans l'onglet Réseau, une nouvelle ligne est apparue (nommée `index.php?...`).
 
 > **📝 Mission d'analyse : Notez les éléments suivants (indispensables pour l'étape suivante) :**
 >
-> 1. **La Méthode :** Dans l'onglet "En-têtes" (Headers), vérifiez si c'est du **GET** ou du **POST**. *(Note : DVWA utilise souvent GET ici, ce qui expose le mot de passe dans l'URL !)*.
+> 1. **La Méthode :** Dans l'onglet "En-têtes" (Headers), vérifiez si c'est du **GET** ou du **POST**.
+    *   *(Note importante : Pour cet exercice spécifique de vulnérabilité, DVWA utilise le moins adequat des deux ==> celui qui expose le mot de passe dans l'URL. Dans la "vraie vie", ce n'est normalement pas ainsi ).*
 > 2. **Les Paramètres :** Trouvez les noms exacts des variables envoyées (ex: `username`, `password`, `Login`).
 > 3. **Le Cookie :** Trouvez la ligne `Cookie`. Vous verrez `PHPSESSID=...` et `security=low`. 
 >    * **Notez votre PHPSESSID.** Hydra en aura besoin pour simuler votre session.
@@ -142,13 +143,7 @@ Dans la réalité, un attaquant ne choisit pas ses mots au hasard. Il utilise l'
    ```bash
    cat custom_pass.txt
    ```
-   Vous verrez des mots comme `vulnerable`, `database`, `security`. Ce sont des mots que vous testeriez en priorité si vous étiez un attaquant.
-
-4. **Préparer le test :**
-   Pour être certain que notre attaque Hydra réussisse, ajoutez manuellement le vrai mot de passe à votre liste :
-   ```bash
-   echo "password" >> custom_pass.txt
-   ```
+TODO: il faut qu'on leur donne un site ayant le mot de passe dedans ! (ce qui n'est pas le cas ici)
 
 ---
 
@@ -222,10 +217,10 @@ Pour cette mission, nous allons utiliser **dirb**, un scanner de contenu web tr�
    ```
 
 3. **Analyse du résultat :**
-   *   Observez la liste des dossiers trouvés par `dirb`. 
-   *   Cherchez dans le résultat si des dossiers comme `/config`, `/docs` ou `/external` existent.
-   *   Tentez d'accéder à l'un de ces dossiers directement via votre navigateur (ex: `http://localhost/config/`). 
-   *   *Note :* Certains dossiers renverront une erreur "403 Forbidden", ce qui signifie que le dossier existe mais que vous n'avez pas le droit d'en lister le contenu. C'est déjà une information précieuse !
+   *   Observez la liste des dossiers trouvés par `dirb`.
+   *   Vous verrez probablement beaucoup de codes **302** (Redirection vers login) ou **403** (Forbidden).
+   *   Cherchez si des dossiers comme `/config`, `/docs` ou `/external` apparaissent.
+   *   *Interprétation :* Même si vous ne pouvez pas entrer dans le dossier (Code 403), le simple fait de savoir qu'il **existe** est une faille. Un attaquant sait maintenant qu'il y a un dossier `/config` à attaquer spécifiquement.
 
 ---
 
