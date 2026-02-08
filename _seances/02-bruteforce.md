@@ -62,44 +62,85 @@ Vous devriez voir une ligne avec `vulnerables/web-dvwa`. Si la liste est vide, d
 
 ---
 
-## 3. Premier accès à la cible
+## 3. Phase de "Reconnaissance" (Analyse du formulaire)
 
-Même si le site tourne "dans Docker", il est accessible depuis le navigateur de votre VM.
+Avant de lancer une attaque automatique, un attaquant doit comprendre précisément comment sa cible communique. Nous allons analyser techniquement ce qui se passe quand on valide le formulaire.
 
-1.  Ouvrez **Firefox** dans votre VM.
-2.  Accédez à l'adresse : [http://localhost](http://localhost)
-3.  Si c'est votre première connexion, allez sur [http://localhost/setup](http://localhost/setup) et cliquez sur le bouton **"Create / Reset Database"** en bas de page.
-4.  Connectez-vous avec les identifiants par défaut :
-    *   **Username :** `admin`
-    *   **Password :** `password`
+### 3.1. Accéder au module de test
+1. Assurez-vous d'être connecté à DVWA (**admin** / **password**).
+2. Dans le menu de gauche, cliquez sur **Brute Force**.
+3. Vous voyez un nouveau formulaire de connexion au centre de la page. C'est celui-là que nous allons tenter de "casser".
 
-Une fois connecté, allez dans l'onglet **"DVWA Security"** dans le menu de gauche et vérifiez que le niveau est sur **"Low"**. Cliquez sur "Submit" pour valider.
+### 3.2. Analyser la requête (Outils de développement)
+Nous allons utiliser les outils intégrés à Firefox pour voir "sous le capot".
+
+1. Appuyez sur **F12** (ou clic droit -> Inspecter) pour ouvrir les outils de développement de Firefox.
+2. Allez dans l'onglet **Réseau** (Network).
+3. Dans le formulaire de la page, tapez des identifiants au hasard :
+   * **Username :** `toto`
+   * **Password :** `pipo123`
+4. Cliquez sur **Login**.
+
+### 3.3. Collecter les informations pour l'attaque
+Dans l'onglet Réseau, une nouvelle ligne est apparue (nommée `index.php?...`). Cliquez dessus pour voir les détails à droite.
+
+> **📝 Mission d'analyse : Notez les éléments suivants (indispensables pour l'étape suivante) :**
+>
+> 1. **La Méthode :** Dans l'onglet "En-têtes" (Headers), vérifiez si c'est du **GET** ou du **POST**. *(Note : DVWA utilise souvent GET ici, ce qui expose le mot de passe dans l'URL !)*.
+> 2. **Les Paramètres :** Trouvez les noms exacts des variables envoyées (ex: `username`, `password`, `Login`).
+> 3. **Le Cookie :** Trouvez la ligne `Cookie`. Vous verrez `PHPSESSID=...` et `security=low`. 
+>    * **Notez votre PHPSESSID.** Hydra en aura besoin pour simuler votre session.
+> 4. **Le Message d'échec :** Quel texte exact s'affiche en rouge sur la page après l'erreur ? (ex: `Username and/or password incorrect.`). 
+>    * Hydra utilisera ce texte pour savoir qu'il s'est trompé.
 
 ---
 
-## 4. Réglage du niveau de sécurité
+## 4. Phase de "Weaponization" (Préparation du dictionnaire)
 
-Dans le menu de gauche → **DVWA Security**
+Une attaque par dictionnaire n'est efficace que si vos "munitions" (les mots de passe à tester) sont pertinentes. Au lieu d'utiliser un fichier de 14 millions de lignes, nous allons créer notre propre liste ciblée.
 
-Le niveau par défaut est *Impossible*. Pour les exercices de compréhension, choisir un niveau faible :
-**Security Level : Low** ou **Medium**
+### 4.1. Créer sa liste de mots de passe
+1. Ouvrez un terminal dans votre VM.
+2. Créez un fichier nommé `pass.txt` avec l'éditeur de texte `nano` :
+   ```bash
+   nano pass.txt
+   ```
+3. Tapez une dizaine de mots de passe, un par ligne. Soyez créatifs, mais **insérez le mot de passe "password"** quelque part dans la liste (pour être sûr que l'attaque réussisse).
+   * *Exemple :* `123456`, `azerty`, `admin`, `password`, `soleil`, `matin123`...
+4. Sauvegardez et quittez (`Ctrl+O`, `Entrée`, puis `Ctrl+X`).
 
 ---
 
-## 6. Installation de Hydra (version graphique)
+## 5. L'Attaque avec Hydra (Ligne de commande)
 
-Dans le terminal :
+Hydra est l'un des outils les plus puissants pour automatiser les tentatives de connexion sur de nombreux protocoles (HTTP, SSH, FTP, etc.).
 
+### 5.1. Installer Hydra
+Si ce n'est pas déjà fait, installez l'outil dans votre VM :
 ```bash
-sudo apt update
-sudo apt install hydra-gtk
+sudo apt update && sudo apt install hydra -y
 ```
 
-Hydra est un outil qui permet de comprendre les risques d’un formulaire dépourvu de protections anti-automatisation.
+### 5.2. Construire la commande
+Lancer une attaque sur un formulaire web demande une syntaxe très précise. Voici à quoi elle ressemble (à adapter avec vos infos) :
+
+```bash
+hydra -l admin -P pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=Username and/or password incorrect.:H=Cookie: PHPSESSID=VOTRE_COOKIE; security=low"
+```
+
+**Explication des paramètres :**
+*   `-l admin` : On cible l'utilisateur `admin`.
+*   `-P pass.txt` : On utilise notre liste de mots de passe.
+*   `localhost` : La cible (notre Docker).
+*   `http-get-form` : Le module Hydra pour les formulaires envoyés en GET.
+*   `"/vulnerabilities/brute/..."` : L'URL et les paramètres (séparés par des `:`).
+    *   `^USER^` et `^PASS^` seront remplacés par Hydra.
+    *   `F=...` : Le message d'échec (**F**ailed).
+    *   `H=Cookie: ...` : On passe notre cookie de session pour avoir accès à la page.
 
 ---
 
-## 7. Comprendre les attaques par force brute
+## 6. Comprendre les attaques par force brute (Synthèse)
 
 Une attaque par force brute repose sur le principe suivant :
 > **Essayer automatiquement un très grand nombre de combinaisons jusqu’à trouver la bonne.**
