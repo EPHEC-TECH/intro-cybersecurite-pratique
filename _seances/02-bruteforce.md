@@ -147,14 +147,14 @@ Hydra est un outil capable d'automatiser des tentatives de connexion sur des diz
 Lancer une attaque sur un formulaire web demande une syntaxe précise. Voici la commande à adapter avec **votre PHPSESSID** noté à l'étape 3 :
 
 ```bash
-hydra -l admin -P pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=Username and/or password incorrect.:H=Cookie: PHPSESSID=VOTRE_COOKIE; security=low"
+hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=Username and/or password incorrect.:H=Cookie: PHPSESSID=VOTRE_COOKIE; security=low"
 ```
 
 **Si l'attaque réussit**, Hydra affichera le mot de passe trouvé en évidence.
 
 **Explication des paramètres :**
 *   `-l admin` : Le nom d'utilisateur cible.
-*   `-P pass.txt` : Le dictionnaire à utiliser.
+*   `-P custom_pass.txt` : Le dictionnaire à utiliser.
 *   `http-get-form` : Indique à Hydra que nous attaquons un formulaire web utilisant la méthode GET.
 *   `F=...` : Indique le message que Hydra doit chercher pour savoir que la tentative a **échoué**.
 *   `H=Cookie: ...` : Permet de passer vos informations de session (indispensable pour que DVWA vous laisse accéder à la page).
