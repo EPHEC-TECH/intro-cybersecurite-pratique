@@ -14,13 +14,13 @@ has_children: false
 ## Objectif
 {: .no_toc .text-delta }
 
-Apprendre à analyser et comprendre le fonctionnement d'une attaque par dictionnaire sur une application web. Vous allez utiliser un environnement sécurisé pour observer comment un attaquant peut automatiser des milliers d'essais de mots de passe pour forcer un accès.
+Apprendre à analyser et comprendre le fonctionnement d'une attaque par dictionnaire sur une application web. Vous allez opérer dans un **environnement isolé** pour découvrir comment un attaquant peut automatiser des milliers d'essais de mots de passe pour forcer un accès.
 
 ---
 
-## 1. Architecture du laboratoire
+## 1. Architecture et "Isolation" du laboratoire
 
-Pour ce TP, nous allons utiliser une architecture spécifique car les PC de l'école ne permettent pas de lancer directement les outils d'attaque.
+Pour ce TP, nous allons utiliser une architecture spécifique car les PC de l'école ne permettent pas de lancer directement les outils d'attaque ou docker.
 
 1.  **Votre PC (Windows) :** L'hôte physique.
 2.  **La VM (Linux Ubuntu) :** Votre poste de travail. C'est ici que vous lancerez vos outils (Navigateur, Hydra).
@@ -38,7 +38,7 @@ Durée : 15-20 min
 
 > **Note 1:** On utilisera ce setup pour de prochain TP également, donc assurez vous de comprendre ce que vous faites (pour le reproduire aux prochains TP)
 
-> **Note 2:** Si vous voulez utiliser votre ordinateur, on vous conseille d'installer docker (ne le faite pas au TP, vous n'avez pas le temps) ou d'utiliser une VM linux qui a déjà docker installé (docker sera vu en profondeur l'année prochaine, en Admin 2)
+> **Note 2:** Si vous voulez utiliser votre ordinateur (ex: pour faire l'exercice en autonomie), vous pouvez installer une VM linux ayant docker déjà installé dessus.  Vous pouvez aussi installer docker sur votre machine et installer les outils 'attaquant' sur votre ordinateur (passez par wsl si vous êtes sur windows).  Note: On travaillera Docker en profondeur en deuxième (au cours d'Admin 2) et ce n'est pas necessaire de comprendre docker pour ce cours.
 
 
 ### 2.1. Lancer votre poste de travail (VM)
@@ -155,7 +155,14 @@ Durée : 20 min
 
 Hydra est un outil capable d'automatiser des tentatives de connexion sur des dizaines de protocoles différents (HTTP, SSH, FTP, etc.).
 
-### 5.1. Construire la commande
+### 5.1. Attention aux erreurs fréquentes (⚠️ À lire avant de lancer)
+La commande Hydra est extrêmement sensible. Une seule erreur et rien ne fonctionnera :
+*   **Les deux-points (`:`) :** Ils servent de séparateurs pour Hydra. N'en ajoutez pas et n'en enlevez pas dans la chaîne de paramètres.
+*   **Espaces :** Il n'y a **aucun espace** autour des deux-points (`:`).
+*   **Exactitude :** Le message d'échec (`F=...`) doit être rigoureusement identique au texte vu dans votre navigateur.
+*   **Session :** Si vous mettez trop de temps, votre `PHPSESSID` peut expirer. Si l'attaque échoue sans raison, rafraîchissez la page dans Firefox et récupérez le nouveau cookie.
+
+### 5.2. Construire la commande
 Lancer une attaque sur un formulaire web demande une syntaxe précise. Voici la commande à adapter avec **votre PHPSESSID** noté à l'étape 3 :
 
 ```bash
