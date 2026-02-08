@@ -180,7 +180,41 @@ L'attaque échoue. En niveau "High", le serveur génère un code unique (Token a
 
 ---
 
-## 7. Questions d'analyse
+## 7. Exercice **[à faire en autonomie]** : Le Brute Force de fichiers (Fuzzing)
+
+{: .d-inline-block }
+Durée estimée : 15 min
+{: .label .label-red }
+
+### Contexte
+> Le Brute Force ne s'applique pas qu'aux mots de passe. Un attaquant peut aussi tenter de deviner les noms des dossiers et des fichiers "cachés" sur un serveur (ex: `/admin`, `/backup`, `/dev`, `/config.php`). Cette technique s'appelle le **Fuzzing de répertoire**. L'administrateur pense que ces pages sont sûres car "personne ne connaît l'URL", mais un outil automatique peut les trouver en quelques secondes.
+
+**Objectif :** Utiliser un dictionnaire de noms de dossiers courants pour découvrir l'arborescence cachée de DVWA.
+
+---
+
+### Mission : Exploration des dossiers "invisibles"
+Pour cette mission, nous allons utiliser **dirb**, un scanner de contenu web très simple.
+
+1. **Installer dirb dans votre VM :**
+   ```bash
+   sudo apt update && sudo apt install dirb -y
+   ```
+
+2. **Lancer le scan sur DVWA :**
+   ```bash
+   dirb http://localhost
+   ```
+
+3. **Analyse du résultat :**
+   *   Observez la liste des dossiers trouvés par `dirb`. 
+   *   Cherchez dans le résultat si des dossiers comme `/config`, `/docs` ou `/external` existent.
+   *   Tentez d'accéder à l'un de ces dossiers directement via votre navigateur (ex: `http://localhost/config/`). 
+   *   *Note :* Certains dossiers renverront une erreur "403 Forbidden", ce qui signifie que le dossier existe mais que vous n'avez pas le droit d'en lister le contenu. C'est déjà une information précieuse !
+
+---
+
+## 8. Questions d'analyse
 
 > Ces questions sont essentielles pour valider votre compréhension. Prenez le temps d'y réfléchir.
 
