@@ -31,6 +31,11 @@ Pour ce TP, nous allons utiliser une architecture spécifique car les PC de l'é
 ---
 
 ## 2. Préparation de l’environnement
+
+{: .d-inline-block }
+Durée : 15-20 min
+{: .label .label-yellow }
+
 > **Note 1:** On utilisera ce setup pour de prochain TP également, donc assurez vous de comprendre ce que vous faites (pour le reproduire aux prochains TP)
 
 > **Note 2:** Si vous voulez utiliser votre ordinateur, on vous conseille d'installer docker (ne le faite pas au TP, vous n'avez pas le temps) ou d'utiliser une VM linux qui a déjà docker installé (docker sera vu en profondeur l'année prochaine, en Admin 2)
@@ -64,6 +69,10 @@ Vous devriez voir une ligne avec `vulnerables/web-dvwa`. Si la liste est vide, d
 
 ## 3. Phase de "Reconnaissance" (Analyse du formulaire)
 
+{: .d-inline-block }
+Durée : 15-20 min
+{: .label .label-yellow }
+
 Avant de lancer une attaque automatique, un attaquant doit comprendre précisément comment sa cible communique. Nous allons analyser techniquement ce qui se passe quand on valide le formulaire.
 
 ### 3.1. Accéder au module de test
@@ -96,6 +105,10 @@ Dans l'onglet Réseau, une nouvelle ligne est apparue (nommée `index.php?...`).
 ---
 
 ## 4. Préparation du dictionnaire (Liste de mots de passe)
+
+{: .d-inline-block }
+Durée : 15-20 min
+{: .label .label-yellow }
 
 Une attaque par dictionnaire consiste à tester une liste prédéfinie de mots de passe. Plus la liste est "intelligente" et ciblée, plus l'attaque a de chances de réussir rapidement.
 
@@ -141,6 +154,10 @@ Dans la réalité, un attaquant ne choisit pas ses mots au hasard. Il utilise l'
 
 ## 5. L'Attaque avec Hydra
 
+{: .d-inline-block }
+Durée : 20 min
+{: .label .label-yellow }
+
 Hydra est un outil capable d'automatiser des tentatives de connexion sur des dizaines de protocoles différents (HTTP, SSH, FTP, etc.).
 
 ### 5.1. Construire la commande
@@ -161,13 +178,11 @@ hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brut
 
 ---
 
-## 6. Défense et Contre-mesures
-
-Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou trop lentes pour être rentables.
-
----
-
 ## 6. Défense : Pourquoi l'attaque échoue-t-elle ?
+
+{: .d-inline-block }
+Durée : 10 min
+{: .label .label-green }
 
 Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou trop lentes pour être rentables.
 
@@ -215,6 +230,10 @@ Pour cette mission, nous allons utiliser **dirb**, un scanner de contenu web tr�
 ---
 
 ## 8. Questions d'analyse
+
+{: .d-inline-block }
+Durée : 20 min
+{: .label .label-yellow }
 
 > Ces questions sont essentielles pour valider votre compréhension. Prenez le temps d'y réfléchir.
 
