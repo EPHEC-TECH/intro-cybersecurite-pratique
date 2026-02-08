@@ -165,20 +165,31 @@ hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brut
 
 Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou trop lentes pour être rentables.
 
+---
+
+## 6. Défense : Pourquoi l'attaque échoue-t-elle ?
+
+Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou trop lentes pour être rentables.
+
 ### 6.1. Tester la protection "High"
 1. Dans DVWA, allez dans **DVWA Security** et passez le niveau sur **High**.
-2. Retournez sur l'onglet **Brute Force**.
-3. Relancez la **même commande Hydra** dans votre terminal.
+2. Retournez sur l'onglet **Brute Force** et relancez la **même commande Hydra** dans votre terminal.
 
 **Observation :**
-L'attaque devrait échouer. En niveau "High", le serveur génère un code unique (Token anti-CSRF) à chaque chargement de page. Comme Hydra ne renvoie pas le bon code, le serveur rejette la tentative avant même de vérifier le mot de passe.
+L'attaque échoue. En niveau "High", le serveur génère un code unique (Token anti-CSRF) à chaque chargement de page. Comme Hydra ne renvoie pas le bon code, le serveur rejette la tentative avant même de vérifier le mot de passe.
 
-### 6.2. Synthèse des protections efficaces
+---
 
-| Défense | Effet |
-| :--- | :--- |
-| **Politique de mots de passe** | Empêche l'utilisation de mots simples présents dans les dictionnaires (ex: rockyou). |
-| **Verrouillage de compte** | Bloque le compte après X essais infructueux (ex: bloqué 30 min). |
-| **Délais progressifs** | Ajoute un temps d'attente de plus en plus long entre chaque essai. |
-| **CAPTCHA** | Force une action humaine impossible à automatiser pour Hydra. |
-| **MFA (2FA)** | Ajoute une étape de validation (code SMS/App) que l'attaquant ne possède pas. |
+## 7. Questions d'analyse
+
+> Ces questions sont essentielles pour valider votre compréhension. Prenez le temps d'y réfléchir.
+
+### Analyse de l'attaque
+1. **Exposition des données :** Lors de l'analyse avec **F12**, vous avez vu les identifiants circuler en clair (méthode GET). Quels sont les risques si un utilisateur se connecte sur un Wi-Fi public ou si un collègue regarde l'historique du navigateur ?
+2. **Authentification d'Hydra :** Pourquoi est-il indispensable de fournir le `PHPSESSID` à Hydra ? Que se passerait-il si vous tentiez l'attaque sans ce cookie ?
+3. **Profiling (CeWL) :** Pourquoi un dictionnaire généré sur le site public d'une entreprise est-il souvent plus efficace que le célèbre fichier `rockyou.txt` de 14 millions de mots ?
+
+### Analyse de la défense
+4. **Automatisation vs Token :** Pourquoi le Token anti-CSRF (vu en niveau High) est-il une défense efficace contre un outil comme Hydra ?
+5. **Vitesse et Verrouillage :** Hydra peut tester des centaines de mots de passe par seconde. Si le serveur ajoutait un délai de 2 secondes entre chaque tentative ou bloquait le compte après 5 échecs, l'attaque resterait-elle réaliste ?
+6. **L'ultime rempart :** Même si un attaquant possède un dictionnaire parfait et que le serveur est vulnérable, quelle technologie (souvent utilisée sur vos comptes personnels) rendrait la découverte du mot de passe totalement inutile pour l'attaquant ?
