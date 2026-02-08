@@ -95,99 +95,64 @@ Dans l'onglet Réseau, une nouvelle ligne est apparue (nommée `index.php?...`).
 
 ---
 
-## 4. Phase de "Weaponization" (Préparation du dictionnaire)
+## 4. Préparation du dictionnaire (Liste de mots de passe)
 
-Une attaque par dictionnaire n'est efficace que si vos "munitions" (les mots de passe à tester) sont pertinentes. Au lieu d'utiliser un fichier de 14 millions de lignes, nous allons créer notre propre liste ciblée.
+Une attaque par dictionnaire consiste à tester une liste prédéfinie de mots de passe. Dans la réalité, les attaquants utilisent des listes de millions de mots issues de fuites de données réelles.
 
-### 4.1. Créer sa liste de mots de passe
+> **Le saviez-vous ?** Le dictionnaire le plus célèbre s'appelle **rockyou.txt**. Il contient plus de 14 millions de mots de passe récupérés lors d'une fuite de données en 2009. C'est encore aujourd'hui une référence pour tester la solidité des mots de passe. Pour ce TP, nous n'utiliserons pas ce fichier car il est trop volumineux, mais il est souvent pré-installé sur les distributions comme Kali Linux.
+
+### 4.1. Créer une liste ciblée
+Pour ce TP, nous allons créer notre propre micro-dictionnaire :
 1. Ouvrez un terminal dans votre VM.
-2. Créez un fichier nommé `pass.txt` avec l'éditeur de texte `nano` :
+2. Créez un fichier nommé `pass.txt` avec l'éditeur `nano` :
    ```bash
    nano pass.txt
    ```
-3. Tapez une dizaine de mots de passe, un par ligne. Soyez créatifs, mais **insérez le mot de passe "password"** quelque part dans la liste (pour être sûr que l'attaque réussisse).
-   * *Exemple :* `123456`, `azerty`, `admin`, `password`, `soleil`, `matin123`...
+3. Tapez une dizaine de mots de passe courants (un par ligne), en incluant le mot de passe **"password"** pour que le test puisse réussir.
 4. Sauvegardez et quittez (`Ctrl+O`, `Entrée`, puis `Ctrl+X`).
 
 ---
 
-## 5. L'Attaque avec Hydra (Ligne de commande)
+## 5. L'Attaque avec Hydra
 
-Hydra est l'un des outils les plus puissants pour automatiser les tentatives de connexion sur de nombreux protocoles (HTTP, SSH, FTP, etc.).
+Hydra est un outil capable d'automatiser des tentatives de connexion sur des dizaines de protocoles différents (HTTP, SSH, FTP, etc.).
 
-### 5.1. Installer Hydra
-Si ce n'est pas déjà fait, installez l'outil dans votre VM :
-```bash
-sudo apt update && sudo apt install hydra -y
-```
-
-### 5.2. Construire la commande
-Lancer une attaque sur un formulaire web demande une syntaxe très précise. Voici à quoi elle ressemble (à adapter avec vos infos) :
+### 5.1. Construire la commande
+Lancer une attaque sur un formulaire web demande une syntaxe précise. Voici la commande à adapter avec **votre PHPSESSID** noté à l'étape 3 :
 
 ```bash
 hydra -l admin -P pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=Username and/or password incorrect.:H=Cookie: PHPSESSID=VOTRE_COOKIE; security=low"
 ```
 
+**Si l'attaque réussit**, Hydra affichera le mot de passe trouvé en évidence.
+
 **Explication des paramètres :**
-*   `-l admin` : On cible l'utilisateur `admin`.
-*   `-P pass.txt` : On utilise notre liste de mots de passe.
-*   `localhost` : La cible (notre Docker).
-*   `http-get-form` : Le module Hydra pour les formulaires envoyés en GET.
-*   `"/vulnerabilities/brute/..."` : L'URL et les paramètres (séparés par des `:`).
-    *   `^USER^` et `^PASS^` seront remplacés par Hydra.
-    *   `F=...` : Le message d'échec (**F**ailed).
-    *   `H=Cookie: ...` : On passe notre cookie de session pour avoir accès à la page.
+*   `-l admin` : Le nom d'utilisateur cible.
+*   `-P pass.txt` : Le dictionnaire à utiliser.
+*   `http-get-form` : Indique à Hydra que nous attaquons un formulaire web utilisant la méthode GET.
+*   `F=...` : Indique le message que Hydra doit chercher pour savoir que la tentative a **échoué**.
+*   `H=Cookie: ...` : Permet de passer vos informations de session (indispensable pour que DVWA vous laisse accéder à la page).
 
 ---
 
-## 6. Comprendre les attaques par force brute (Synthèse)
+## 6. Défense et Contre-mesures
 
-Une attaque par force brute repose sur le principe suivant :
-> **Essayer automatiquement un très grand nombre de combinaisons jusqu’à trouver la bonne.**
+Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou trop lentes pour être rentables.
 
-Plus le mot de passe est court, simple ou récurrent, plus l’attaque sera rapide.
+### 6.1. Tester la protection "High"
+1. Dans DVWA, allez dans **DVWA Security** et passez le niveau sur **High**.
+2. Retournez sur l'onglet **Brute Force**.
+3. Relancez la **même commande Hydra** dans votre terminal.
 
-**Facteurs importants :**
-*   Vitesse de réponse du serveur
-*   Absence de protections
-*   Structure des requêtes HTTP
+**Observation :**
+L'attaque devrait échouer. En niveau "High", le serveur génère un code unique (Token anti-CSRF) à chaque chargement de page. Comme Hydra ne renvoie pas le bon code, le serveur rejette la tentative avant même de vérifier le mot de passe.
 
----
-
-## 8. Types d’attaques par force brute (synthèse)
-
-| Type d’attaque | Description |
-| :--- | :--- |
-| **Simple brute force** | Teste toutes les combinaisons possibles. |
-| **Hybrid brute force** | Mélange logique + variations systématiques. |
-| **Dictionary attack** | Utilise une liste de mots de passe plausibles. |
-| **Rainbow table** | Tente de retrouver un mot de passe à partir d’un hash. |
-| **Reverse brute force** | Un mot de passe contre beaucoup d’utilisateurs. |
-| **Credential stuffing** | Réutilise des identifiants volés. |
-
-*Source : Fortinet – Attaque par force brute*
-
----
-
-## 9. Outils connus pour analyser ou comprendre ces attaques
-
-*   **Hydra**
-*   **John the Ripper**
-*   **Hashcat**
-*   **Aircrack-ng**
-*   **Ncrack**
-*   **L0phtCrack**
-
-Chaque outil illustre une catégorie d’attaque ou de test de résistance.
-
----
-
-## 10. Défenses essentielles contre la force brute
+### 6.2. Synthèse des protections efficaces
 
 | Défense | Effet |
 | :--- | :--- |
-| **Mots de passe forts** | Rend le dictionnaire inefficace. |
-| **Limitation des tentatives** | Bloque après X échecs. |
-| **CAPTCHA** | Empêche l’automatisation. |
-| **MFA (2FA)** | Ajoute un facteur impossible à deviner. |
-| **Verrouillage temporaire** | Ralentit drastiquement les essais. |
+| **Politique de mots de passe** | Empêche l'utilisation de mots simples présents dans les dictionnaires (ex: rockyou). |
+| **Verrouillage de compte** | Bloque le compte après X essais infructueux (ex: bloqué 30 min). |
+| **Délais progressifs** | Ajoute un temps d'attente de plus en plus long entre chaque essai. |
+| **CAPTCHA** | Force une action humaine impossible à automatiser pour Hydra. |
+| **MFA (2FA)** | Ajoute une étape de validation (code SMS/App) que l'attaquant ne possède pas. |
