@@ -4,6 +4,7 @@ title: Bonus & Avenir
 order: 11
 description: IA, Hardware Hacking
 nav_order: 11
+published: false
 ---
 
 # Séance 11 : Sujets Avancés
