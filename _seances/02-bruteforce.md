@@ -33,7 +33,7 @@ Pour ce TP, nous allons utiliser une architecture spécifique car les PC de l'é
 ## 2. Préparation de l’environnement
 
 {: .d-inline-block }
-Durée : 15-20 min
+Durée : 10-15 min
 {: .label .label-yellow }
 
 > **Note 1:** On utilisera ce setup pour de prochain TP également, donc assurez vous de comprendre ce que vous faites (pour le reproduire aux prochains TP)
@@ -54,12 +54,12 @@ TODO: je ne connais pas les identifiants de cette VM ni si il faut la dezip avan
 Dans la VM, ouvrez un terminal et lancez le serveur vulnérable avec la commande suivante :
 
 ```bash
-docker run -d -p 80:80 vulnerables/web-dvwa
+sudo docker run -p 80:80 vulnerables/web-dvwa
 ```
-*(L'option `-d` permet de lancer le serveur en arrière-plan pour garder votre terminal libre).*
+Cette étape peut prendre de longues minutes (car la première fois, il doit télécharger l'image)*
 
 **Vérification :**
-Pour vérifier que le serveur tourne bien, tapez :
+Pour vérifier que le serveur tourne bien, tapez (dans un autre terminal) :
 ```bash
 docker ps
 ```
@@ -70,14 +70,15 @@ Vous devriez voir une ligne avec `vulnerables/web-dvwa`. Si la liste est vide, d
 ## 3. Phase de "Reconnaissance" (Analyse du formulaire)
 
 {: .d-inline-block }
-Durée : 15-20 min
+Durée : 15 min
 {: .label .label-yellow }
 
 Avant de lancer une attaque automatique, un attaquant doit comprendre précisément comment sa cible communique. Nous allons analyser techniquement ce qui se passe quand on valide le formulaire.
 
 ### 3.1. Accéder au module de test
-1. Assurez-vous d'être connecté à DVWA (**admin** / **password**).
-2. Dans le menu de gauche, cliquez sur **Brute Force**.
+1. Assurez-vous d'être connecté (http://127.0.0.1:8080) à DVWA (**admin** / **password**).
+2. La première fois, vous devrez cliquer sur le bouton "set database" puis suivre l'instruction qui vous demandra de redemarer.
+2. Ensuite, dans le menu de gauche, cliquez sur **Brute Force**.
 3. Vous voyez un nouveau formulaire de connexion au centre de la page. C'est celui-là que nous allons tenter de "casser".
 
 ### 3.2. Analyser la requête (Outils de développement)
@@ -91,7 +92,8 @@ Nous allons utiliser les outils intégrés à Firefox pour voir "sous le capot".
 4. Cliquez sur **Login**.
 
 ### 3.3. Collecter les informations pour l'attaque
-Dans l'onglet Réseau, une nouvelle ligne est apparue (nommée `index.php?...`). Cliquez dessus pour voir les détails à droite.
+Dans l'onglet Réseau, vous voyez les différents échanges effectués par la page web. 
+Il y a une ligne qui vous intéressera plus qu'une autre: cliquez dessus pour voir les détails à droite.
 
 > **📝 Mission d'analyse : Notez les éléments suivants (indispensables pour l'étape suivante) :**
 >
@@ -101,7 +103,7 @@ Dans l'onglet Réseau, une nouvelle ligne est apparue (nommée `index.php?...`).
 > 3. **Le Cookie :** Trouvez la ligne `Cookie`. Vous verrez `PHPSESSID=...` et `security=low`. 
 >    * **Notez votre PHPSESSID.** Hydra en aura besoin pour simuler votre session.
 > 4. **Le Message d'échec :** Quel texte exact s'affiche en rouge sur la page après l'erreur ? (ex: `Username and/or password incorrect.`). 
->    * Hydra utilisera ce texte pour savoir qu'il s'est trompé.
+>    * Hydra (qu'on installera bientôt) utilisera ce texte pour savoir qu'il s'est trompé.
 
 ---
 
@@ -126,7 +128,7 @@ Dans la réalité, un attaquant ne choisit pas ses mots au hasard. Il utilise l'
 
 1. **Installer CeWL dans votre VM :**
    ```bash
-   sudo apt update && sudo apt install cewl -y
+   sudo apt update && sudo apt install cewl hydra -y
    ```
 
 2. **Aspirer les mots du site DVWA :**
@@ -150,7 +152,7 @@ TODO: il faut qu'on leur donne un site ayant le mot de passe dedans ! (ce qui n'
 ## 5. L'Attaque avec Hydra
 
 {: .d-inline-block }
-Durée : 20 min
+Durée : 15 min
 {: .label .label-yellow }
 
 Hydra est un outil capable d'automatiser des tentatives de connexion sur des dizaines de protocoles différents (HTTP, SSH, FTP, etc.).
@@ -184,7 +186,7 @@ hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brut
 
 {: .d-inline-block }
 Durée : 10 min
-{: .label .label-green }
+{: .label .label-yellow }
 
 Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou trop lentes pour être rentables.
 
@@ -201,7 +203,7 @@ L'attaque échoue. En niveau "High", le serveur génère un code unique (Token a
 
 {: .d-inline-block }
 Durée estimée : 15 min
-{: .label .label-red }
+{: .label .label-yellow }
 
 ### Contexte
 > Le Brute Force ne s'applique pas qu'aux mots de passe. Un attaquant peut aussi tenter de deviner les noms des dossiers et des fichiers "cachés" sur un serveur (ex: `/admin`, `/backup`, `/dev`, `/config.php`). Cette technique s'appelle le **Fuzzing de répertoire**. L'administrateur pense que ces pages sont sûres car "personne ne connaît l'URL", mais un outil automatique peut les trouver en quelques secondes.
