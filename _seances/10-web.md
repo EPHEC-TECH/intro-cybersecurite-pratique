@@ -3,7 +3,7 @@ layout: default
 title: Sécurité Web (OWASP)
 order: 10
 description: SQLi, XSS, Cookies
-published: false
+nav_order: 10
 ---
 
 # Séance 10 : OWASP Top 10

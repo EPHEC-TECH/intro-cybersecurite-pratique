@@ -3,10 +3,10 @@ layout: default
 title: Chiffrement Asymétrique
 order: 3
 description: Clés publiques/privées, Signature
-published: false
+nav_order: 3
 ---
 
-# Séance 2 : Chiffrement Asymétrique
+# Séance 3 : Chiffrement Asymétrique
 
 ## 1. Principes de base
 * Différence avec le symétrique.

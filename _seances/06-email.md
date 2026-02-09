@@ -3,10 +3,10 @@ layout: default
 title: Sécurité Email
 order: 6
 description: SPAM, DMARC, DKIM, Social Engineering
-published: false
+nav_order: 6
 ---
 
-# Séance 5 : Sécurité des Emails
+# Séance 6 : Sécurité des Emails
 
 ## 1. Le fléau du SPAM
 Fonctionnement et filtrage de base.

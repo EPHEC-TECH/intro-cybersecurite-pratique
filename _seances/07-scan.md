@@ -3,7 +3,7 @@ layout: default
 title: Reconnaissance Réseau
 order: 7
 description: NMAP, Zenmap
-published: false
+nav_order: 7
 ---
 
 # Séance 7 : Scan de Réseau

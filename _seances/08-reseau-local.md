@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Attaques Réseau Local
+title: Attaque Réseau Local
 order: 8
 description: ARP, DHCP, Man-in-the-Middle
-published: false
+nav_order: 8
 ---
 
 # Séance 8 : Attaques LAN

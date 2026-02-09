@@ -3,10 +3,10 @@ layout: default
 title: Hachage & Intégrité
 order: 4
 description: Hash, Sel, Rainbow tables
-published: false
+nav_order: 4
 ---
 
-# Séance 3 : Fonctions de Hachage
+# Séance 4 : Fonctions de Hachage
 
 ## 1. Propriétés du Hash
 * Empreinte unique.
