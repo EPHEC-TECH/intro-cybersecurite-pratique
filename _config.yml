@@ -2,6 +2,10 @@ title: Introduction à la Cybersécurité - partie pratique
 description: Énoncés des TP d'intro à la Cybersécurité
 remote_theme: just-the-docs/just-the-docs
 
+# Plugins nécessaires
+plugins:
+  - jekyll-remote-theme
+
 # Configuration des URLs
 url: "https://ephec-tech.github.io"
 baseurl: "/intro-cybersecurite-pratique"

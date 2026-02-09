@@ -1,0 +1,8 @@
+<!-- 
+  Fix CSS 404 & Build Failure :
+  1. Le premier lien tente de charger le CSS local généré par le thème.
+  2. Le second lien est un "Fallback" (secours) vers le CSS officiel.
+  Si le premier donne un 404, le second assure que le site reste beau.
+-->
+<link rel="stylesheet" href="{{ '/assets/css/just-the-docs-default.css' | absolute_url }}">
+<link rel="stylesheet" href="https://just-the-docs.github.io/just-the-docs/assets/css/just-the-docs-default.css">
