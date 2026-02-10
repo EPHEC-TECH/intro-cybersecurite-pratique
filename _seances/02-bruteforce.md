@@ -23,7 +23,7 @@ Apprendre à analyser et comprendre le fonctionnement d'une attaque par dictionn
 Pour ce TP, nous allons utiliser une architecture spécifique car les PC de l'école ne permettent pas de lancer directement les outils d'attaque ou docker.
 
 1.  **Votre PC (Windows) :** L'hôte physique.
-2.  **La VM (Linux Ubuntu) :** Votre poste de travail. C'est ici que vous lancerez vos outils (Navigateur, Hydra).
+2.  **La VM (Linux Ubuntu) :**  le nom de la VM est :"GNS3-Admin-I-2024" se trouve sur le disuque C: de Votre poste de travail. C'est ici que vous lancerez vos outils (Navigateur, Hydra).
 3.  **Le Conteneur Docker (DVWA) :** Une "mini-machine" isolée qui tourne *à l'intérieur* de votre VM et qui contient le site web vulnérable que nous allons attaquer.
 
 > **Note sur Docker :** Considérez Docker comme un système permettant de lancer une application (ici, un site web) avec toutes ses dépendances en une seule ligne de commande, sans rien installer de complexe sur la VM.
@@ -43,9 +43,12 @@ Durée : 10-15 min
 
 ### 2.1. Lancer votre poste de travail (VM)
 
-1.  Sur le PC Windows, lancez votre logiciel de virtualisation (VMware) comme vous avez déjà fait en TP d'OS.
-2.  Démarrez la VM appelée **“system admin 2024”** (ou celle indiquée par votre professeur).
-
+Sur le PC Windows, lancez votre logiciel de virtualisation VMware, comme vous l’avez déjà fait lors des TP d’OS.
+Démarrez la VM appelée “system admin 2024”, cette Vm se trouve sur LE dique C:\VM , sans l’allumer.
+Ensuite, allez dans le menu : VM → Manage → Clone.
+L’objectif est de cloner cette machine virtuelle pour l’utiliser dans ce cours.
+Lors de la procédure de clonage, choisissez l’option “Create a linked clone”, puis donnez-lui le nom : vm security.
+Le nom d’utilisateur  pour cette VM :est GNS, et le mot de passe est user123
 TODO: je ne connais pas les identifiants de cette VM ni si il faut la dezip avant...
 4. Ouvrez une session. C'est depuis cette VM que vous ferez tout le travail.
 
@@ -54,14 +57,14 @@ TODO: je ne connais pas les identifiants de cette VM ni si il faut la dezip avan
 Dans la VM, ouvrez un terminal et lancez le serveur vulnérable avec la commande suivante :
 
 ```bash
-sudo docker run -p 80:80 vulnerables/web-dvwa
+sudo docker run -d -p 80:80 vulnerables/web-dvwa
 ```
 Cette étape peut prendre de longues minutes (car la première fois, il doit télécharger l'image)*
 
 **Vérification :**
 Pour vérifier que le serveur tourne bien, tapez (dans un autre terminal) :
 ```bash
-docker ps
+docker container ps
 ```
 Vous devriez voir une ligne avec `vulnerables/web-dvwa`. Si la liste est vide, demandez de l'aide.
 
@@ -76,8 +79,8 @@ Durée : 15 min
 Avant de lancer une attaque automatique, un attaquant doit comprendre précisément comment sa cible communique. Nous allons analyser techniquement ce qui se passe quand on valide le formulaire.
 
 ### 3.1. Accéder au module de test
-1. Assurez-vous d'être connecté (http://127.0.0.1:8080) à DVWA (**admin** / **password**).
-2. La première fois, vous devrez cliquer sur le bouton "set database" puis suivre l'instruction qui vous demandra de redemarer.
+1. Assurez-vous d'être connecté (http://127.0.0.1) à DVWA (**admin** / **password**).
+2. La première fois, vous devrez cliquer sur le bouton "create/reset database" puis suivre les instructions.
 2. Ensuite, dans le menu de gauche, cliquez sur **Brute Force**.
 3. Vous voyez un nouveau formulaire de connexion au centre de la page. C'est celui-là que nous allons tenter de "casser".
 
@@ -97,8 +100,7 @@ Il y a une ligne qui vous intéressera plus qu'une autre: cliquez dessus pour vo
 
 > **📝 Mission d'analyse : Notez les éléments suivants (indispensables pour l'étape suivante) :**
 >
-> 1. **La Méthode :** Dans l'onglet "En-têtes" (Headers), vérifiez si c'est du **GET** ou du **POST**.
-    *   *(Note importante : Pour cet exercice spécifique de vulnérabilité, DVWA utilise le moins adequat des deux ==> celui qui expose le mot de passe dans l'URL. Dans la "vraie vie", ce n'est normalement pas ainsi ).*
+> 1. **La Méthode :** Comme vous le voyez, la méthode utilisée est GET. Sachant que cette méthode pose un problème, pourquoi ?.*
 > 2. **Les Paramètres :** Trouvez les noms exacts des variables envoyées (ex: `username`, `password`, `Login`).
 > 3. **Le Cookie :** Trouvez la ligne `Cookie`. Vous verrez `PHPSESSID=...` et `security=low`. 
 >    * **Notez votre PHPSESSID.** Hydra en aura besoin pour simuler votre session.
@@ -146,7 +148,7 @@ Dans la réalité, un attaquant ne choisit pas ses mots au hasard. Il utilise l'
    cat custom_pass.txt
    ```
 TODO: il faut qu'on leur donne un site ayant le mot de passe dedans ! (ce qui n'est pas le cas ici)
-
+      example :  http://127.0.0.1/
 ---
 
 ## 5. L'Attaque avec Hydra
@@ -196,6 +198,9 @@ Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou tr
 
 **Observation :**
 L'attaque échoue. En niveau "High", le serveur génère un code unique (Token anti-CSRF) à chaque chargement de page. Comme Hydra ne renvoie pas le bon code, le serveur rejette la tentative avant même de vérifier le mot de passe.
+Refaites le même exercice avec le mode High/Medium/impossible. Qu’est‑ce que vous remarquez ?
+L’attaque reste‑t‑elle facile ? Possible mais plus longue ? Ou impossible ? Pourquoi ?
+Quelles sont les mesures à prendre pour limiter une attaque par brute force ? 
 
 ---
 
@@ -249,4 +254,5 @@ Durée : 20 min
 ### Analyse de la défense
 4. **Automatisation vs Token :** Pourquoi le Token anti-CSRF (vu en niveau High) est-il une défense efficace contre un outil comme Hydra ?
 5. **Vitesse et Verrouillage :** Hydra peut tester des centaines de mots de passe par seconde. Si le serveur ajoutait un délai de 2 secondes entre chaque tentative ou bloquait le compte après 5 échecs, l'attaque resterait-elle réaliste ?
+
 6. **L'ultime rempart :** Même si un attaquant possède un dictionnaire parfait et que le serveur est vulnérable, quelle technologie (souvent utilisée sur vos comptes personnels) rendrait la découverte du mot de passe totalement inutile pour l'attaquant ?
