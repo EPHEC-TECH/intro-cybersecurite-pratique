@@ -254,6 +254,10 @@ python3 attaque.py
 Durée estimée : 15 min
 {: .label .label-yellow }
 
+> **C'est quoi le Fuzzing ?**
+> Le **Fuzzing** (ou test par injection de données) est une technique qui consiste à envoyer des quantités massives de données "imprévues" (aléatoires, semi-aléatoires ou issues de dictionnaires) à un programme pour observer sa réaction. 
+> Dans le contexte web, on fait du **Directory Fuzzing** : on teste des milliers de noms de dossiers et de fichiers (ex: `/backup`, `/config.old`, `/.git`) pour voir lesquels renvoient une réponse positive (Code 200) plutôt qu'une erreur 404. C'est du brute force appliqué à l'arborescence du site.
+
 ### Contexte
 > Le Brute Force ne s'applique pas qu'aux mots de passe. Un attaquant peut aussi tenter de deviner les noms des dossiers et des fichiers "cachés" sur un serveur (ex: `/admin`, `/backup`, `/dev`, `/config.php`). Cette technique s'appelle le **Fuzzing de répertoire**. L'administrateur pense que ces pages sont sûres car "personne ne connaît l'URL", mais un outil automatique peut les trouver en quelques secondes.
 
