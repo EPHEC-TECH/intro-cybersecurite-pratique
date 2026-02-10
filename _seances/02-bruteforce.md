@@ -134,9 +134,10 @@ Dans la réalité, un attaquant ne choisit pas ses mots au hasard. Il utilise l'
    ```
 
 2. **Aspirer les mots du site DVWA :**
-   Nous allons demander à CeWL de créer un fichier `custom_pass.txt` à partir des mots présents sur la page d'accueil :
+   Nous allons demander à CeWL de créer un fichier `custom_pass.txt` à partir des mots présents sur une page web.  
+L'idée est bien evidement de construire une liste de mot de passe qui seraient lié à la cible.  Imaginons, que, dans cet exemple, la cible est une personne (francophone) qui travaille chez Kaspersky :
    ```bash
-   cewl -w custom_pass.txt -d 1 -m 5 http://localhost
+   cewl -w custom_pass.txt -d 1 -m 5 https://password.kaspersky.com/fr/
    ```
    *   `-w custom_pass.txt` : Enregistre le résultat dans ce fichier.
    *   `-d 1` : Profondeur de recherche (s'arrête à la première page).
@@ -147,8 +148,24 @@ Dans la réalité, un attaquant ne choisit pas ses mots au hasard. Il utilise l'
    ```bash
    cat custom_pass.txt
    ```
-TODO: il faut qu'on leur donne un site ayant le mot de passe dedans ! (ce qui n'est pas le cas ici)
-      example :  http://127.0.0.1/
+
+### 4.3. Option alternative : Le dictionnaire "RockYou" 
+Si vous voulez tester l'efficacité d'une liste de mots de passe issue d'une fuite réelle (contenant 14 millions de mots), vous pouvez télécharger le célèbre fichier **rockyou.txt** :
+(Note: ce n'est pas la seule liste ni la plus récente, c'est 'juste' la plus connue. (allez voir du côté de *Kali linux* pour plus de listes et d'outils sur le sujet))
+
+1. **Télécharger le fichier :**
+   ```bash
+   wget https://gitlab.com/kalilinux/packages/wordlists/-/raw/kali/master/rockyou.txt.gz?ref_type=heads -O rockyou.txt.gz
+   ```
+
+2. **Décompresser le fichier :**
+   ```bash
+   gunzip rockyou.txt.gz
+   ```
+
+> **Attention :** Ce fichier est énorme. N'essayez pas de l'ouvrir avec un éditeur de texte classique, cela pourrait faire ramer votre VM. Utilisez `head rockyou.txt` pour voir les premières lignes.
+
+
 ---
 
 ## 5. L'Attaque avec Hydra
