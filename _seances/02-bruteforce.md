@@ -210,7 +210,7 @@ Maintenant que vous maîtrisez l'outil, changeons de cible. Un utilisateur nomm�
 ## 6. Défense : Pourquoi l'attaque échoue-t-elle ?
 
 {: .d-inline-block }
-Durée : 10 min
+Durée : 15 min
 {: .label .label-yellow }
 
 Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou trop lentes pour être rentables.
@@ -223,8 +223,22 @@ Le but de la cybersécurité est de rendre ce genre d'attaques impossibles ou tr
 L'attaque échoue. En niveau "High", le serveur génère un code unique (Token anti-CSRF) à chaque chargement de page. Comme Hydra ne renvoie pas le bon code, le serveur rejette la tentative avant même de vérifier le mot de passe.
 Refaites le même exercice avec le mode High/Medium/impossible. Qu’est‑ce que vous remarquez ?
 L’attaque reste‑t‑elle facile ? Possible mais plus longue ? Ou impossible ? Pourquoi ?
-Quelles sont les mesures à prendre pour limiter une attaque par brute force ? 
+Quelles sont les mesures à prendre pour limiter une attaque par brute force ?
 
+### 6.2. Piste de résolution avancée : Scripter l'attaque
+Un outil comme Hydra montre ici ses limites. Pour réussir cette attaque, il faudrait un outil capable de :
+1. Lire la page de connexion pour récupérer le Token.
+2. Envoyer la tentative (User + Pass + Token).
+3. Recommencer pour le mot de passe suivant.
+
+**💡 Astuce : Utilisez l'IA comme assistant de codage**
+Vous pouvez demander à une IA générative (ChatGPT, Claude, Gemini...) de vous écrire un script Python pour automatiser cela. Voici un exemple de prompt que vous pourriez utiliser :
+
+> "Écris-moi un script Python qui effectue une attaque par dictionnaire sur une page de login protégée par un token CSRF.
+> L'URL est http://localhost/vulnerabilities/brute/.
+> Le script doit utiliser la librairie 'requests'.
+> À chaque tentative, il doit d'abord faire un GET pour récupérer la valeur du champ caché 'user_token' dans le HTML, puis faire un GET avec les paramètres username, password, Login='Login' et le user_token récupéré.
+> Il doit aussi gérer le cookie de session (PHPSESSID)."
 ---
 
 ## 7. Exercice **[à faire en autonomie]** : Le Brute Force de fichiers (Fuzzing)
