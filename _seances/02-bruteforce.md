@@ -43,14 +43,17 @@ Durée : 10-15 min
 
 ### 2.1. Lancer votre poste de travail (VM)
 
-Sur le PC Windows, lancez votre logiciel de virtualisation VMware, comme vous l’avez déjà fait lors des TP d’OS.
-Démarrez la VM appelée “system admin 2024”, cette Vm se trouve sur LE dique C:\VM , sans l’allumer.
-Ensuite, allez dans le menu : VM → Manage → Clone.
+1. Sur le PC Windows, lancez votre logiciel de virtualisation VMware, comme vous l’avez déjà fait lors des TP d’OS.
+2.Démarrez la VM appelée “system admin 2024”, cette Vm se trouve sur LE dique C:\VM , sans l’allumer.
+
+3. Ensuite, allez dans le menu : VM → Manage → Clone.
+   
 L’objectif est de cloner cette machine virtuelle pour l’utiliser dans ce cours.
 Lors de la procédure de clonage, choisissez l’option “Create a linked clone”, puis donnez-lui le nom : vm security.
+
 Le nom d’utilisateur  pour cette VM :est GNS, et le mot de passe est user123
-TODO: je ne connais pas les identifiants de cette VM ni si il faut la dezip avant...
-4. Ouvrez une session. C'est depuis cette VM que vous ferez tout le travail.
+
+
 
 ### 2.2. Lancer la cible (DVWA via Docker)
 
@@ -304,3 +307,4 @@ Durée : 20 min
 5. **Vitesse et Verrouillage :** Hydra peut tester des centaines de mots de passe par seconde. Si le serveur ajoutait un délai de 2 secondes entre chaque tentative ou bloquait le compte après 5 échecs, l'attaque resterait-elle réaliste ?
 
 6. **L'ultime rempart :** Même si un attaquant possède un dictionnaire parfait et que le serveur est vulnérable, quelle technologie (souvent utilisée sur vos comptes personnels) rendrait la découverte du mot de passe totalement inutile pour l'attaquant ?
+
