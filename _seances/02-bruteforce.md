@@ -234,11 +234,18 @@ Un outil comme Hydra montre ici ses limites. Pour réussir cette attaque, il fau
 **💡 Astuce : Utilisez l'IA comme assistant de codage**
 Vous pouvez demander à une IA générative (ChatGPT, Claude, Gemini...) de vous écrire un script Python pour automatiser cela. Voici un exemple de prompt que vous pourriez utiliser :
 
-> "Écris-moi un script Python qui effectue une attaque par dictionnaire sur une page de login protégée par un token CSRF.
-> L'URL est http://localhost/vulnerabilities/brute/.
-> Le script doit utiliser la librairie 'requests'.
-> À chaque tentative, il doit d'abord faire un GET pour récupérer la valeur du champ caché 'user_token' dans le HTML, puis faire un GET avec les paramètres username, password, Login='Login' et le user_token récupéré.
+> "Écris un script Python pour automatiser un login sur http://localhost/vulnerabilities/brute/.
+> Le script doit :
+> 1. Inclure un cookie 'PHPSESSID' et 'security' fournis au départ.
+> 2. Pour chaque tentative : faire un GET pour extraire le 'user_token' (CSRF) du HTML avant d'envoyer les paramètres (username, password, Login, user_token).
+> 3. Confirmer le succès uniquement si la chaîne "Welcome" est présente dans la réponse finale.
 > Il doit aussi gérer le cookie de session (PHPSESSID)."
+
+**Comment l'exécuter ?** Copiez le code fourni par l'IA dans un nouveau fichier (ex: `attaque.py`) et lancez-le depuis votre terminal avec la commande :
+```bash
+python3 attaque.py
+```
+
 ---
 
 ## 7. Exercice **[à faire en autonomie]** : Le Brute Force de fichiers (Fuzzing)
