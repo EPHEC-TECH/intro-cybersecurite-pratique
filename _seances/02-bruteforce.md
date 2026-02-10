@@ -192,6 +192,12 @@ hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brut
 
 **Si l'attaque réussit**, Hydra affichera le mot de passe trouvé en évidence.
 
+### 5.3. Défi supplémentaire : La cible "gordonb"
+Maintenant que vous maîtrisez l'outil, changeons de cible. Un utilisateur nommé `gordonb` possède également un compte sur ce système.
+
+*   **Votre mission :** Tentez de trouver son mot de passe en utilisant la même méthode.
+*   **Conseil :** Si vous n'avez pas encore téléchargé la liste `rockyou.txt` (voir section 4.3), ce défi risque d'être difficile avec votre petit dictionnaire `custom_pass.txt`. Dans ce cas, gardez cet exercice pour votre travail en autonomie une fois le fichier récupéré.
+
 **Explication des paramètres :**
 *   `-l admin` : Le nom d'utilisateur cible.
 *   `-P custom_pass.txt` : Le dictionnaire à utiliser.
