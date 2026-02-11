@@ -131,9 +131,9 @@ Dans la réalité, un attaquant ne choisit pas ses mots au hasard. Il utilise l'
 ### 4.2. Générer un dictionnaire automatique avec CeWL
 **CeWL** (Custom Word List generator) est un outil qui "aspire" un site web pour en extraire tous les mots uniques et créer un dictionnaire sur mesure.
 
-1. **Installer CeWL dans votre VM :**
+1. **Installer CeWL, hydra et medusa dans votre VM :**
    ```bash
-   sudo apt update && sudo apt install cewl hydra -y
+   sudo apt update && sudo apt install cewl hydra medusa -y
    ```
 
 2. **Aspirer les mots du site DVWA :**
@@ -171,29 +171,35 @@ Si vous voulez tester l'efficacité d'une liste de mots de passe issue d'une fui
 
 ---
 
-## 5. L'Attaque avec Hydra
+## 5. L'Attaque (Hydra ou Medusa)
 
 {: .d-inline-block }
 Durée : 15 min
 {: .label .label-yellow }
 
-Hydra est un outil capable d'automatiser des tentatives de connexion sur des dizaines de protocoles différents (HTTP, SSH, FTP, etc.).
+Pour automatiser les tentatives de connexion, nous allons utiliser des outils comme **Hydra** ou **Medusa**. Si l'un ne fonctionne pas dans votre environnement, essayez l'autre.
 
 ### 5.1. Attention aux erreurs fréquentes (⚠️ À lire avant de lancer)
-La commande Hydra est extrêmement sensible. Une seule erreur et rien ne fonctionnera :
-*   **Les deux-points (`:`) :** Ils servent de séparateurs pour Hydra. N'en ajoutez pas et n'en enlevez pas dans la chaîne de paramètres.
+La commande est extrêmement sensible. Une seule erreur et rien ne fonctionnera :
+*   **Les deux-points (`:`) :** Ils servent de séparateurs. N'en ajoutez pas et n'en enlevez pas dans la chaîne de paramètres.
 *   **Espaces :** Il n'y a **aucun espace** autour des deux-points (`:`).
 *   **Exactitude :** Le message d'échec (`F=...`) doit être rigoureusement identique au texte vu dans votre navigateur.
 *   **Session :** Si vous mettez trop de temps, votre `PHPSESSID` peut expirer. Si l'attaque échoue sans raison, rafraîchissez la page dans Firefox et récupérez le nouveau cookie.
 
 ### 5.2. Construire la commande
-Lancer une attaque sur un formulaire web demande une syntaxe précise. Voici la commande à adapter avec **votre PHPSESSID** noté à l'étape 3 :
+Lancer une attaque sur un formulaire web demande une syntaxe précise. Voici les commandes à adapter avec **votre PHPSESSID** noté à l'étape 3 :
 
+**Option A : Avec Hydra** (EDIT: Cette syntax n'a pas l'air de fonctionner dans votre environement )
 ```bash
 hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=UNE_PHRASE_OU_MOT_QUI_EXISTE_QUE_SUR_LA_PAGE_D_ECHEC:H=Cookie: PHPSESSID=VOTRE_COOKIE; security=low"
 ```
 
-**Si l'attaque réussit**, Hydra affichera le mot de passe trouvé en évidence.
+**Option B : Avec Medusa (Solution recommandée car Hydra échouera si vous êtes dans la VM GNS3)**
+```bash
+medusa -h localhost -u admin -P custom_pass.txt -M http -m "DIR:/vulnerabilities/brute/" -m "FORM:username=^USER^&password=^PASS^&Login=Login" -m "DENY:UNE_PHRASE_OU_MOT_QUI_EXISTE_QUE_SUR_LA_PAGE_D_ECHEC" -m "H:Cookie: PHPSESSID=VOTRE_PHPSESSID; security=low"
+```
+
+**Si l'attaque réussit**, l'outil affichera le mot de passe trouvé en évidence.
 
 ### 5.3. Défi supplémentaire : La cible "gordonb"
 Maintenant que vous maîtrisez l'outil, changeons de cible. Un utilisateur nommé `gordonb` possède également un compte sur ce système.
