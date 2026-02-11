@@ -187,10 +187,20 @@ La commande Hydra est extrêmement sensible. Une seule erreur et rien ne fonctio
 *   **Session :** Si vous mettez trop de temps, votre `PHPSESSID` peut expirer. Si l'attaque échoue sans raison, rafraîchissez la page dans Firefox et récupérez le nouveau cookie.
 
 ### 5.2. Construire la commande
-Lancer une attaque sur un formulaire web demande une syntaxe précise. Voici la commande à adapter avec **votre PHPSESSID** noté à l'étape 3 :
+Lancer une attaque sur un formulaire web demande une syntaxe précise. La syntaxe peut varier légèrement selon la version de Hydra que vous utilisez. 
 
+> **Note sur les versions :** 
+> *   Si vous travaillez sur la VM via **GNS3**, vous avez probablement **Hydra v9.5**.
+> *   Si vous travaillez via **WSL** (Ubuntu), vous avez probablement **Hydra v9.2**.
+
+#### Pour Hydra v9.5 (GNS3)
 ```bash
-hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=UNE_PHRASE_OU_MOT_QUI_EXISTE_QUE_SUR_LA_PAGE_D_ECHEC:H=Cookie: PHPSESSID=VOTRE_COOKIE; security=low"
+hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:H=Cookie: security=low; PHPSESSID=VOTRE_PHPSESSID:F=LE_MESSAGE_D_ECHEC"
+```
+
+#### Pour Hydra v9.2 (WSL / Anciennes versions)
+```bash
+hydra -l admin -P custom_pass.txt localhost http-get-form "/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:F=LE_MESSAGE_D_ECHEC:H=Cookie: PHPSESSID=VOTRE_PHPSESSID; security=low"
 ```
 
 **Si l'attaque réussit**, Hydra affichera le mot de passe trouvé en évidence.
