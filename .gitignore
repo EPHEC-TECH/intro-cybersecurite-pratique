@@ -7,6 +7,11 @@ _site/
 # Dependency lock file
 Gemfile.lock
 
-# Gemini file
-GEMINI.md
 /misc_not_to_be_commited/
+
+# Agents file
+GEMINI.md
+CLAUDE.md
+
+.claude/
+.gemini
