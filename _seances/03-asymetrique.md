@@ -5,7 +5,7 @@ order: 3
 description: Clés publiques/privées, Signature, Attaque RSA
 nav_order: 3
 has_children: false
-published: false
+published: true
 ---
 
 # Séance 3 : Chiffrement Asymétrique (RSA)
@@ -17,20 +17,20 @@ published: false
 Recrues, nouvelle mission.
 Jusqu'ici, vous avez travaillé avec le chiffrement **symétrique** : une seule clé pour chiffrer et déchiffrer. Le problème ? Il faut trouver un moyen sûr de transmettre cette clé à l'autre personne. Sur Internet, c'est impossible — vous ne pouvez pas "rencontrer" chaque serveur web avant de lui envoyer un mot de passe.
 
-La cryptographie **asymétrique** résout ce problème en utilisant un couple de clés :
+La cryptographie **asymétrique** résout ce problème en utilisant une **paire de clés** :
 - Une **clé publique** que vous distribuez à tout le monde.
 - Une **clé privée** que vous gardez secrète.
 
 **Analogie :** La clé publique est un **cadenas ouvert** que vous distribuez. N'importe qui peut l'utiliser pour fermer une boîte contenant un message. Seule votre clé privée peut ouvrir ce cadenas.
 
-<!-- SUGGESTION: Si tu veux renforcer l'intuition mathématique sans entrer dans les formules,
-tu pourrais ajouter un paragraphe du type :
+{% comment %} SUGGESTION: Si l'on veut renforcer l'intuition mathématique sans entrer dans les formules,
+on pourrait ajouter un paragraphe du type :
 "Le principe repose sur un problème mathématique simple à comprendre :
 multiplier deux grands nombres premiers ensemble est instantané,
 mais retrouver ces deux nombres à partir du résultat (factoriser) est
 extrêmement long. C'est cette asymétrie qui donne son nom au chiffrement."
-Je ne l'ai pas mis car c'est un choix pédagogique — peut-être trop tôt ici,
-et tu pourrais préférer le garder pour la Mission 4 (attaque). -->
+C'est un choix pédagogique — peut-être trop tôt ici,
+et l'on pourrait préférer le garder pour la Mission 4 (attaque). {% endcomment %}
 
 **Outils requis :**
 - Un terminal Linux (VM ou WSL)
@@ -89,7 +89,7 @@ Durée : 15-20 min
 
 ### Étape 1 : L'échange de clés publiques
 
-Échangez votre fichier `ma_cle.pub` avec votre voisin(e). Vous pouvez utiliser le canal **Teams**, un `scp`, ou un simple copier-coller du contenu.
+Échangez votre fichier `ma_cle.pub` avec votre voisin. Vous pouvez utiliser le canal **Teams**.
 
 > **Rappel :** La clé publique est faite pour être partagée. C'est le "cadenas ouvert" de l'analogie.
 
@@ -101,10 +101,6 @@ echo "Mon message secret" > secret.txt
 openssl pkeyutl -encrypt -pubin -inkey ma_cle.pub -in secret.txt -out message.enc
 ```
 
-<!-- NOTE: j'ai remplacé `openssl rsautl` par `openssl pkeyutl`.
-rsautl est DEPRECATED depuis OpenSSL 3.0 (la version installée sur Ubuntu 22.04+).
-Il fonctionne encore avec un warning, mais pkeyutl est le remplaçant officiel.
-La syntaxe est quasi identique. -->
 
 ### Étape 3 : Déchiffrement
 
@@ -118,11 +114,11 @@ openssl pkeyutl -decrypt -inkey ma_cle.priv -in message.enc
 *   Pourquoi est-il crucial de ne jamais partager le fichier `.priv` ?
 *   Comparez avec le chiffrement symétrique du TP1 : quel est le problème de l'échange de clé avec un chiffrement symétrique que l'asymétrique résout ici ?
 
-<!-- SUGGESTION: La limitation de RSA est qu'on ne peut chiffrer qu'un message
+{% comment %} SUGGESTION: La limitation de RSA est qu'on ne peut chiffrer qu'un message
 plus petit que la clé (max ~245 octets pour RSA-2048). Si un étudiant tente
-de chiffrer un fichier trop gros, il aura une erreur. Tu pourrais en faire
+de chiffrer un fichier trop gros, il aura une erreur. On pourrait en faire
 un piège pédagogique volontaire (faire essayer un long message et demander
-"que se passe-t-il ?"), ou simplement le mentionner en note. -->
+"que se passe-t-il ?"), ou simplement le mentionner en note. {% endcomment %}
 
 ---
 
@@ -136,7 +132,7 @@ Durée : 15-20 min
 
 > La signature numérique ne sert pas à cacher un message, mais à **prouver qui l'a écrit** et à garantir qu'il **n'a pas été modifié** (intégrité + authentification).
 
-> Le principe : on calcule un **hash** du document (son empreinte), puis on **chiffre ce hash avec la clé privée**. N'importe qui peut vérifier en déchiffrant avec la clé publique et en comparant le hash.
+> Le principe : on calcule un **hash** du document (son empreinte unique), puis on utilise la **clé privée** pour générer une preuve mathématique appelée **signature**. N'importe qui peut vérifier cette signature avec la **clé publique** pour s'assurer que le document provient bien de l'auteur et n'a pas été altéré.
 
 ---
 
@@ -152,18 +148,18 @@ Durée : 15-20 min
     ```
     Le résultat doit afficher `Verified OK`.
 
-### Défi Hacker
+### Exercice d'application : Intégrité
 
 > Modifiez **un seul caractère** dans le fichier `document.txt` (avec `nano` ou `echo`). Relancez la commande de vérification.
 
 *   Que se passe-t-il ?
 *   Pourquoi ce mécanisme est-il vital pour la sécurité des mises à jour logicielles ? (Pensez : que se passerait-il si quelqu'un modifiait un fichier `.exe` que vous téléchargez ?)
 
-<!-- SUGGESTION: Tu pourrais ajouter un mini-exercice "à l'envers" où un étudiant
+{% comment %} SUGGESTION: On pourrait ajouter un mini-exercice "à l'envers" où un étudiant
 signe un document et l'envoie à son voisin. Le voisin modifie le document
 et tente de vérifier → échec. Puis le voisin signe avec SA propre clé → ça passe,
 mais ce n'est plus la signature de l'auteur original. Ça illustre bien
-l'authentification en plus de l'intégrité. -->
+l'authentification en plus de l'intégrité. {% endcomment %}
 
 ---
 
@@ -177,7 +173,7 @@ Durée : 20-30 min
 
 > La sécurité de RSA repose sur un principe simple : **multiplier deux grands nombres premiers est facile, mais factoriser le résultat est extrêmement difficile**. Si les nombres premiers choisis sont trop petits ou mal choisis, RSA s'effondre.
 
-<!-- CRITIQUE MAJEURE : Cette mission est la plus faible du TP dans sa version actuelle.
+{% comment %} CRITIQUE MAJEURE : Cette mission est la plus faible du TP dans sa version actuelle.
 Voici les problèmes :
 
 1. Cas 1 : Le modulus hex `00:c3:a3:d5:b0:14:f3:95:6b` fait seulement 8 octets (64 bits).
@@ -185,12 +181,12 @@ Voici les problèmes :
    pour convertir le hex en décimal. Les étudiants seront perdus.
 
 2. Cas 2 : L'image Docker `rsactftool/rsactftool` n'existe pas sur Docker Hub
-   (j'ai vérifié). Et surtout, il manque les FICHIERS d'exercice : pas de
+   (on a vérifié). Et surtout, il manque les FICHIERS d'exercice : pas de
    `cle_faible.pub` ni de `secret.enc` fournis. L'exercice est infaisable en l'état.
 
 PROPOSITION : Remplacer par un exercice concret et auto-suffisant.
-Ci-dessous, j'ai réécrit cette mission en deux approches.
-Tu choisis celle qui te convient le mieux. -->
+Ci-dessous, cette mission est réécrite en deux approches.
+On choisira celle qui convient le mieux. {% endcomment %}
 
 ---
 
@@ -216,12 +212,17 @@ Inspectez la clé publique pour trouver le **modulus** `N` :
 openssl rsa -pubin -in cle_faible.pub -text -noout
 ```
 
-Le modulus s'affiche en hexadécimal. Convertissez-le en décimal avec Python :
+Le modulus s'affiche en hexadécimal. **Attention :** si le premier octet est `00`, ignorez-le (c'est un marqueur de signe pour s'assurer que le nombre est positif).
+
+Convertissez-le en décimal avec Python :
 ```bash
-python3 -c "print(int('COPIEZ_LE_HEX_ICI_SANS_LES_DEUX_POINTS', 16))"
+# Supprimez les ":" et les éventuels "00" en tête de ligne
+python3 -c "print(int('VOTRE_HEX_ICI', 16))"
 ```
 
-<!-- SUGGESTION: Tu pourrais fournir le modulus directement pour éviter la
+> **Note :** Le script ci-dessous effectue un déchiffrement RSA dit "Textbook" (mathématique pur). Comme OpenSSL utilise par défaut un **padding PKCS#1 v1.5** pour renforcer la sécurité, le résultat brut contiendra des octets de remplissage avant votre message.
+
+{% comment %} SUGGESTION: On pourrait fournir le modulus directement pour éviter la
 galère de conversion hex → décimal. Ou fournir un script Python tout fait
 qui extrait N et e automatiquement. Exemple :
 python3 -c "
@@ -231,7 +232,7 @@ print(f'N = {key.n}')
 print(f'e = {key.e}')
 "
 Mais ça nécessite pycryptodome (pip install pycryptodome).
-À toi de voir si tu veux ajouter cette dépendance. -->
+À voir si l'on veut ajouter cette dépendance. {% endcomment %}
 
 ### Étape 3 : Factoriser N
 
@@ -242,7 +243,7 @@ Allez sur [FactorDB.com](http://factordb.com) et collez le nombre décimal `N`.
 
 ### Étape 4 : Reconstruire la clé privée et déchiffrer
 
-<!-- CRITIQUE : C'est ici que ça coince. Reconstruire manuellement la clé privée
+{% comment %} CRITIQUE : C'est ici que ça coince. Reconstruire manuellement la clé privée
 à partir de P, Q et e demande du code Python (calculer phi, puis d = e^-1 mod phi,
 puis reconstruire un fichier PEM). C'est faisable mais complexe pour des débutants.
 
@@ -250,7 +251,7 @@ DEUX OPTIONS :
 A) Fournir un script Python prêt à l'emploi (que l'étudiant utilise comme une "boîte noire")
 B) Utiliser RsaCtfTool (mais il faut l'installer, pas de Docker)
 
-Option A me semble plus adaptée au niveau intro. Voici le script : -->
+L'option A semble plus adaptée au niveau intro. Voici le script : {% endcomment %}
 
 Si vous avez trouvé `P` et `Q`, utilisez ce script Python pour reconstruire la clé privée et déchiffrer le message :
 
@@ -278,24 +279,28 @@ with open("flag.enc", "rb") as f:
     ciphertext = f.read()
 
 plaintext = pow(int.from_bytes(ciphertext, 'big'), d, n)
-print(plaintext.to_bytes(256, 'big').strip(b'\x00').decode())
+# Pour une clé de 512 bits, le bloc déchiffré fait 64 octets
+decrypted_block = plaintext.to_bytes(64, 'big')
+# On affiche le bloc brut pour voir le padding PKCS#1 v1.5 (00 02 ... 00 [MESSAGE])
+print(f"Bloc brut : {decrypted_block.hex()}")
+print(f"Message probable : {decrypted_block.split(b'\\x00')[-1].decode()}")
 ```
 
 ```bash
 python3 crack_rsa.py
 ```
 
-<!-- NOTE : Le script ci-dessus est volontairement simplifié.
+{% comment %} NOTE : Le script ci-dessus est volontairement simplifié.
 Pour une version plus robuste (qui gère le padding PKCS#1), il faudrait
 utiliser PKCS1_v1_5.new(key).decrypt(). Mais pour une clé de 512 bits
 générée par openssl, le script devrait fonctionner.
 
-ALTERNATIVE : Si tu ne veux pas de Python, tu peux installer RsaCtfTool
+ALTERNATIVE : Si l'on ne veut pas de Python, on peut installer RsaCtfTool
 directement (sans Docker) :
   git clone https://github.com/RsaCtfTool/RsaCtfTool.git
   cd RsaCtfTool && pip install -r requirements.txt
   python3 RsaCtfTool.py --publickey ../cle_faible.pub --uncipherfile ../flag.enc
-C'est plus "hacker" mais ajoute une dépendance lourde. -->
+C'est plus "hacker" mais ajoute une dépendance lourde. {% endcomment %}
 
 ### Questions d'analyse
 *   Pourquoi une clé de 512 bits est-elle dangereuse alors qu'une clé de 2048 bits est considérée comme sûre ?
@@ -310,19 +315,19 @@ C'est plus "hacker" mais ajoute une dépendance lourde. -->
 Optionnel
 {: .label .label-green }
 
-<!-- CRITIQUE : La section bonus actuelle est trop mince (2 bullet points sans
-contexte). Je l'ai étoffée ci-dessous avec des pistes concrètes.
-Tu peux garder ce qui t'intéresse et supprimer le reste. -->
+{% comment %} CRITIQUE : La section bonus actuelle est trop mince (2 bullet points sans
+contexte). Elle est étoffée ci-dessous avec des pistes concrètes.
+On peut garder ce qui est pertinent et supprimer le reste. {% endcomment %}
 
 *   **Vos clés SSH :** Regardez dans votre dossier `~/.ssh/`. Si vous avez déjà utilisé SSH, vous y trouverez vos paires de clés asymétriques (`id_rsa` / `id_rsa.pub` ou `id_ed25519` / `id_ed25519.pub`). C'est exactement le même principe que ce TP !
 *   **Limitation de RSA :** Essayez de chiffrer un fichier de plus de 245 octets avec votre clé RSA 2048 bits. Que se passe-t-il ? Pourquoi en pratique, on utilise RSA pour chiffrer une **clé symétrique** (AES), et c'est AES qui chiffre les données ?
 *   **CryptoHack :** Si vous voulez vous entraîner sur des challenges RSA progressifs (du débutant au difficile), essayez la plateforme gratuite [CryptoHack](https://cryptohack.org/challenges/rsa/).
 
-<!-- SUGGESTION : Autres pistes bonus possibles :
+{% comment %} SUGGESTION : Autres pistes bonus possibles :
 - GPG : générer une clé GPG, signer un fichier, importer la clé d'un camarade
   et vérifier sa signature (mais ça fait un 2ème outil en plus d'OpenSSL)
 - Visualisation : aller sur https://legacy.cryptool.org/en/cto/rsa-step-by-step
   pour voir RSA pas à pas avec des petits nombres
 - Attaque de Wiener : fournir une clé avec un exposant privé trop petit
   et utiliser RsaCtfTool pour la casser automatiquement
--->
+{% endcomment %}
