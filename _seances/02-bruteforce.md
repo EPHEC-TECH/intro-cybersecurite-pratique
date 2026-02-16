@@ -261,7 +261,7 @@ python3 attaque.py
 
 ---
 
-## 7. Exercice **[à faire en autonomie]** : Le Brute Force de fichiers (Fuzzing)
+## Exercice 7 [À faire en autonomie]{: .label .label-green } : Le Brute Force de fichiers (Fuzzing)
 
 {: .d-inline-block }
 Durée estimée : 15 min

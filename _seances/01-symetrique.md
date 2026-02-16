@@ -115,7 +115,7 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 
 ---
 
-## Exercice 3 **[à faire en autonomie]** : L'Attaque Fréquentielle 
+## Exercice 3 [À faire en autonomie]{: .label .label-green } : L'Attaque Fréquentielle 
 
 {: .d-inline-block }
 Durée estimée : 15 min
@@ -153,7 +153,7 @@ Durée estimée : 15 min
 
 ---
 
-## Exercice 4 **[à faire en autonomie]** : Le Chiffre de Vigenère
+## Exercice 4 [À faire en autonomie]{: .label .label-green } : Le Chiffre de Vigenère
 
 {: .d-inline-block }
 Durée : 20 min
@@ -265,4 +265,4 @@ Durée : 15 min
 1. Qu'observez vous entre les deux output ? Si ont avait utilisé ROT13, est-ce qu'on aurait eu la même observation ?   En quoi est-ce important ?
 2. Que ce passe t'il si on change que le vecteur d'initialisation ?
 3. Est-ce AES est encore utilisé aujourd'hui ?  des exemples ?
-4. 
+

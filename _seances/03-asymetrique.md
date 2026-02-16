@@ -21,15 +21,16 @@ La cryptographie **asymétrique** résout ce problème en utilisant une **paire 
 - Une **clé publique** que vous distribuez à tout le monde.
 - Une **clé privée** que vous gardez secrète.
 
+{: .note }
 **Analogie :** La clé publique est un **cadenas ouvert** que vous distribuez. N'importe qui peut l'utiliser pour fermer une boîte contenant un message. Seule votre clé privée peut ouvrir ce cadenas.
 
 > **Le principe mathématique (RSA en 30 secondes)**
 >
-> RSA repose sur une opération facile lorsque effectué dans un sens, mais quasi impossible dans lorsqu'on essaye de l'effectuer dans l'autre sens:
-> - **Facile :** Multiplier deux grands nombres premiers → `P × Q = N`
-> - **Beaucoup plus compliqué :** Retrouver `P` et `Q` à partir de `N` (c'est la **factorisation**)
+> RSA repose sur une opération facile lorsque effectuée dans un sens, mais quasi impossible lorsqu'on essaye de l'effectuer dans l'autre sens :
+> - **Facile :** Multiplier deux grands nombres premiers → $P \times Q = N$
+> - **Beaucoup plus compliqué :** Retrouver $P$ et $Q$ à partir de $N$ (c'est la **factorisation**)
 >
-> La clé publique contient `N` (le produit) et un exposant `e`. La clé privée contient `P`, `Q` et d'autres valeurs dérivées. Tant que personne ne peut factoriser `N`, la clé privée reste secrète.
+> La clé publique contient $N$ (le produit) et un exposant $e$. La clé privée contient $P$, $Q$ et d'autres valeurs dérivées. Tant que personne ne peut factoriser $N$, la clé privée reste secrète.
 >
 > C'est cette **asymétrie de difficulté** qui donne son nom au chiffrement asymétrique.
 
@@ -37,22 +38,19 @@ La cryptographie **asymétrique** résout ce problème en utilisant une **paire 
 - Un terminal Linux (VM ou WSL)
 - **OpenSSL** (déjà installé sur la plupart des distributions Linux)
 
+{: .important }
 > **Pourquoi Teams ? Et pourquoi en public ?**
->
-> Durant ce TP, vous échangerez des fichiers via le canal **Teams du cours** (pas en message privé). C'est volontaire : la force du chiffrement asymétrique est justement que **la sécurité ne repose pas sur le secret du canal de communication**. Vous pouvez publier votre clé publique sur un panneau d'affichage en pleine rue — ça ne compromet rien.
->
-> **Convention de nommage :** Pour éviter la confusion quand 20 personnes partagent des fichiers, **préfixez tous vos fichiers avec votre prénom** (ou pseudo). Par exemple : `alex_cle.pub`, `alex_message.enc`, `alex_signature.bin`. Dans les commandes ci-dessous, remplacez `prenom` par le vôtre.
+> Durant ce TP, vous échangerez des fichiers via le canal **Teams du cours**. C'est volontaire : la force du chiffrement asymétrique est que **la sécurité ne repose pas sur le secret du canal de communication**. Vous pouvez publier votre clé publique sur un panneau d'affichage en pleine rue — ça ne compromet rien.
 
 ---
 
-## Mission 1 : Génération de la paire de clés
+## Exercice 1 : Génération de la paire de clés
 
 {: .d-inline-block }
 Durée : 10-15 min
 {: .label .label-yellow }
 
 ### Contexte
-
 > Pour participer à un échange sécurisé, chaque agent doit d'abord se créer son propre "cadenas" (clé publique) et sa "clé" (clé privée). Nous utilisons l'outil standard **OpenSSL**.
 
 ---
@@ -67,7 +65,6 @@ Durée : 10-15 min
     ```
 
 ### Questions d'analyse
-
 *   Affichez le contenu des deux fichiers avec `cat`. À quoi ressemblent-ils ? Lequel est le plus long ?
 *   Utilisez la commande suivante pour inspecter les composants mathématiques de votre clé privée :
     ```bash
@@ -82,15 +79,14 @@ Durée : 10-15 min
 
 ---
 
-## Mission 2 : Chiffrement et Secret Partagé
+## Exercice 2 : Chiffrement et Secret Partagé
 
 {: .d-inline-block }
 Durée : 15-20 min
 {: .label .label-yellow }
 
 ### Contexte
-
-> Le but de l'asymétrique est de pouvoir envoyer un secret à quelqu'un **sans avoir besoin de se rencontrer au préalable**. Votre voisin(e) veut vous envoyer un message secret.
+> Le but de l'asymétrique est de pouvoir envoyer un secret à quelqu'un **sans avoir besoin de se rencontrer au préalable**.
 
 ---
 
@@ -120,7 +116,7 @@ openssl pkeyutl -decrypt -inkey prenom_cle.priv -in prenom_message.enc
 
 ### Questions d'analyse
 *   Que se passe-t-il si votre voisin essaie de déchiffrer `message.enc` avec **sa propre** clé privée ?
-*   Pourquoi est-il crucial de ne jamais partager le fichier `.priv` ?
+*    {: .warning }  Pourquoi est-il crucial de ne jamais partager le fichier `.priv` ?
 *   Comparez avec le chiffrement symétrique du TP1 : quel est le problème de l'échange de clé avec un chiffrement symétrique que l'asymétrique résout ici ?
 
 ---
@@ -149,7 +145,7 @@ Durée : 5 min
 
 ---
 
-## Mission 3 : La Signature Numérique
+## Exercice 3 : La Signature Numérique
 
 {: .d-inline-block }
 Durée : 15-20 min
@@ -193,7 +189,7 @@ Durée : 15-20 min
 
 ---
 
-## Mission 4 : Le Casse du Siècle (RSA à la main)
+## Exercice 4 : Le casse du siècle (RSA à la main)
 
 {: .d-inline-block }
 Durée : 15 min
@@ -228,10 +224,10 @@ Vous avez intercepté une clé publique très faible et un message chiffré :
 
 ---
 
-## Mission 5 : Le Secret de la Vitesse (Le Chiffrement Hybride)
+## Exercice 5 [À faire en autonomie]{: .label .label-green } : Le Secret de la Vitesse (Le Chiffrement Hybride)
 
 {: .d-inline-block }
-Durée : 20 min
+Durée : 15 min
 {: .label .label-yellow }
 
 ### Contexte
