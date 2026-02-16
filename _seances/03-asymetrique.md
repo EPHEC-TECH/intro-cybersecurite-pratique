@@ -37,6 +37,12 @@ La cryptographie **asymétrique** résout ce problème en utilisant une **paire 
 - Un terminal Linux (VM ou WSL)
 - **OpenSSL** (déjà installé sur la plupart des distributions Linux)
 
+> **Pourquoi Teams ? Et pourquoi en public ?**
+>
+> Durant ce TP, vous échangerez des fichiers via le canal **Teams du cours** (pas en message privé). C'est volontaire : la force du chiffrement asymétrique est justement que **la sécurité ne repose pas sur le secret du canal de communication**. Vous pouvez publier votre clé publique sur un panneau d'affichage en pleine rue — ça ne compromet rien.
+>
+> **Convention de nommage :** Pour éviter la confusion quand 20 personnes partagent des fichiers, **préfixez tous vos fichiers avec votre prénom** (ou pseudo). Par exemple : `alex_cle.pub`, `alex_message.enc`, `alex_signature.bin`. Dans les commandes ci-dessous, remplacez `prenom` par le vôtre.
+
 ---
 
 ## Mission 1 : Génération de la paire de clés
@@ -53,11 +59,11 @@ Durée : 10-15 min
 
 1.  **Générer la clé privée (placez vous dans un dossier approprié) :**
     ```bash
-    openssl genrsa -out ma_cle.priv 2048
+    openssl genrsa -out prenom_cle.priv 2048
     ```
 2.  **Extraire la clé publique correspondante :**
     ```bash
-    openssl rsa -in ma_cle.priv -pubout -out ma_cle.pub
+    openssl rsa -in prenom_cle.priv -pubout -out prenom_cle.pub
     ```
 
 ### Questions d'analyse
@@ -65,12 +71,12 @@ Durée : 10-15 min
 *   Affichez le contenu des deux fichiers avec `cat`. À quoi ressemblent-ils ? Lequel est le plus long ?
 *   Utilisez la commande suivante pour inspecter les composants mathématiques de votre clé privée :
     ```bash
-    openssl rsa -in ma_cle.priv -text -noout
+    openssl rsa -in prenom_cle.priv -text -noout
     ```
     Trouvez le **modulus** (noté `n`) et l'**exposant public** (noté `e`). Quelle est la valeur de `e` ?
 *   Faites la même chose avec la clé publique :
     ```bash
-    openssl rsa -pubin -in ma_cle.pub -text -noout
+    openssl rsa -pubin -in prenom_cle.pub -text -noout
     ```
     Quels éléments sont présents dans la clé publique ? Lesquels sont absents par rapport à la clé privée ? Pourquoi ?
 
@@ -90,24 +96,26 @@ Durée : 15-20 min
 
 ### Étape 1 : L'échange de clés publiques
 
-Échangez votre fichier `ma_cle.pub` avec votre voisin. Vous pouvez utiliser le canal **Teams**.
+Échangez votre fichier `prenom_cle.pub` avec votre voisin (ou un autre élève avec qui vous faites l'exercice. Ce n'est pas grave si, pour une question de facilité de gestion, vous participez à plusieurs échanges).
+Vous utiliserez uniquement le canal **Teams** pour vos échanges avec votre 'voisin' (vous pouvez le tagguer pour plus de simplicité).
 
 > **Rappel :** La clé publique est faite pour être partagée. C'est le "cadenas ouvert" de l'analogie.
 
 ### Étape 2 : Chiffrement
 
-Votre voisin écrit un court message dans `secret.txt` et le chiffre avec **votre** clé publique :
+Votre voisin écrit un court message dans `prenom_secret.txt` et le chiffre avec **votre** clé publique :
 ```bash
-echo "Mon message secret" > secret.txt
-openssl pkeyutl -encrypt -pubin -inkey ma_cle.pub -in secret.txt -out message.enc
+echo "Mon message secret" > prenom_secret.txt
+openssl pkeyutl -encrypt -pubin -inkey prenom_cle.pub -in prenom_secret.txt -out prenom_message.enc
 ```
 
+Il vous envoie le fichier `prenom_message.enc` sur **Teams**.
 
 ### Étape 3 : Déchiffrement
 
-Récupérez le fichier `message.enc` et déchiffrez-le avec **votre** clé privée :
+Récupérez le fichier `prenom_message.enc` de votre voisin et déchiffrez-le avec **votre** clé privée :
 ```bash
-openssl pkeyutl -decrypt -inkey ma_cle.priv -in message.enc
+openssl pkeyutl -decrypt -inkey prenom_cle.priv -in prenom_message.enc
 ```
 
 ### Questions d'analyse
@@ -115,11 +123,29 @@ openssl pkeyutl -decrypt -inkey ma_cle.priv -in message.enc
 *   Pourquoi est-il crucial de ne jamais partager le fichier `.priv` ?
 *   Comparez avec le chiffrement symétrique du TP1 : quel est le problème de l'échange de clé avec un chiffrement symétrique que l'asymétrique résout ici ?
 
-{% comment %} SUGGESTION: La limitation de RSA est qu'on ne peut chiffrer qu'un message
-plus petit que la clé (max ~245 octets pour RSA-2048). Si un étudiant tente
-de chiffrer un fichier trop gros, il aura une erreur. On pourrait en faire
-un piège pédagogique volontaire (faire essayer un long message et demander
-"que se passe-t-il ?"), ou simplement le mentionner en note. {% endcomment %}
+---
+
+## Exercice : La Limite de RSA
+
+{: .d-inline-block }
+Durée : 5 min
+{: .label .label-red }
+
+### Contexte
+> Lors de la Mission 2, vous avez chiffré un court message. Mais que se passe-t-il si le message est plus long ?
+
+### Mission
+
+1. Générez un fichier contenant un texte assez long (plusieurs phrases). Par exemple avec cette commande (mais vous pouvez juste copier-coller un 'long texte', tel que ce TP, dans le fichier long_message.txt) :
+    ```bash
+    python3 -c "print('A' * 500)" > long_message.txt
+    ```
+2. Tentez de le chiffrer avec votre clé publique RSA 2048 bits, comme vous l'avez fait à la Mission 2.
+
+### Questions d'analyse
+*   Quelle erreur obtenez-vous ?
+*   D'après l'encart mathématique de l'introduction, pourquoi RSA ne peut-il pas chiffrer un message plus grand que la clé ?
+*   En pratique, on n'utilise **jamais** RSA pour chiffrer directement des données. À la place, on chiffre une **clé symétrique** (AES -- vu au précédent TP) avec RSA, puis on chiffre les données avec AES. Pourquoi cette combinaison est-elle le meilleur des deux mondes ?
 
 ---
 
@@ -133,34 +159,37 @@ Durée : 15-20 min
 
 > La signature numérique ne sert pas à cacher un message, mais à **prouver qui l'a écrit** et à garantir qu'il **n'a pas été modifié** (intégrité + authentification).
 
-> Le principe : on calcule un **hash** du document (son empreinte unique), puis on utilise la **clé privée** pour générer une preuve mathématique appelée **signature**. N'importe qui peut vérifier cette signature avec la **clé publique** pour s'assurer que le document provient bien de l'auteur et n'a pas été altéré.
+> Le principe : on calcule un **hash** du document (une empreinte unique -- mais on y reviendra dans la suite du cours), puis on utilise la **clé privée** pour générer une preuve mathématique appelée **signature**. N'importe qui peut vérifier cette signature avec la **clé publique** pour s'assurer que le document provient bien de l'auteur et n'a pas été altéré.
 
 ---
 
 1.  **Signer un document :**
     ```bash
-    echo "Ceci est un document officiel" > document.txt
-    openssl dgst -sha256 -sign ma_cle.priv -out signature.bin document.txt
+    echo "Ceci est un document officiel: moi [pseudo/nom] affirme la chose suivante: xxxx_a_completer_xxxx " > prenom_document.txt
+    openssl dgst -sha256 -sign prenom_cle.priv -out prenom_signature.bin prenom_document.txt
     ```
 2.  **Vérifier la signature :**
-    Partagez le `document.txt`, la `signature.bin` et votre `ma_cle.pub` à votre voisin(e). Il/elle vérifie avec :
+    Partagez `prenom_document.txt`, `prenom_signature.bin` et votre `prenom_cle.pub` à votre voisin (via **Teams** toujours). Il vérifie avec :
     ```bash
-    openssl dgst -sha256 -verify ma_cle.pub -signature signature.bin document.txt
+    openssl dgst -sha256 -verify prenom_cle.pub -signature prenom_signature.bin prenom_document.txt
     ```
     Le résultat doit afficher `Verified OK`.
 
-### Exercice d'application : Intégrité
+### Exercice d'application : Falsification et Usurpation
 
-> Modifiez **un seul caractère** dans le fichier `document.txt` (avec `nano` ou `echo`). Relancez la commande de vérification.
+> Un message signé de votre voisin traîne sur le canal Teams. Vous allez tenter de le falsifier.
 
-*   Que se passe-t-il ?
-*   Pourquoi ce mécanisme est-il vital pour la sécurité des mises à jour logicielles ? (Pensez : que se passerait-il si quelqu'un modifiait un fichier `.exe` que vous téléchargez ?)
+1. **Attaque sur l'intégrité :** Récupérez le `prenom_document.txt` et le `prenom_signature.bin` d'un camarade. Modifiez **un seul caractère** dans son document (avec `nano` ou `echo`). Vérifiez la signature avec sa clé publique. Que se passe-t-il ?
 
-{% comment %} SUGGESTION: On pourrait ajouter un mini-exercice "à l'envers" où un étudiant
-signe un document et l'envoie à son voisin. Le voisin modifie le document
-et tente de vérifier → échec. Puis le voisin signe avec SA propre clé → ça passe,
-mais ce n'est plus la signature de l'auteur original. Ça illustre bien
-l'authentification en plus de l'intégrité. {% endcomment %}
+2. **Tentative d'usurpation :** La signature est invalide... Qu'à cela ne tienne : re-signez le document modifié avec **votre propre** clé privée et publiez le tout sur Teams (le document modifié + votre nouvelle signature). Prévenez vos camarades que vous avez "mis à jour" le message.
+
+3. **Détection :** Vos camarades doivent vérifier ce message. Tomberont-ils dans le piège ? Comment peuvent-ils détecter la supercherie ?
+
+### Questions d'analyse
+*   Pourquoi la vérification échoue-t-elle à l'étape 1, même pour un changement minuscule ?
+*   À l'étape 2, la signature est techniquement valide — mais elle prouve quoi exactement ? Est-ce que le message vient toujours de l'auteur original ?
+*   Comment un destinataire peut-il se protéger contre ce type d'attaque ? (Indice : que faut-il vérifier **en plus** de la validité de la signature ?)
+*   Pourquoi ce mécanisme est-il vital pour la sécurité des mises à jour logicielles ? (Pensez : que se passerait-il si quelqu'un modifiait un `.exe` que vous téléchargez ?)
 
 ---
 
