@@ -125,7 +125,7 @@ openssl pkeyutl -decrypt -inkey prenom_cle.priv -in prenom_message.enc
 
 {: .d-inline-block }
 Durée : 5 min
-{: .label .label-red }
+{: .label .label-yellow }
 
 ### Contexte
 > Lors de la Mission 2, vous avez chiffré un court message. Mais que se passe-t-il si le message est plus long ?
@@ -189,7 +189,7 @@ Durée : 15-20 min
 
 ---
 
-## Exercice 4 : Le casse du siècle (RSA à la main)
+## Exercice 4 <span class="label label-green">À faire en autonomie</span> : Le casse du siècle (RSA à la main)
 
 {: .d-inline-block }
 Durée : 15 min
@@ -224,7 +224,7 @@ Vous avez intercepté une clé publique très faible et un message chiffré :
 
 ---
 
-## Exercice 5 [À faire en autonomie]{: .label .label-green } : Le Secret de la Vitesse (Le Chiffrement Hybride)
+## Exercice 5: Le secret de la vitesse (Le Chiffrement Hybride)
 
 {: .d-inline-block }
 Durée : 15 min

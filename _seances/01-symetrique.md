@@ -115,7 +115,7 @@ Le **code de César** consiste à décaler chaque lettre de l’alphabet d’un 
 
 ---
 
-## Exercice 3 [À faire en autonomie]{: .label .label-green } : L'Attaque Fréquentielle 
+## Exercice 3 <span class="label label-green">À faire en autonomie</span> : L'Attaque Fréquentielle 
 
 {: .d-inline-block }
 Durée estimée : 15 min
@@ -153,7 +153,7 @@ Durée estimée : 15 min
 
 ---
 
-## Exercice 4 [À faire en autonomie]{: .label .label-green } : Le Chiffre de Vigenère
+## Exercice 4 <span class="label label-green">À faire en autonomie</span> : Le Chiffre de Vigenère
 
 {: .d-inline-block }
 Durée : 20 min

@@ -26,7 +26,7 @@ Le **hachage** (hashing) ne sert pas à cacher un message, mais à lui donner un
 
 ---
 
-## Exercice 1 [À faire en autonomie]{: .label .label-green } : L'Effet Avalanche
+## Exercice 1 <span class="label label-green">À faire en autonomie</span> : L'Effet Avalanche
 
 {: .d-inline-block }
 Durée estimée : 10 min
@@ -52,7 +52,7 @@ Durée estimée : 10 min
 
 ---
 
-## Exercice 2 [À faire en autonomie]{: .label .label-green } : Casser un Hash (Rainbow Tables)
+## Exercice 2 <span class="label label-green">À faire en autonomie</span> : Casser un Hash (Rainbow Tables)
 
 {: .d-inline-block }
 Durée estimée : 15 min
@@ -74,7 +74,7 @@ Durée estimée : 15 min
 
 ---
 
-## Exercice 3 [À faire en autonomie]{: .label .label-green } : Le Sel (Salt) — La contre-mesure
+## Exercice 3 <span class="label label-green">À faire en autonomie</span> : Le Sel (Salt) — La contre-mesure
 
 {: .d-inline-block }
 Durée estimée : 10 min
@@ -97,7 +97,7 @@ Deux utilisateurs, Alice et Bob, utilisent le même mot de passe : `123456`.
 
 ---
 
-## Exercice 4 [À faire en autonomie]{: .label .label-green } : Vérification d'Intégrité (Checksum)
+## Exercice 4 <span class="label label-green">À faire en autonomie</span> : Vérification d'Intégrité (Checksum)
 
 {: .d-inline-block }
 Durée estimée : 10 min
@@ -123,7 +123,7 @@ Durée estimée : 10 min
 
 ---
 
-## Exercice 5 [À faire en autonomie]{: .label .label-green } : Déduplication avec `fdupes`
+## Exercice 5 <span class="label label-green">À faire en autonomie</span> : Déduplication avec `fdupes`
 
 {: .d-inline-block }
 Durée estimée : 10 min
