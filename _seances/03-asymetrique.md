@@ -339,25 +339,62 @@ C'est plus "hacker" mais ajoute une dépendance lourde. {% endcomment %}
 
 ---
 
-## Pour aller plus loin (Bonus)
+## Le saviez-vous ?
+
+### Vos clés GitHub sont publiques
+
+Si vous avez configuré une clé SSH sur GitHub, **n'importe qui** peut la consulter à l'adresse :
+
+```
+https://github.com/VOTRE_USERNAME.keys  (à condition qu'une clé aie été créé par l'utilisateur)
+```
+
+
+
+Essayez avec votre propre compte, ou avec celui d'un camarade. Vous y verrez la clé publique SSH en clair — c'est normal et voulu, exactement comme le "cadenas ouvert" de ce TP.
+
+#### Mini-défi (hors TP): Message secret via GitHub
 
 {: .d-inline-block }
 Optionnel
 {: .label .label-green }
 
-{% comment %} CRITIQUE : La section bonus actuelle est trop mince (2 bullet points sans
-contexte). Elle est étoffée ci-dessous avec des pistes concrètes.
-On peut garder ce qui est pertinent et supprimer le reste. {% endcomment %}
+> Envoyez un message chiffré à un camarade **en utilisant uniquement sa clé publique GitHub** — sans qu'il ne vous ait rien transmis au préalable.
+
+1. Récupérez la clé publique SSH de votre cible :
+    ```bash
+    curl https://github.com/USERNAME.keys > cible.pub
+    ```
+2. Cette clé est au format SSH. Convertissez-la au format PEM (compatible OpenSSL) :
+    ```bash
+    ssh-keygen -f cible.pub -e -m PKCS8 > cible_pkcs8.pub
+    ```
+3. Chiffrez votre message :
+    ```bash
+    echo "Ton message secret ici" > msg.txt
+    openssl pkeyutl -encrypt -pubin -inkey cible_pkcs8.pub -in msg.txt -out msg.enc
+    ```
+4. Encodez le résultat en **base64** pour obtenir du texte lisible (et partageable via Teams, un email, ou même un post-it) :
+    ```bash
+    openssl base64 -in msg.enc
+    ```
+5. Envoyez ce texte base64 à votre cible. De son côté, il devra décoder le base64 et déchiffrer avec sa clé privée SSH. À lui de trouver comment !
+
+### Votre carte d'identité belge aussi
+
+Votre **eID belge** contient elle aussi des clés asymétriques, stockées directement dans la puce de la carte. Elle en contient même **trois paires** : une pour l'**authentification** (prouver votre identité en ligne), une pour la **signature numérique** (signer des documents avec valeur légale), et une pour le **chiffrement**.
+
+Les clés privées ne quittent **jamais** la puce — elles sont générées sur la carte et y restent. Quand vous utilisez Itsme ou que vous signez un document via un lecteur de carte, c'est la puce qui effectue le calcul cryptographique en interne. Seul le résultat (la signature) sort de la carte.
+
+Les certificats (contenant les clés publiques) sont lisibles sans code PIN par n'importe quel lecteur de carte. Par contre, contrairement à GitHub, il n'existe pas de site web public où consulter le certificat de quelqu'un.
+
+---
+
+## Pour aller plus loin (Hors TP)
+
+{: .d-inline-block }
+Optionnel
+{: .label .label-green }
 
 *   **Vos clés SSH :** Regardez dans votre dossier `~/.ssh/`. Si vous avez déjà utilisé SSH, vous y trouverez vos paires de clés asymétriques (`id_rsa` / `id_rsa.pub` ou `id_ed25519` / `id_ed25519.pub`). C'est exactement le même principe que ce TP !
-*   **Limitation de RSA :** Essayez de chiffrer un fichier de plus de 245 octets avec votre clé RSA 2048 bits. Que se passe-t-il ? Pourquoi en pratique, on utilise RSA pour chiffrer une **clé symétrique** (AES), et c'est AES qui chiffre les données ?
 *   **CryptoHack :** Si vous voulez vous entraîner sur des challenges RSA progressifs (du débutant au difficile), essayez la plateforme gratuite [CryptoHack](https://cryptohack.org/challenges/rsa/).
-
-{% comment %} SUGGESTION : Autres pistes bonus possibles :
-- GPG : générer une clé GPG, signer un fichier, importer la clé d'un camarade
-  et vérifier sa signature (mais ça fait un 2ème outil en plus d'OpenSSL)
-- Visualisation : aller sur https://legacy.cryptool.org/en/cto/rsa-step-by-step
-  pour voir RSA pas à pas avec des petits nombres
-- Attaque de Wiener : fournir une clé avec un exposant privé trop petit
-  et utiliser RsaCtfTool pour la casser automatiquement
-{% endcomment %}
