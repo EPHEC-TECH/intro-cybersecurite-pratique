@@ -193,149 +193,95 @@ Durée : 15-20 min
 
 ---
 
-## Mission 4 : L'Attaque — Casser une clé RSA faible
+## Mission 4 : Le Casse du Siècle (RSA à la main)
 
 {: .d-inline-block }
-Durée : 20-30 min
+Durée : 15 min
 {: .label .label-yellow }
 
 ### Contexte
+> On vous a dit que RSA était "impossible" à casser. C'est vrai, mais seulement si les nombres premiers sont gigantesques. Si un agent utilise des nombres trop petits, n'importe qui peut retrouver sa clé privée en quelques secondes.
 
-> La sécurité de RSA repose sur un principe simple : **multiplier deux grands nombres premiers est facile, mais factoriser le résultat est extrêmement difficile**. Si les nombres premiers choisis sont trop petits ou mal choisis, RSA s'effondre.
-
-{% comment %} CRITIQUE MAJEURE : Cette mission est la plus faible du TP dans sa version actuelle.
-Voici les problèmes :
-
-1. Cas 1 : Le modulus hex `00:c3:a3:d5:b0:14:f3:95:6b` fait seulement 8 octets (64 bits).
-   C'est beaucoup trop petit pour être pris au sérieux et il n'y a pas de step-by-step
-   pour convertir le hex en décimal. Les étudiants seront perdus.
-
-2. Cas 2 : L'image Docker `rsactftool/rsactftool` n'existe pas sur Docker Hub
-   (on a vérifié). Et surtout, il manque les FICHIERS d'exercice : pas de
-   `cle_faible.pub` ni de `secret.enc` fournis. L'exercice est infaisable en l'état.
-
-PROPOSITION : Remplacer par un exercice concret et auto-suffisant.
-Ci-dessous, cette mission est réécrite en deux approches.
-On choisira celle qui convient le mieux. {% endcomment %}
+**Objectif :** Factoriser un modulus $N$ et reconstruire la clé privée pour lire un message intercepté.
 
 ---
 
-### Étape 1 : Générer une clé volontairement faible
+### Étape 1 : L'interception
+Vous avez intercepté une clé publique très faible et un message chiffré :
+*   **Modulus ($N$) :** `3233`
+*   **Message chiffré ($c$) :** `1317`
 
-Générons une clé RSA ridiculement petite (512 bits — interdite en production depuis des années) :
-
-```bash
-openssl genrsa -out cle_faible.priv 512
-openssl rsa -in cle_faible.priv -pubout -out cle_faible.pub
-```
-
-Chiffrons un secret avec cette clé faible :
-```bash
-echo "FLAG{rsa_est_casse}" > flag.txt
-openssl pkeyutl -encrypt -pubin -inkey cle_faible.pub -in flag.txt -out flag.enc
-```
-
-### Étape 2 : Extraire le modulus
-
-Inspectez la clé publique pour trouver le **modulus** `N` :
-```bash
-openssl rsa -pubin -in cle_faible.pub -text -noout
-```
-
-Le modulus s'affiche en hexadécimal. **Attention :** si le premier octet est `00`, ignorez-le (c'est un marqueur de signe pour s'assurer que le nombre est positif).
-
-Convertissez-le en décimal avec Python :
-```bash
-# Supprimez les ":" et les éventuels "00" en tête de ligne
-python3 -c "print(int('VOTRE_HEX_ICI', 16))"
-```
-
-> **Note :** Le script ci-dessous effectue un déchiffrement RSA dit "Textbook" (mathématique pur). Comme OpenSSL utilise par défaut un **padding PKCS#1 v1.5** pour renforcer la sécurité, le résultat brut contiendra des octets de remplissage avant votre message.
-
-{% comment %} SUGGESTION: On pourrait fournir le modulus directement pour éviter la
-galère de conversion hex → décimal. Ou fournir un script Python tout fait
-qui extrait N et e automatiquement. Exemple :
-python3 -c "
-from Crypto.PublicKey import RSA
-key = RSA.import_key(open('cle_faible.pub').read())
-print(f'N = {key.n}')
-print(f'e = {key.e}')
-"
-Mais ça nécessite pycryptodome (pip install pycryptodome).
-À voir si l'on veut ajouter cette dépendance. {% endcomment %}
-
-### Étape 3 : Factoriser N
-
-Allez sur [FactorDB.com](http://factordb.com) et collez le nombre décimal `N`.
-
-*   Si le site affiche la factorisation `N = P × Q`, **la clé est cassée**.
-*   Notez les deux facteurs `P` et `Q`.
-
-### Étape 4 : Reconstruire la clé privée et déchiffrer
-
-{% comment %} CRITIQUE : C'est ici que ça coince. Reconstruire manuellement la clé privée
-à partir de P, Q et e demande du code Python (calculer phi, puis d = e^-1 mod phi,
-puis reconstruire un fichier PEM). C'est faisable mais complexe pour des débutants.
-
-DEUX OPTIONS :
-A) Fournir un script Python prêt à l'emploi (que l'étudiant utilise comme une "boîte noire")
-B) Utiliser RsaCtfTool (mais il faut l'installer, pas de Docker)
-
-L'option A semble plus adaptée au niveau intro. Voici le script : {% endcomment %}
-
-Si vous avez trouvé `P` et `Q`, utilisez ce script Python pour reconstruire la clé privée et déchiffrer le message :
-
-```bash
-pip install pycryptodome
-```
-
-```python
-# fichier: crack_rsa.py
-from Crypto.PublicKey import RSA
-import math
-
-# Remplacez par vos valeurs
-p = VOTRE_P
-q = VOTRE_Q
-e = 65537
-
-n = p * q
-phi = (p - 1) * (q - 1)
-d = pow(e, -1, phi)
-
-key = RSA.construct((n, e, d, p, q))
-
-with open("flag.enc", "rb") as f:
-    ciphertext = f.read()
-
-plaintext = pow(int.from_bytes(ciphertext, 'big'), d, n)
-# Pour une clé de 512 bits, le bloc déchiffré fait 64 octets
-decrypted_block = plaintext.to_bytes(64, 'big')
-# On affiche le bloc brut pour voir le padding PKCS#1 v1.5 (00 02 ... 00 [MESSAGE])
-print(f"Bloc brut : {decrypted_block.hex()}")
-print(f"Message probable : {decrypted_block.split(b'\\x00')[-1].decode()}")
-```
-
-```bash
-python3 crack_rsa.py
-```
-
-{% comment %} NOTE : Le script ci-dessus est volontairement simplifié.
-Pour une version plus robuste (qui gère le padding PKCS#1), il faudrait
-utiliser PKCS1_v1_5.new(key).decrypt(). Mais pour une clé de 512 bits
-générée par openssl, le script devrait fonctionner.
-
-ALTERNATIVE : Si l'on ne veut pas de Python, on peut installer RsaCtfTool
-directement (sans Docker) :
-  git clone https://github.com/RsaCtfTool/RsaCtfTool.git
-  cd RsaCtfTool && pip install -r requirements.txt
-  python3 RsaCtfTool.py --publickey ../cle_faible.pub --uncipherfile ../flag.enc
-C'est plus "hacker" mais ajoute une dépendance lourde. {% endcomment %}
+### Étape 2 : Le calcul
+1.  **Factorisez $N$ :** Trouvez les deux nombres premiers $P$ et $Q$ tels que $P \times Q = 3233$.
+    *(Indice : l'un des deux est 61. À vous de trouver l'autre !)*
+2.  **Ouvrez l'outil visuel :** [RSA Calculator Tool](https://raw.githack.com/mlgarrett/rsa-calculator-tool/master/index.html) ([source GitHub](https://github.com/mlgarrett/rsa-calculator-tool)).
+3.  **Reconstruisez la clé :**
+    *   Entrez vos valeurs $P$ et $Q$ dans les cases.
+    *   Cliquez successivement sur les boutons **calculate n**, **calculate φ**, **choose e**, puis **calculate d**.
+    *   Notez les valeurs de $e$ et $d$ que l'outil a calculées.
+4.  **Déchiffrez :** Entrez le ciphertext `1317` dans la case "ciphertext number" et cliquez sur **decrypt**.
 
 ### Questions d'analyse
-*   Pourquoi une clé de 512 bits est-elle dangereuse alors qu'une clé de 2048 bits est considérée comme sûre ?
-*   Le site FactorDB connaissait-il déjà la factorisation, ou l'a-t-il calculée ? Qu'est-ce que cela implique ?
-*   En 1999, une clé RSA de 512 bits a été cassée en 7 mois par des chercheurs. Aujourd'hui, cela prend quelques secondes. Que dit cela sur la durée de vie des standards de sécurité ?
+*   Quelles sont les valeurs de $e$ et $d$ calculées par l'outil ?
+*   Quel était le message secret caché derrière le nombre `1317` ? *(Indice : pensez au code ASCII)*
+*   Pourquoi est-ce que cette attaque devient impossible si $N$ possède 600 chiffres au lieu de 4 ?
+
+---
+
+## Mission 5 : Le Secret de la Vitesse (Le Chiffrement Hybride)
+
+{: .d-inline-block }
+Durée : 20 min
+{: .label .label-yellow }
+
+### Contexte
+> Vous l'avez vu : RSA ne peut pas chiffrer de longs messages. De plus, il est environ 1000 fois plus lent que l'AES. Alors, comment fait Netflix pour vous envoyer des films entiers de manière sécurisée ?
+> Ils utilisent le **Chiffrement Hybride** (ou Enveloppe Numérique).
+
+**Le concept :** On utilise RSA (lent mais pratique) pour protéger une clé AES (rapide mais difficile à partager).
+
+---
+
+### Étape 1 : L'envoi (vous)
+Vous allez simuler l'envoi d'un fichier "lourd" à votre voisin.
+
+1.  **Préparez le colis (AES) :**
+    Générez une clé symétrique au hasard et chiffrez votre fichier avec AES :
+    ```bash
+    # On crée une clé AES de 256 bits
+    openssl rand -hex 32 > prenom_cle_aes.txt
+
+    # On chiffre le fichier lourd avec cette clé
+    openssl enc -aes-256-cbc -pbkdf2 -in long_message.txt -out prenom_colis.enc -pass file:./prenom_cle_aes.txt
+    ```
+
+2.  **Préparez l'enveloppe (RSA) :**
+    Maintenant, chiffrez **uniquement la petite clé AES** avec la clé publique de votre voisin :
+    ```bash
+    openssl pkeyutl -encrypt -pubin -inkey voisin_cle.pub -in prenom_cle_aes.txt -out prenom_enveloppe.enc
+    ```
+
+3.  **L'envoi :**
+    Envoyez les deux fichiers (`prenom_colis.enc` et `prenom_enveloppe.enc`) à votre voisin sur Teams.
+
+### Étape 2 : La réception (votre voisin)
+
+1.  **Ouvrir l'enveloppe :** Déchiffrez la clé AES avec votre clé privée :
+    ```bash
+    openssl pkeyutl -decrypt -inkey prenom_cle.priv -in voisin_enveloppe.enc -out cle_recue.txt
+    ```
+
+2.  **Ouvrir le colis :** Déchiffrez le fichier avec la clé AES récupérée :
+    ```bash
+    openssl enc -aes-256-cbc -pbkdf2 -d -in voisin_colis.enc -out message_recu.txt -pass file:./cle_recue.txt
+    ```
+
+3.  Vérifiez le contenu avec `cat message_recu.txt`.
+
+### Questions d'analyse
+*   Pourquoi cette méthode est-elle plus efficace que d'essayer de tout chiffrer en RSA ?
+*   Si un pirate intercepte `prenom_colis.enc` mais n'a pas la clé privée du destinataire, peut-il retrouver le contenu ?
+*   **Synthèse :** Expliquez pourquoi on dit que RSA sert de "porte-clé" pour AES.
 
 ---
 
