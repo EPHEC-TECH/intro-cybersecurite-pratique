@@ -27,10 +27,10 @@ La cryptographie **asymétrique** résout ce problème en utilisant une **paire 
 > **Le principe mathématique (RSA en 30 secondes)**
 >
 > RSA repose sur une opération facile lorsque effectuée dans un sens, mais quasi impossible lorsqu'on essaye de l'effectuer dans l'autre sens :
-> - **Facile :** Multiplier deux grands nombres premiers → $P \times Q = N$
-> - **Beaucoup plus compliqué :** Retrouver $P$ et $Q$ à partir de $N$ (c'est la **factorisation**)
+> - **Facile :** Multiplier deux grands nombres premiers → `P × Q = N`
+> - **Beaucoup plus compliqué :** Retrouver `P` et `Q` à partir de `N` (c'est la **factorisation**)
 >
-> La clé publique contient $N$ (le produit) et un exposant $e$. La clé privée contient $P$, $Q$ et d'autres valeurs dérivées. Tant que personne ne peut factoriser $N$, la clé privée reste secrète.
+> La clé publique contient `N` (le produit) et un exposant `e`. La clé privée contient `P`, `Q` et d'autres valeurs dérivées. Tant que personne ne peut factoriser `N`, la clé privée reste secrète.
 >
 > C'est cette **asymétrie de difficulté** qui donne son nom au chiffrement asymétrique.
 
@@ -198,29 +198,29 @@ Durée : 15 min
 ### Contexte
 > On vous a dit que RSA était "impossible" à casser. C'est vrai, mais seulement si les nombres premiers sont gigantesques. Si un agent utilise des nombres trop petits, n'importe qui peut retrouver sa clé privée en quelques secondes.
 
-**Objectif :** Factoriser un modulus $N$ et reconstruire la clé privée pour lire un message intercepté.
+**Objectif :** Factoriser un modulus `N` et reconstruire la clé privée pour lire un message intercepté.
 
 ---
 
 ### Étape 1 : L'interception
 Vous avez intercepté une clé publique très faible et un message chiffré :
-*   **Modulus ($N$) :** `3233`
-*   **Message chiffré ($c$) :** `1317`
+*   **Modulus (`N`) :** `3233`
+*   **Message chiffré (`c`) :** `1317`
 
 ### Étape 2 : Le calcul
-1.  **Factorisez $N$ :** Trouvez les deux nombres premiers $P$ et $Q$ tels que $P \times Q = 3233$.
+1.  **Factorisez `N` :** Trouvez les deux nombres premiers `P` et `Q` tels que `P × Q = 3233`.
     *(Indice : l'un des deux est 61. À vous de trouver l'autre !)*
 2.  **Ouvrez l'outil visuel :** [RSA Calculator Tool](https://raw.githack.com/mlgarrett/rsa-calculator-tool/master/index.html) ([source GitHub](https://github.com/mlgarrett/rsa-calculator-tool)).
 3.  **Reconstruisez la clé :**
-    *   Entrez vos valeurs $P$ et $Q$ dans les cases.
+    *   Entrez vos valeurs `P` et `Q` dans les cases.
     *   Cliquez successivement sur les boutons **calculate n**, **calculate φ**, **choose e**, puis **calculate d**.
-    *   Notez les valeurs de $e$ et $d$ que l'outil a calculées.
+    *   Notez les valeurs de `e` et `d` que l'outil a calculées.
 4.  **Déchiffrez :** Entrez le ciphertext `1317` dans la case "ciphertext number" et cliquez sur **decrypt**.
 
 ### Questions d'analyse
-*   Quelles sont les valeurs de $e$ et $d$ calculées par l'outil ?
+*   Quelles sont les valeurs de `e` et `d` calculées par l'outil ?
 *   Quel était le message secret caché derrière le nombre `1317` ? *(Indice : pensez au code ASCII)*
-*   Pourquoi est-ce que cette attaque devient impossible si $N$ possède 600 chiffres au lieu de 4 ?
+*   Pourquoi est-ce que cette attaque devient impossible si `N` possède 600 chiffres au lieu de 4 ?
 
 ---
 
