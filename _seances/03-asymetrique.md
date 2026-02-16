@@ -23,14 +23,15 @@ La cryptographie **asymétrique** résout ce problème en utilisant une **paire 
 
 **Analogie :** La clé publique est un **cadenas ouvert** que vous distribuez. N'importe qui peut l'utiliser pour fermer une boîte contenant un message. Seule votre clé privée peut ouvrir ce cadenas.
 
-{% comment %} SUGGESTION: Si l'on veut renforcer l'intuition mathématique sans entrer dans les formules,
-on pourrait ajouter un paragraphe du type :
-"Le principe repose sur un problème mathématique simple à comprendre :
-multiplier deux grands nombres premiers ensemble est instantané,
-mais retrouver ces deux nombres à partir du résultat (factoriser) est
-extrêmement long. C'est cette asymétrie qui donne son nom au chiffrement."
-C'est un choix pédagogique — peut-être trop tôt ici,
-et l'on pourrait préférer le garder pour la Mission 4 (attaque). {% endcomment %}
+> **Le principe mathématique (RSA en 30 secondes)**
+>
+> RSA repose sur une opération facile lorsque effectué dans un sens, mais quasi impossible dans lorsqu'on essaye de l'effectuer dans l'autre sens:
+> - **Facile :** Multiplier deux grands nombres premiers → `P × Q = N`
+> - **Beaucoup plus compliqué :** Retrouver `P` et `Q` à partir de `N` (c'est la **factorisation**)
+>
+> La clé publique contient `N` (le produit) et un exposant `e`. La clé privée contient `P`, `Q` et d'autres valeurs dérivées. Tant que personne ne peut factoriser `N`, la clé privée reste secrète.
+>
+> C'est cette **asymétrie de difficulté** qui donne son nom au chiffrement asymétrique.
 
 **Outils requis :**
 - Un terminal Linux (VM ou WSL)
@@ -50,7 +51,7 @@ Durée : 10-15 min
 
 ---
 
-1.  **Générer la clé privée :**
+1.  **Générer la clé privée (placez vous dans un dossier approprié) :**
     ```bash
     openssl genrsa -out ma_cle.priv 2048
     ```
