@@ -19,10 +19,10 @@ Le **hachage** (hashing) ne sert pas à cacher un message, mais à lui donner un
 {: .note }
 **Analogie :** Une fonction de hachage est comme un mixeur. Vous pouvez y mettre des fruits pour faire un smoothie (le hash), mais vous ne pourrez jamais retrouver les fruits entiers à partir du smoothie.
 
-{: .highlight }
-> **Pas de VM nécessaire pour ce TP.** Un terminal Linux suffit (ex: wsl) — si vous n'en avez pas, [WebVM](https://webvm.io/) fonctionne directement dans votre navigateur et suffisant pour ce TP !
-
 **Outils requis :**
+{: .highlight }
+> **Pas de VM nécessaire pour ce TP .** Un terminal Linux suffit (ex: wsl) — si vous n'en avez pas, [WebVM](https://webvm.io/) fonctionne directement dans votre navigateur et sera suffisant pour les 4 premiers exercices.
+
 - Outils `md5sum`, `sha256sum` (terminal Linux)
 - [CyberChef](https://gchq.github.io/CyberChef/)
 
@@ -125,11 +125,14 @@ Durée estimée : 10 min
 
 ---
 
-## Exercice 5 <span class="label label-green">À faire en autonomie - si pas fini en TP</span> : Déduplication avec `fdupes`
+## Exercice 5: Déduplication avec `fdupes`
 
 {: .d-inline-block }
 Durée estimée : 10 min
 {: .label .label-green }
+
+{: .warning }
+> **Linux requis (WSL ou VM).** `fdupes` ne peut pas s'installer dans WebVM. Cet exercice nécessite un terminal Linux natif.
 
 ### Contexte
 > Le hachage est aussi utilisé pour gagner de la place. Si deux fichiers ont le même hash, ils sont identiques, quel que soit leur nom.
@@ -151,8 +154,5 @@ Durée estimée : 10 min
 
 ## Pour aller plus loin : Signature Numérique (GPG)
 
-{: .d-inline-block }
-Durée estimée : 5 min
-{: .label .label-green }
 
 > Le hachage est la base de la **signature GPG**. On hache le message, puis on chiffre ce hash avec sa clé privée (vue au TP3). C'est ce qui garantit que le message n'a pas été modifié ET qu'il vient bien de vous.
