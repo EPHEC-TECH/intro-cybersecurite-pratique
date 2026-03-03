@@ -19,9 +19,11 @@ Le **hachage** (hashing) ne sert pas à cacher un message, mais à lui donner un
 {: .note }
 **Analogie :** Une fonction de hachage est comme un mixeur. Vous pouvez y mettre des fruits pour faire un smoothie (le hash), mais vous ne pourrez jamais retrouver les fruits entiers à partir du smoothie.
 
+{: .highlight }
+> **Pas de VM nécessaire pour ce TP.** Un terminal Linux suffit (ex: wsl) — si vous n'en avez pas, [WebVM](https://webvm.io/) fonctionne directement dans votre navigateur et suffisant pour ce TP !
+
 **Outils requis :**
-- Terminal Linux
-- Outils `md5sum`, `sha256sum`
+- Outils `md5sum`, `sha256sum` (terminal Linux)
 - [CyberChef](https://gchq.github.io/CyberChef/)
 
 ---
