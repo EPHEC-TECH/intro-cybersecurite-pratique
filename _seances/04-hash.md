@@ -13,7 +13,7 @@ published: false
 
 ## Introduction
 
-Recrues, l'intégrité est le troisième pilier de la sécurité (CIA : Confidentialité, Intégrité, Disponibilité). 
+Recrues, l'intégrité est le deuxième pilier de la sécurité (CIA : Confidentialité, Intégrité, Disponibilité). 
 Le **hachage** (hashing) ne sert pas à cacher un message, mais à lui donner une **empreinte numérique** unique. Si le message change, ne serait-ce que d'un minuscule point, l'empreinte change totalement.
 
 {: .note }
@@ -61,7 +61,7 @@ Durée estimée : 15 min
 ### Contexte
 > Le hachage est "à sens unique" (on ne peut pas revenir en arrière mathématiquement). Cependant, si un attaquant possède une liste de milliards de mots de passe et leurs hashs correspondants (une **Rainbow Table**), il peut retrouver votre mot de passe en une fraction de seconde.
 
-1.  **Le défi :** On vous a transmis ce hash MD5 intercepté sur un vieux serveur : `5e8640ef774780521e40566418850614`
+1.  **Le défi :** On vous a transmis ce hash MD5 intercepté sur un vieux serveur : `01a2da07bf36766155f48fc670d53fe8`
 2.  **L'attaque :**
     *   Allez sur [CyberChef](https://gchq.github.io/CyberChef/).
     *   Cherchez si une opération peut vous aider, ou utilisez un service en ligne comme [CrackStation](https://crackstation.net/).
