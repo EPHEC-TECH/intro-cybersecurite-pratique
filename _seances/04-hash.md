@@ -133,7 +133,8 @@ Durée estimée : 10 min
 
 {: .warning }
 > **Linux requis (WSL ou VM).** `fdupes` ne peut pas s'installer dans WebVM. Cet exercice nécessite un terminal Linux natif.
-> EDIT: https://killercoda.com/playgrounds/scenario/ubuntu  Semble (à tester) permettre d'avoir un Linux depuis son navigateur et accepte le 'apt install fdupes'
+> 
+> EDIT: https://killercoda.com/playgrounds/scenario/ubuntu Permet aussi d'avoir un Linux depuis son navigateur et est fonctionnel pour cet exercice
 
 ### Contexte
 > Le hachage est aussi utilisé pour gagner de la place. Si deux fichiers ont le même hash, ils sont identiques, quel que soit leur nom.
