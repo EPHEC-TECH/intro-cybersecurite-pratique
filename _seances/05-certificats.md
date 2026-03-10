@@ -423,7 +423,7 @@ Mot de passe simple pour l'exercice : `user1234`
 ### Étape 4 — Capture du trafic Telnet (mot de passe en clair)
 
 1. Ouvrir Wireshark : `wireshark &`
-2. Sélectionner l'interface réseau **eth0**
+2. Sélectionner l'interface réseau **ens33**
 3. Démarrer la capture
 4. Dans un autre terminal, lancer Telnet vers soi-même :
 
