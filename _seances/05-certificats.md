@@ -545,7 +545,7 @@ Lorsqu'on ouvre `https://google.com`, une négociation démarre.
 ## 6. Analyse TLS dans Wireshark
 
 1. Lancer Wireshark
-2. Accéder à : `https://epec.be`
+2. Accéder à : `https://ephec.be`
 3. Filtrer : `tls`
 4. Observer les messages :
    - **Client Hello**
