@@ -314,7 +314,7 @@ Répondez brièvement aux questions suivantes.
 
 ---
 
-## Exercice 2 : Bonus — ECDH (Courbes elliptiques)
+## Exercice 2 : Pour aller plus loin — ECDH (Courbes elliptiques)
 
 {: .d-inline-block }
 À faire en autonomie
