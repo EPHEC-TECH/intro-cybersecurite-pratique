@@ -29,9 +29,9 @@ published: true
 
 ---
 
-## Introduction : l'email est un protocole des années 70
+## Introduction : l'email n'a pas été conçu pour la sécurité
 
-Le protocole SMTP qui transporte vos emails date de 1982. À l'époque, tout le monde se connaissait sur Internet — la sécurité n'était pas une priorité. Résultat : **n'importe qui peut envoyer un email en se faisant passer pour n'importe qui**.
+L'email existe depuis 1971 (ARPANET). Le protocole SMTP qui le transporte a été standardisé en 1982. À l'époque, tout le monde se connaissait sur Internet — la sécurité n'était pas une priorité. Résultat : **n'importe qui peut envoyer un email en se faisant passer pour n'importe qui**.
 
 C'est comme envoyer une lettre papier : vous pouvez écrire `Expéditeur : Président de la République` sur l'enveloppe. Le facteur la livrera quand même.
 
@@ -101,7 +101,7 @@ Authentication-Results: mx.google.com;
        spf=fail (google.com: domain of support@bnpparibas.fr does NOT designate
              185.220.101.47 as permitted sender) smtp.mailfrom=support@bnpparibas.fr;
        dkim=none;
-       dmarc=fail (p=REJECT sp=REJECT dis=REJECT) header.from=bnpparibas.fr
+       dmarc=fail (p=REJECT sp=REJECT dis=NONE) header.from=bnpparibas.fr
 Return-Path: <support@bnpparibas.fr>
 From: "BNP Paribas - Service Sécurité" <support@bnpparibas.fr>
 To: employe@votrepme.be
@@ -121,7 +121,7 @@ Content-Type: text/html; charset=UTF-8
 2. Regardez le `Message-ID`. Quel domaine apparaît à la fin ? Est-ce cohérent avec l'expéditeur affiché ?
 3. L'email affiche `From: support@bnpparibas.fr` et `Return-Path: support@bnpparibas.fr`. Pourtant, si vous cliquez sur **Répondre**, votre réponse ira à `Reply-To: bnp-verification@protonmail.com`. Qu'est-ce que cela vous inspire ?
 4. MXToolbox affiche l'IP `185.220.101.47`. Cliquez sur cette IP dans l'interface. Que dit MXToolbox à son sujet ?
-5. Rappelez-vous la politique DMARC de `bnpparibas.fr` que vous avez vérifiée à l'étape 0. Cet email aurait-il dû arriver dans la boîte de réception de l'employé ?
+5. Rappelez-vous la politique DMARC de `bnpparibas.fr` que vous avez vérifiée à l'étape 0. Cet email aurait-il dû arriver dans la boîte de réception ? Regardez le tag `dis=` dans `Authentication-Results` — que vous apprend-il sur ce qui s'est réellement passé ?
 
 ---
 
@@ -148,7 +148,7 @@ Authentication-Results: mx.google.com;
        spf=softfail (google.com: domain of noreply@paypal.com does not designate
              93.99.104.210 as permitted sender) smtp.mailfrom=noreply@paypal.com;
        dkim=none;
-       dmarc=fail (p=REJECT sp=REJECT dis=REJECT) header.from=paypal.com
+       dmarc=fail (p=REJECT sp=REJECT dis=NONE) header.from=paypal.com
 Return-Path: <noreply@paypal.com>
 From: "Service PayPal" <noreply@paypal.com>
 To: employe@votrepme.be
