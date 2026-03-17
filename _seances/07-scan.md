@@ -16,3 +16,13 @@ L'outil incontournable pour la découverte de réseau et l'audit de sécurité.
 * **Zenmap :** L'interface graphique.
 
 CVE ?
+
+Recon
+
+
+Shodan ?
+
+Osint ?
+
+(laurent a partagé 2 trucs à l'instant sur  teams)
+
