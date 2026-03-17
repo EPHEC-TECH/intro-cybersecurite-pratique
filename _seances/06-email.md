@@ -83,6 +83,9 @@ Avant de commencer, ouvrez votre client email et affichez les en-têtes complets
 ~5 min
 {: .label .label-green }
 
+{: .note }
+> SPF, DKIM et DMARC ne sont pas de la magie : ils reposent sur des informations **publiques**, publiées par chaque domaine dans le DNS. Tout le monde peut les consulter — un serveur de messagerie, un outil en ligne, ou vous. C'est précisément ce qui les rend fiables : la "source de vérité" est publique et vérifiable par n'importe qui, à tout moment. DKIM va un cran plus loin en ajoutant une signature cryptographique (le même principe de clé publique/privée que vous avez vu en séance 3).
+
 Avant d'analyser les emails suspects, allez vérifier comment un domaine **sérieusement protégé** est configuré.
 
 1. Rendez-vous sur [https://mxtoolbox.com/SuperTool.aspx](https://mxtoolbox.com/SuperTool.aspx)
