@@ -67,7 +67,7 @@ Durée estimée : 20 min
 Avant de commencer, ouvrez votre client email et affichez les en-têtes complets d'un email quelconque que vous avez reçu — une newsletter, un email de l'EPHEC, peu importe.
 
 **Comment faire :**
-- **Outlook 365 (version web)** : ouvrir l'email → menu (trois petits points) ⋯ → *Affichager* → *Afficher les détails du message*
+- **Outlook 365 (version web)** : ouvrir l'email → menu ⋯ → *Afficher* → *Afficher les détails du message*
 - **Gmail** : ouvrir l'email → menu ⋮ → *Afficher l'original*
 - **Apple Mail** : menu *Affichage* → *Message* → *Tous les en-têtes*
 - etc ...
@@ -188,9 +188,117 @@ Content-Type: text/html; charset=UTF-8
 
 ---
 
+### Email suspect n°3 — "Transmission de facture"
+
+{: .d-inline-block }
+~10 min
+{: .label .label-yellow }
+
+{: .highlight }
+> **Note :** Cet email est un vrai email reçu par une PME belge (les noms ont été anonymisés). 
+> 
+>Même procédure : copiez et collez les en-têtes dans [https://mxtoolbox.com/EmailHeaders.aspx](https://mxtoolbox.com/EmailHeaders.aspx).
+
+```
+Return-Path: <carine.obfuscated@ac-dijon.fr>
+Delivered-To: laurent@fake-company.be
+Received: from localhost (HELO queue) (127.0.0.1)
+	by localhost with SMTP; 7 Mar 2026 19:23:46 +0200
+Received: from unknown (HELO output43.mail.ovh.net) (192.168.13.45)
+  by 192.168.9.40 with AES256-GCM-SHA384 encrypted SMTP; 7 Mar 2026 19:23:46 +0200
+Received: from vr25.mail.ovh.net (unknown [10.101.8.25])
+	by out43.mail.ovh.net (Postfix) with ESMTP id 4fSqr24ktfz2cMZw
+	for <laurent@fake-company.be>; Sat,  7 Mar 2026 17:23:46 +0000 (UTC)
+Received: from in42.mail.ovh.net (unknown [10.101.4.42])
+	by vr25.mail.ovh.net (Postfix) with ESMTP id 4fSqr24FpSz1spdQ
+	for <laurent@fake-company.be>; Sat,  7 Mar 2026 17:23:46 +0000 (UTC)
+Received: from smtp-out.ac-dijon.fr (smtp-out.ac-dijon.fr [195.221.236.195])
+	by in42.mail.ovh.net (Postfix) with ESMTP id 4fSqr23ZBdzVfdv
+	for <laurent@fake-company.be>; Sat,  7 Mar 2026 17:23:46 +0000 (UTC)
+Authentication-Results: mx.mail.ovh.net;
+    arc=none (no signatures found);
+    dkim=pass (2048-bit rsa key sha256) header.d=ac-dijon.fr header.i=@ac-dijon.fr header.b=DbYa7C9k header.a=rsa-sha256 header.s=smtp;
+    dmarc=pass policy.published-domain-policy=quarantine policy.applied-disposition=none policy.evaluated-disposition=none (p=quarantine,d=none,d.eval=none) policy.policy-from=p header.from=ac-dijon.fr;
+    spf=pass smtp.mailfrom=Carine.obfuscated@ac-dijon.fr smtp.helo=smtp-out.ac-dijon.fr
+Received-SPF: pass
+    (ac-dijon.fr: 195.221.236.195 is authorized to use 'Carine.obfuscated@ac-dijon.fr' in 'mfrom' identity (mechanism 'ip4:195.221.236.195' matched))
+    receiver=in42.mail.ovh.net;
+    identity=mailfrom;
+    envelope-from="Carine.obfuscated@ac-dijon.fr";
+    helo=smtp-out.ac-dijon.fr;
+    client-ip=195.221.236.195
+Received: from hermes.ac-dijon.fr (localhost [127.0.0.1])
+	by smtp-out.ac-dijon.fr (Postfix) with ESMTP id 53B333190
+	for <laurent@fake-company.be>; Sat,  7 Mar 2026 18:23:46 +0100 (CET)
+Received: from [127.0.0.1] (unknown [196.127.21.25])
+	by hermes.ac-dijon.fr (Postfix) with ESMTPSA id 19C7A1950
+	for <laurent@fake-company.be>; Sat,  7 Mar 2026 18:23:45 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 hermes.ac-dijon.fr 19C7A1950
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ac-dijon.fr; s=smtp;
+	t=1772904226; bh=P1i60UFy7px4128qI0FOPPNQAS0CX0pLhWqyPjGwNT8=;
+	h=From:To:Subject:Message-ID:Date:From;
+	b=DbYa7C9kC8fpOTnnG0fQZ2BdrJ5qWEjcyjj2YRo9AxlrcZa8kmHsVDdlSzOrMq4zG
+	 YPjhjdYb5Jm4r+7mCufX8nLcQp141iM0UUghy0SwDMnpPtKbouRhby36jByDEWd8Do
+	 X4OhBDMimjOIw2+fZ4EQvrnJ3nXm2GfuCqBJjQ6o74GM3QL46RVRachj1DRpqOI3q+
+	 ph5F+wfKuOBdyfkHXF3uVuGVrGZjlDNGAfR810m7qPouKHEAkM42NPqzVNLIVVy1Fh
+	 mxSkEHaePrb8RcDVnehsNa4kv/UGCjq8eC/Y2CeXv0vzdDvrUeZ2LcJSPFhCSu4b95
+	 gejsXliwKRqzw==
+Content-Type: text/html
+From: =?UTF-8?Q?Service_Comptabilit=C3=A9?= <Carine.obfuscated@ac-dijon.fr>
+To: laurent@fake-company.be
+Subject: =?UTF-8?Q?Transmission_de_facture_=E2=80=93_Servic?=
+ =?UTF-8?Q?e_Comptabilit=C3=A9?=
+Message-ID: <051088b1-099e-a5a6-bf62-602e3122212f@ac-dijon.fr>
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 07 Mar 2026 17:23:45 +0000
+MIME-Version: 1.0
+X-OVH-Remote: 195.221.236.195 (smtp-out.ac-dijon.fr)
+x-ovh-tracer-id: 6855041585889247582
+X-VR-SPAMSTATE: DCE
+X-VR-SPAMSCORE: 107
+X-VR-SPAMCAUSE: dmFkZTECcuZq7YqWJnu5Sb6RUGV9Tyb4KWz+M27yu09LX35dDoTksCIzBn1wTENZBH4e4MOTd7U8nVSaIbjR/Ru1bYAtElutd7Pw0x00mvzauiqp4jwMArbuVFedJZcl4gJwTYxxwwHhyZFs5ZqEADnthDfQoIHhY/L4q2P0yMmWQO88nvxKBN7tpONZ4GMclqJgoXxLCn2XkW5v55u8W5rZc21EQGrRkc7Re1QmHhg/dtLSg73uMqKIDjQOO1uoT0dCycTDnZVptIZeqZDqLzieD/+O/8jHJ18eflOJYTWjUJkzP7hlHlwXMkltXU7X73IZ6Gs3gstpK2zldDaVc6t8HPMch+vTYEKZuQ/RsFk0CSJrr0adoIQWLRgqqiU0OubNCny7J46/dISCDPmJeOsT4iJNgDDrinhpqxqES/bsMgoTuiV8wEHjyyXbHpHqQ/emrbXY6nwfaGL9AmqtWZYzA7lZEZPiwL0p5xuqRMKLwuWUiUHoZENi4jZjIGDZeyD4ImsifJHSJeWDiMfZCq/YIr7SpaJWWTkrZTtCM9p/UxbtU29z2pYWSQfvGn5AuQiGq72W6hR68OQ0kY4uNo/bPkzDbvPNGkjVIRoyF5bmwogTubFVXeB4DM2ghNvzDEi9bdgZz56a4Ei9Pxb7dKcRGeuGYqw6k/B6N5QHhqKmoGxFlw
+X-Ovh-Spam-Status: OK
+X-Ovh-Spam-Reason: vr: OK; dkim: disabled; spf: disabled
+X-Ovh-Message-Type: DCE
+<p class=3D"gmail-isSelectedEnd">Bonjour,</p>
+<p class=3D"gmail-isSelectedE=
+nd">Veuillez trouver ci-dessous le lien pour consulter et =
+t&eacute;l&eacute;charger la facture relative &agrave; nos prestations =
+:</p>
+<p class=3D"gmail-isSelectedEnd"><span class=3D"gmail-text-token-text=
+-primary gmail-cursor-text gmail-rounded-sm"><a href=3D"https://docsign.=
+ecrosa.cfd/">Lien de la facture</a></span></p>
+<p class=3D"gmail-isSelected=
+End">Nous vous remercions de bien vouloir proc&eacute;der &agrave; son =
+r&egrave;glement selon les modalit&eacute;s convenues.</p>
+<p class=3D"gmail-isSelectedEnd">Restant &agrave; votre disposition pour =
+toute information compl&eacute;mentaire.</p>
+<p>Cordialement,</p>
+<p>Service Comptabilit&eacute;</p>
+<p>Transmission de facture&nbsp;</p>
+<p>&nbsp;</p>
+
+```
+
+#### Questions
+
+1. Commencez par le champ `Authentication-Results`. Quels sont les résultats SPF, DKIM et DMARC ? Ce résultat vous rassure-t-il sur la légitimité de l'email ?
+
+2. Regardez le domaine de l'expéditeur (`From:`). Faites une rapide recherche : à quel type d'organisation appartient ce domaine ? Est-il cohérent que cette organisation envoie une facture à une PME belge ?
+
+3. L'email contient un lien cliquable vers une facture. Survolez ce lien (sans cliquer) ou cherchez-le dans les en-têtes. Quel est le domaine de destination ? Que pensez-vous de l'extension utilisée (le TLD) ?
+
+4. Remontez la chaîne des champs `Received:` jusqu'à l'entrée du mail dans l'infrastructure de l'expéditeur. Quelle est l'IP de la machine qui a initié l'envoi ? Géolocalisez cette IP. Ce résultat correspond-il à ce que vous attendriez de l'expéditeur déclaré ?
+
+5. Cherchez les champs dont le nom commence par `X-VR-SPAM` et `X-Ovh-Message-Type`. Que vous indiquent-ils ? Sont-ils cohérents avec les résultats d'authentification ?
+
+6. En tenant compte de l'ensemble de vos observations, quel scénario vous semble le plus probable pour expliquer cet email ?
+
+---
+
 ### Questions de synthèse
 
-1. Dans les deux emails, le champ `From:` affiche des adresses qui semblent parfaitement légitimes. Pourquoi ne faut-il pas se fier uniquement au `From:` pour juger de la légitimité d'un email ?
+1. Dans les deux premiers emails, les authentifications échouaient clairement. Dans le troisième, elles passent toutes. Cela signifie-t-il que SPF/DKIM/DMARC garantissent qu'un email est légitime ?
 2. Quel est, selon vous, le champ le plus fiable pour identifier l'origine réelle d'un email ?
 3. Si votre organisation voulait se protéger contre ce type d'usurpation d'identité de son propre domaine, quelle politique DMARC devrait-elle mettre en place ?
 
@@ -198,12 +306,8 @@ Content-Type: text/html; charset=UTF-8
 
 ## Quiz phishing
 
-{: .d-inline-block }
-À faire en autonomie
-{: .label .label-blue }
+Le phishing ne passe pas toujours par des en-têtes suspects — parfois, l'email semble parfaitement légitime à l'œil nu (et respecte le DKIM/SPF/DMARC). Ce quiz développé par Google met votre instinct à l'épreuve : saurez-vous distinguer un vrai email d'un faux, uniquement à partir de ce que vous voyez à l'écran ?
 
-Le phishing ne passe pas toujours par des en-têtes suspects — parfois, l'email semble parfaitement légitime à l'œil nu. Ce quiz développé par Google met votre instinct à l'épreuve : saurez-vous distinguer un vrai email d'un faux, uniquement à partir de ce que vous voyez à l'écran ?
-
-👉 [https://phishingquiz.withgoogle.com/](https://phishingquiz.withgoogle.com/)
+=> [https://phishingquiz.withgoogle.com/](https://phishingquiz.withgoogle.com/)
 
 Notez votre score et réfléchissez aux cas qui vous ont trompé. Quels indices visuels auraient pu vous alerter ?
