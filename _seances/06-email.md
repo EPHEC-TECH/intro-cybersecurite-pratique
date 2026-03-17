@@ -62,6 +62,21 @@ Durée estimée : 20 min
 
 ---
 
+### Et dans votre vraie boîte mail ?
+
+Avant de commencer, ouvrez votre client email et affichez les en-têtes complets d'un email quelconque que vous avez reçu — une newsletter, un email de l'EPHEC, peu importe.
+
+**Comment faire :**
+- **Outlook 365 (version web)** : ouvrir l'email → menu (trois petits points) ⋯ → *Affichager* → *Afficher les détails du message*
+- **Gmail** : ouvrir l'email → menu ⋮ → *Afficher l'original*
+- **Apple Mail** : menu *Affichage* → *Message* → *Tous les en-têtes*
+- etc ...
+
+{: .highlight }
+> Prenez le temps de parcourir ce bloc de texte. Vous allez y retrouver la plupart des champs que vous manipulerez dans la suite de cet exercice : `From:`, `Return-Path:`, `Received:`, `Authentication-Results:`...
+
+---
+
 ### Étape 0 — Comprendre la baseline
 
 {: .d-inline-block }
@@ -175,20 +190,6 @@ Content-Type: text/html; charset=UTF-8
 1. Dans les deux emails, le champ `From:` affiche des adresses qui semblent parfaitement légitimes. Pourquoi ne faut-il pas se fier uniquement au `From:` pour juger de la légitimité d'un email ?
 2. Quel est, selon vous, le champ le plus fiable pour identifier l'origine réelle d'un email ?
 3. Si votre organisation voulait se protéger contre ce type d'usurpation d'identité de son propre domaine, quelle politique DMARC devrait-elle mettre en place ?
-
----
-
-### Et dans votre vraie boîte mail ?
-
-{: .note }
-> Les emails que vous venez d'analyser sont des exemples construits pour ce TP. Mais vous pouvez faire exactement la même chose avec n'importe quel email reçu dans votre client mail.
->
-> **Comment afficher les en-têtes complets d'un email reçu :**
-> - **Gmail** : ouvrir l'email → menu ⋮ → *Afficher l'original*
-> - **Outlook** : ouvrir l'email → menu ⋯ → *Affichage* → *Afficher la source du message*
-> - **Apple Mail** : menu *Affichage* → *Message* → *Tous les en-têtes*
->
-> Prenez un email que vous avez reçu récemment — une newsletter, un email d'une administration, ou même un email suspect dans vos spams. Affichez ses en-têtes et collez-les dans MXToolbox. Qu'est-ce que vous observez ?
 
 ---
 
