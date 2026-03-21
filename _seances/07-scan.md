@@ -4,7 +4,8 @@ title: Reconnaissance Réseau
 order: 7
 description: OSINT, NMAP, TCP Handshake
 nav_order: 7
-published: false
+published: true
+nav_exclude: true
 ---
 
 # Séance 7 : Reconnaissance & Scan Réseau
