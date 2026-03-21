@@ -22,23 +22,23 @@ published: false
 
 À la fin de la séance, l'étudiant sera capable de :
 
-- Collecter des informations sur une cible de manière **passive** (OSINT), sans envoyer de paquets vers elle.
+- Collecter des informations sur une cible de manière **passive** (OSINT), sans envoyer de paquets directement vers elle.
 - Expliquer le fonctionnement du **TCP Three-Way Handshake** et son lien avec la détection de ports.
 - Utiliser **Nmap** pour scanner une cible et interpréter les résultats.
 - Distinguer un port **ouvert**, **fermé** et **filtré**.
-- Dresser une "fiche identité" d'une machine distante à partir d'informations publiques.
+- Dresser une "fiche identité" d'une machine distante à partir d'informations publiques et de scans.
 
 ---
 
-## Introduction : voir sans être vu
+## Introduction : voir avant d'agir
 
 Avant toute attaque, un attaquant commence par la **reconnaissance** : collecter un maximum d'informations sur sa cible, idéalement sans déclencher d'alarme.
 
 Cette phase se divise en deux grandes étapes :
 
-| Phase | Description | Interaction réseau ? |
+| Phase | Description | Contact direct avec la cible ? |
 |---|---|---|
-| **OSINT passif** | Exploitation de sources publiques (DNS, Shodan, WHOIS…) | ❌ Aucune |
+| **OSINT passif** | Exploitation de sources publiques (DNS, Shodan, WHOIS…) | ❌ Non |
 | **Scan actif** | Envoi de paquets vers la cible pour découvrir ses services | ✅ Oui |
 
 > ⚠️ **Rappel légal :** Scanner un système sans autorisation est illégal dans la plupart des pays (en Belgique : loi du 28 novembre 2000 sur la criminalité informatique). Dans ce TP, nous utilisons **uniquement** `scanme.nmap.org`, un serveur mis à disposition par les créateurs de Nmap **explicitement** pour l'apprentissage.
@@ -50,7 +50,7 @@ Cette phase se divise en deux grandes étapes :
 ## Partie 1 — OSINT : reconnaissance passive
 
 {: .d-inline-block }
-Durée estimée : 10–15 min
+Durée estimée : 15–20 min
 {: .label .label-yellow }
 
 {: .highlight }
@@ -64,50 +64,70 @@ L'idée clé : **avant même de toucher une cible, une quantité considérable d
 
 ---
 
-### Exercice 1 — Qui est `scanme.nmap.org` ? (sans toucher le serveur)
+### Exercice 1 — Qui est `scanme.nmap.org` ?
 
 #### Étape 1 — Résolution DNS
 
-Depuis votre terminal Linux, sans rien envoyer au serveur cible :
+Depuis votre terminal Linux :
 
 ```bash
 nslookup scanme.nmap.org
 ```
 
-> ❓ Quelle est l'adresse IP de `scanme.nmap.org` ? Dans quel pays/réseau est-elle hébergée (vous pouvez vérifier sur [https://ipinfo.io](https://ipinfo.io)) ?
+{: .note }
+> **Note :** `nslookup` envoie une requête à votre résolveur DNS (souvent votre FAI ou 8.8.8.8), qui contacte ensuite les serveurs DNS de `nmap.org`. Vous n'envoyez rien *directement* à la cible, mais cette requête laisse des traces chez les intermédiaires. C'est ce qu'on appelle une reconnaissance "indirecte".
+
+> ❓ Quelle est l'adresse IP de `scanme.nmap.org` ? Dans quel pays est-elle hébergée ? (vérifiez sur [https://ipinfo.io](https://ipinfo.io))
 
 ---
 
 #### Étape 2 — WHOIS : qui possède ce domaine ?
 
-Rendez-vous sur [https://whois.domaintools.com/nmap.org](https://whois.domaintools.com/nmap.org) (ou utilisez `whois nmap.org` dans le terminal).
+Rendez-vous sur [https://whois.domaintools.com/nmap.org](https://whois.domaintools.com/nmap.org) (ou `whois nmap.org` dans le terminal).
 
 > ❓ Qui est l'organisation propriétaire du domaine `nmap.org` ? Depuis quand est-il enregistré ?
 
 ---
 
-#### Étape 3 — Shodan : ce que l'internet "sait" déjà
+#### Étape 3 — Shodan : ce que l'internet sait déjà sur tout le monde
 
-Rendez-vous sur [https://www.shodan.io](https://www.shodan.io) (compte gratuit suffisant) et recherchez :
+Avant de chercher votre cible, prenez 2 minutes pour mesurer la puissance de l'outil.
+
+Rendez-vous sur [https://www.shodan.io](https://www.shodan.io) et essayez ces recherches :
+
+```
+# Des caméras IP exposées en Belgique
+webcam country:BE
+
+# Des serveurs web de l'EPHEC
+org:EPHEC
+```
+
+> ❓ Que trouvez-vous ? Y a-t-il des résultats surprenants ?
+
+Maintenant cherchez votre vraie cible :
 
 ```
 scanme.nmap.org
 ```
 
-> ❓ Quels ports et services Shodan a-t-il déjà indexés ? Depuis quand ce serveur est-il connu de Shodan ?
+> ❓ Quels ports et services Shodan a-t-il déjà indexés ?
 >
-> ❓ Shodan vous donne-t-il des informations sur les versions des services ? Lesquelles ?
+> ❓ Ces données correspondent-elles à ce que vous attendez d'un serveur de démonstration Nmap ?
 
 {: .note }
-> **Shodan en quelques mots :** C'est un moteur de recherche qui scanne en permanence l'ensemble d'Internet et indexe les services exposés (web, SSH, bases de données, caméras IP, etc.). Il ne scanne pas à votre demande — il vous montre ce qu'il a **déjà collecté**. C'est pourquoi c'est de l'OSINT **passif** de votre côté.
+> **Shodan en quelques mots :** C'est un moteur de recherche qui scanne en permanence l'ensemble d'Internet et indexe les services exposés (serveurs web, SSH, bases de données, caméras IP, IoT…). Il ne scanne pas à votre demande — il vous montre ce qu'il a **déjà collecté**. Vous n'envoyez rien vers la cible.
 >
 > Source : [Shodan — The Search Engine for the Internet of Things](https://www.shodan.io/about/products)
+
+{: .warning }
+> Les données Shodan sur l'historique complet ne sont visibles qu'avec un compte payant. Avec le compte gratuit, vous voyez la dernière capture et les ports principaux — c'est suffisant pour ce TP.
 
 ---
 
 #### Synthèse OSINT
 
-Complétez ce tableau uniquement avec les informations OSINT (sans avoir lancé Nmap) :
+Complétez ce tableau **avant** de lancer Nmap :
 
 | Champ | Valeur |
 |---|---|
@@ -117,17 +137,17 @@ Complétez ce tableau uniquement avec les informations OSINT (sans avoir lancé 
 | Ports déjà connus (Shodan) | |
 | Services détectés (Shodan) | |
 
-> 💡 **Conclusion :** Sans envoyer le moindre paquet vers la cible, vous disposez déjà d'un profil partiel. Un attaquant patient peut construire ce profil sans déclencher aucune alerte.
+> 💡 **Conclusion :** Sans envoyer le moindre paquet directement vers la cible, vous disposez déjà d'un profil partiel. Comparez ce tableau avec vos résultats Nmap à la fin du TP — que Nmap aura-t-il appris de plus ?
 
 ---
 
 ## Partie 2 — Comprendre Nmap : le TCP Three-Way Handshake
 
 {: .d-inline-block }
-Durée estimée : 5–10 min
+Durée estimée : 10 min
 {: .label .label-green }
 
-Avant d'utiliser Nmap, il est essentiel de comprendre **ce qu'il mesure réellement** — et pour cela, il faut comprendre comment TCP établit (ou n'établit pas) une connexion.
+Avant d'utiliser Nmap, il faut comprendre **ce qu'il mesure** — et pour cela, comprendre comment TCP établit (ou n'établit pas) une connexion.
 
 ### Le Three-Way Handshake TCP
 
@@ -138,7 +158,7 @@ Client                    Serveur
   |                          |
   |-------- SYN ----------->|   "Je veux me connecter au port X"
   |                          |
-  |<------- SYN-ACK ---------|   "OK, je suis là, je t'attends" (port OUVERT)
+  |<------- SYN-ACK ---------|   "OK, je suis là" (port OUVERT)
   |                          |
   |-------- ACK ----------->|   "Reçu. Connexion établie."
   |                          |
@@ -158,11 +178,13 @@ Nmap envoie un paquet **SYN** et analyse la réponse pour déterminer l'état du
 | `RST` (Reset) | **Fermé** | Rien n'écoute sur ce port |
 | Pas de réponse / `ICMP unreachable` | **Filtré** | Un pare-feu bloque le trafic |
 
+> ❓ Si un port est **filtré**, peut-on savoir avec certitude si un service écoute derrière ? Pourquoi ?
+
 ---
 
-### Le Scan SYN (`-sS`) : furtivité par demi-connexion
+### Le Scan SYN (`-sS`) : la demi-connexion
 
-Le scan le plus courant de Nmap, appelé **SYN scan** ou *stealth scan*, exploite le handshake de manière incomplète :
+Le scan par défaut de Nmap (quand utilisé avec sudo) est le **SYN scan**, qui n'établit jamais la connexion TCP complète :
 
 ```
 Nmap                      Serveur
@@ -171,38 +193,27 @@ Nmap                      Serveur
   |                          |
   |<------- SYN-ACK ---------|   (port ouvert détecté ✓)
   |                          |
-  |-------- RST ----------->|   Nmap coupe la connexion ici
-  |                          |   (pas de connexion complète)
+  |-------- RST ----------->|   Nmap interrompt ici — pas de connexion complète
 ```
 
-**Pourquoi c'est "furtif" ?** En n'envoyant jamais le `ACK` final, Nmap ne complète pas la connexion TCP. L'application serveur ne "voit" donc jamais une session ouverte — elle ne la loggue pas.
+**Ce que cela signifie concrètement :**
+- L'**application** serveur (Apache, SSH…) ne voit jamais de connexion établie — elle ne la loggue pas.
+- En revanche, le **système d'exploitation** du serveur et les **équipements réseau** (firewall, IDS) *voient* les SYN entrants et peuvent tout à fait les détecter et les alerter. Un SYN scan n'est donc pas invisible — il est simplement moins bruyant qu'une connexion complète.
 
-> ⚠️ Ce type de scan nécessite les droits **root/sudo** car il manipule directement les paquets réseau (raw sockets).
+> ⚠️ Le SYN scan nécessite **sudo** car il manipule directement les paquets réseau (raw sockets).
 
 > Source : [Nmap Book — Port Scanning Techniques](https://nmap.org/book/man-port-scanning-techniques.html)
-
----
-
-### Pour aller plus loin : UDP et les autres types de scan
-
-{: .note }
-> **À garder en tête (pas obligatoire pour ce TP) :**
->
-> - **Scan TCP Connect** (`-sT`) : complète le handshake. Pas besoin de root, mais plus facilement détectable car une connexion réelle est établie.
-> - **Scan UDP** (`-sU`) : UDP n'a pas de handshake. Nmap envoie un paquet vide et attend un message d'erreur ICMP "port unreachable" pour détecter les ports fermés. Très lent.
->
-> ❓ *(Question ouverte pour la séance : vaut-il la peine d'introduire les scans UDP ? Trop complexe pour le public ?)*
 
 ---
 
 ## Partie 3 — Nmap en pratique
 
 {: .d-inline-block }
-Durée estimée : 20–25 min
+Durée estimée : 25–30 min
 {: .label .label-yellow }
 
 {: .highlight }
-> **Outil requis :** Nmap. Vérifiez qu'il est disponible : `which nmap`
+> **Outil requis :** Nmap. Vérifiez : `which nmap`
 > Si absent : `sudo apt install nmap`
 >
 > **Cible :** `scanme.nmap.org` — seul host autorisé pour ce TP.
@@ -217,9 +228,9 @@ Durée estimée : 20–25 min
 nmap scanme.nmap.org
 ```
 
-> ❓ Quels ports sont **ouverts** ? Quels services leur sont associés par défaut (colonne `SERVICE`) ?
+> ❓ Quels ports sont **ouverts** ? Quels services leur sont associés (colonne `SERVICE`) ?
 >
-> ❓ Combien de ports Nmap a-t-il scanné par défaut ? (Lisez la ligne de résumé en bas)
+> ❓ Combien de ports Nmap a-t-il scanné par défaut ? (lisez la ligne de résumé en bas)
 
 ---
 
@@ -231,12 +242,12 @@ nmap -sV scanme.nmap.org
 
 > ❓ Quelle version du serveur SSH tourne ? (colonne `VERSION`)
 >
-> ❓ Quelle version du serveur web Apache ?
+> ❓ Quelle version du serveur web ?
 >
-> ❓ Y a-t-il un service dont la version est marquée comme inconnue ou difficile à détecter ?
+> ❓ Y a-t-il un service dont la version n'a pas pu être déterminée ?
 
 {: .note }
-> La détection de version (`-sV`) établit une vraie connexion aux services ouverts et leur envoie des "sondes" pour identifier le logiciel et sa version. C'est plus bruyant qu'un simple SYN scan.
+> `-sV` établit de vraies connexions aux services ouverts et leur envoie des "sondes" pour identifier le logiciel. C'est plus lent et plus visible qu'un SYN scan simple. Comptez 1-3 minutes.
 
 ---
 
@@ -246,120 +257,68 @@ nmap -sV scanme.nmap.org
 sudo nmap -O scanme.nmap.org
 ```
 
-> ❓ Quel système d'exploitation Nmap devine-t-il ?
+> ❓ Quel système d'exploitation Nmap identifie-t-il ?
 >
-> ❓ Avec quelle précision (pourcentage) ?
+> ❓ Comment Nmap peut-il "deviner" l'OS sans y avoir accès ? *(Indice : il analyse les particularités de l'implémentation TCP/IP — TTL, taille de fenêtre, options TCP — qui varient selon les OS)*
 >
-> ❓ Comment Nmap peut-il "deviner" l'OS sans y avoir accès ? *(Réponse attendue : en analysant les particularités de l'implémentation TCP/IP — TTL, taille de fenêtre, options TCP — propres à chaque OS)*
+> ❓ Nmap est-il certain de sa réponse, ou propose-t-il plusieurs candidats ?
 
 ---
 
-#### Étape 4 — Scan de tous les ports
-
-```bash
-nmap -p- scanme.nmap.org
-```
-
-> ⚠️ Ce scan peut prendre 5–10 minutes. Lancez-le et passez à la suite pendant qu'il tourne.
->
-> ❓ Y a-t-il des ports ouverts **inattendus** que le scan de base n'avait pas trouvés ?
->
-> ❓ Pourquoi Nmap ne scanne-t-il pas tous les ports par défaut ?
-
----
-
-#### Étape 5 — Scan agressif (combiné)
+#### Étape 4 — Scan agressif (combiné)
 
 ```bash
 sudo nmap -A scanme.nmap.org
 ```
 
-> ❓ Que combine le flag `-A` ? (Lisez la sortie : OS, versions, scripts NSE, traceroute)
+> ❓ Que combine le flag `-A` ? (observez la sortie : OS, versions, scripts, traceroute)
 >
 > ❓ Quel est l'inconvénient du scan `-A` du point de vue de la discrétion ?
+
+{: .note }
+> Comptez 3-5 minutes pour ce scan.
 
 ---
 
 ### Exercice 3 — La "fiche identité" de la cible
 
-À partir de vos résultats OSINT (Partie 1) **et** Nmap (Partie 3), complétez cette fiche :
+Complétez ce tableau en croisant vos résultats OSINT et Nmap :
 
 | Champ | Source | Valeur |
 |---|---|---|
-| Adresse IP | DNS / OSINT | |
+| Adresse IP | DNS | |
 | Propriétaire du domaine | WHOIS | |
 | Système d'exploitation | Nmap `-O` | |
 | Ports ouverts (top 1000) | Nmap défaut | |
-| Ports ouverts (tous) | Nmap `-p-` | |
 | Version SSH | Nmap `-sV` | |
-| Version web server | Nmap `-sV` | |
-| Données déjà connues (Shodan) | Shodan | |
+| Version serveur web | Nmap `-sV` | |
+| Données déjà connues | Shodan | |
 
-> 💡 **Réflexion :** Imaginez être un administrateur système. Lequel de ces éléments vous inquiéterait le plus si votre serveur était scanné ainsi par un inconnu ? Lequel seriez-vous le plus surpris de voir exposé ?
+> 💡 **Réflexion :** Imaginez être l'administrateur de ce serveur. Lequel de ces éléments vous inquiéterait le plus si un inconnu l'avait collecté ? Que feriez-vous pour limiter cette exposition ?
 
 ---
 
 ## Bonus — Voir les paquets avec Wireshark
 
 {: .d-inline-block }
-Optionnel
+Optionnel — si Wireshark est disponible
 {: .label .label-blue }
 
-Si Wireshark est disponible, ouvrez-le **avant** de lancer le scan, sur votre interface réseau principale.
+Ouvrez Wireshark **avant** de lancer le scan, sur votre interface réseau principale.
 
-Filtre à appliquer dans Wireshark :
+Filtre à appliquer :
 ```
 tcp and host scanme.nmap.org
 ```
 
-Lancez ensuite :
+Lancez :
 ```bash
 sudo nmap -sS scanme.nmap.org
 ```
 
-> ❓ Retrouvez-vous les échanges SYN → SYN-ACK → RST décrits dans la partie théorique ?
+> ❓ Retrouvez-vous les échanges SYN → SYN-ACK → RST de la partie théorique ?
 >
-> ❓ Pour un port **filtré**, que voyez-vous (ou ne voyez-vous pas) dans Wireshark ?
-
-> *(Question ouverte : est-ce que Wireshark est installé sur les VMs étudiants ? Si non, peut-on leur montrer une capture pré-enregistrée ?)*
-
----
-
-## Pour aller plus loin
-
-{: .note }
-> Ces pistes sont **optionnelles** — à intégrer ou non selon le temps disponible et le niveau des étudiants.
-
-### Nmap Scripting Engine (NSE)
-
-Nmap intègre un moteur de scripts permettant d'aller au-delà du simple scan de ports :
-
-```bash
-# Recherche de vulnérabilités connues
-sudo nmap --script vuln scanme.nmap.org
-
-# Informations sur le certificat HTTPS
-nmap --script ssl-cert -p 443 scanme.nmap.org
-```
-
-> ❓ *(À garder ou trop avancé pour une intro ? Cela pourrait faire le lien avec la séance 9 sur l'exploitation…)*
-
-### Shodan avancé
-
-Shodan supporte des requêtes avancées :
-
-```
-# Trouver des serveurs Apache en Belgique
-apache country:BE
-
-# Trouver des caméras IP exposées
-webcam country:BE
-
-# Serveurs avec des ports SSH ouverts sur une plage IP
-port:22 net:193.190.0.0/16
-```
-
-> Source : [100+ Shodan Queries — osintme.com](https://osintme.com/index.php/2021/01/16/ultimate-osint-with-shodan-100-great-shodan-queries/)
+> ❓ Pour un port **filtré**, que voyez-vous dans Wireshark ?
 
 ---
 
@@ -367,20 +326,19 @@ port:22 net:193.190.0.0/16
 
 1. Quelle est la différence fondamentale entre la **reconnaissance passive** (OSINT) et le **scan actif** (Nmap) du point de vue de la détection par la cible ?
 
-2. Un port est marqué **filtré** par Nmap. Cela signifie-t-il qu'aucun service n'écoute derrière ? Ou qu'il est impossible de savoir ?
+2. Un port est marqué **filtré** par Nmap. Cela signifie-t-il qu'aucun service n'écoute derrière ?
 
-3. Vous scannez un serveur et trouvez qu'il tourne **Apache 2.2.14** sur le port 80. Pourquoi cette information est-elle potentiellement dangereuse ?
+3. Vous scannez un serveur et trouvez qu'il tourne **Apache 2.2.14** sur le port 80. Pourquoi cette information est-elle potentiellement dangereuse pour l'administrateur ?
 
-4. Vous êtes administrateur d'un serveur. Que pouvez-vous faire pour **limiter les informations** qu'un scan Nmap peut révéler ?
+4. Vous êtes administrateur. Que pouvez-vous mettre en place pour **limiter les informations** qu'un scan Nmap révèle sur votre serveur ?
 
 ---
 
 ## Ressources
 
 - [Nmap Book (officiel)](https://nmap.org/book/man.html) — Manuel complet de Nmap
-- [Nmap Tutorial — HackerTarget](https://hackertarget.com/nmap-tutorial/) — Tutoriel couvrant le Three-Way Handshake et les types de scans
-- [100+ Shodan Queries — osintme.com](https://osintme.com/index.php/2021/01/16/ultimate-osint-with-shodan-100-great-shodan-queries/) — Requêtes Shodan avancées
-- [OSINT Cheat Sheet — GitHub Jieyab89](https://github.com/Jieyab89/OSINT-Cheat-sheet) — Collection d'outils et techniques OSINT
-- [Pentesting 101: Shodan pour l'OSINT — INE](https://ine.com/blog/pentesting-101-using-shodan-for-cyber-security-technical-osint) — Introduction pratique à Shodan
-- [RFC 793 — Transmission Control Protocol](https://www.rfc-editor.org/rfc/rfc793) — Spécification originale du TCP (référence pour le handshake)
-- [scanme.nmap.org](https://scanme.nmap.org) — Cible officielle et légale pour les exercices Nmap
+- [Nmap Tutorial — HackerTarget](https://hackertarget.com/nmap-tutorial/) — Tutoriel avec explication du Three-Way Handshake
+- [Shodan](https://www.shodan.io) — Moteur de recherche OSINT
+- [RFC 793 — TCP](https://www.rfc-editor.org/rfc/rfc793) — Spécification originale du handshake TCP
+- [scanme.nmap.org](https://scanme.nmap.org) — Cible officielle autorisée
+- Cheatsheet Nmap complète : [ressources/seance7/nmap-cheatsheet.md](../ressources/seance7/nmap-cheatsheet.md)
