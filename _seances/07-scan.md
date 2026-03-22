@@ -85,7 +85,10 @@ nslookup scanme.nmap.org
 {: .note }
 > `dig` envoie une requête à votre résolveur DNS (souvent votre FAI ou 8.8.8.8), qui contacte ensuite les serveurs DNS de `nmap.org`. Vous n'envoyez rien *directement* à la cible, mais cette requête laisse des traces chez les intermédiaires — c'est une reconnaissance indirecte, pas totalement invisible.
 
-Vérifiez dans quel pays est hébergée l'adresse IP obtenue : [https://ipinfo.io](https://ipinfo.io)
+#### Questions
+
+1. Quelle est l'adresse IP de `scanme.nmap.org` ?
+2. Dans quel pays est-elle hébergée ? (vérifiez sur [https://ipinfo.io](https://ipinfo.io))
 
 ---
 
@@ -93,7 +96,10 @@ Vérifiez dans quel pays est hébergée l'adresse IP obtenue : [https://ipinfo.i
 
 Rendez-vous sur [https://whois.domaintools.com/nmap.org](https://whois.domaintools.com/nmap.org) (ou `whois nmap.org` dans le terminal).
 
-Notez qui est l'organisation propriétaire du domaine et depuis quand il est enregistré.
+#### Questions
+
+1. Qui est l'organisation propriétaire du domaine `nmap.org` ?
+2. Depuis quand est-il enregistré ?
 
 ---
 
@@ -122,6 +128,12 @@ scanme.nmap.org
 
 {: .warning }
 > L'historique complet n'est visible qu'avec un compte payant. Avec le compte gratuit, vous voyez la dernière capture et les ports principaux — c'est suffisant.
+
+#### Questions
+
+1. Quels ports et services Shodan a-t-il déjà indexés sur `scanme.nmap.org` ?
+2. Ces données vous semblent-elles cohérentes avec ce qu'on attendrait d'un serveur de démonstration Nmap ?
+3. Qu'avez-vous trouvé en cherchant `webcam country:BE` ou `org:EPHEC` ? Y a-t-il des résultats surprenants ?
 
 ---
 
@@ -228,7 +240,10 @@ Durée estimée : 25–30 min
 nmap scanme.nmap.org
 ```
 
-Observez la sortie : quels ports sont ouverts, quels services leur sont associés (colonne `SERVICE`), combien de ports ont été scannés au total (ligne de résumé en bas).
+#### Questions
+
+1. Quels ports sont ouverts ? Quels services leur sont associés (colonne `SERVICE`) ?
+2. Combien de ports Nmap a-t-il scannés par défaut ? (lisez la ligne de résumé en bas)
 
 ---
 
@@ -238,10 +253,14 @@ Observez la sortie : quels ports sont ouverts, quels services leur sont associé
 nmap -sV scanme.nmap.org
 ```
 
-Notez les versions des services détectés (colonne `VERSION`). Certaines peuvent être indéterminées.
-
 {: .note }
 > `-sV` établit de vraies connexions aux services ouverts et leur envoie des "sondes" pour identifier le logiciel et sa version. C'est plus lent et plus visible qu'un SYN scan simple. Comptez 1–3 minutes.
+
+#### Questions
+
+1. Quelle version du serveur SSH tourne ? (colonne `VERSION`)
+2. Quelle version du serveur web ?
+3. Y a-t-il un service dont la version n'a pas pu être déterminée ?
 
 ---
 
@@ -251,7 +270,12 @@ Notez les versions des services détectés (colonne `VERSION`). Certaines peuven
 sudo nmap -O scanme.nmap.org
 ```
 
-Nmap tente d'identifier l'OS en analysant les particularités de l'implémentation TCP/IP de la cible : valeur du TTL, taille de la fenêtre TCP, options activées. Chaque système d'exploitation a ses propres "empreintes" dans ces paramètres. Nmap peut proposer plusieurs candidats avec un niveau de confiance variable.
+Nmap tente d'identifier l'OS en analysant les particularités de l'implémentation TCP/IP de la cible : valeur du TTL, taille de la fenêtre TCP, options activées. Chaque système d'exploitation a ses propres "empreintes" dans ces paramètres.
+
+#### Questions
+
+1. Quel système d'exploitation Nmap identifie-t-il ?
+2. Nmap est-il certain de sa réponse, ou propose-t-il plusieurs candidats ?
 
 ---
 
@@ -261,10 +285,15 @@ Nmap tente d'identifier l'OS en analysant les particularités de l'implémentati
 sudo nmap -A scanme.nmap.org
 ```
 
-Le flag `-A` combine la détection d'OS (`-O`), la détection de versions (`-sV`), les scripts NSE par défaut (`-sC`) et un traceroute. La sortie est plus riche mais le scan est nettement plus visible sur le réseau.
+Le flag `-A` combine la détection d'OS (`-O`), la détection de versions (`-sV`), les scripts NSE par défaut (`-sC`) et un traceroute.
 
 {: .note }
 > Comptez 3–5 minutes pour ce scan.
+
+#### Questions
+
+1. Quelles informations supplémentaires obtenez-vous par rapport aux scans précédents ?
+2. Quel est l'inconvénient du scan `-A` du point de vue de la discrétion ?
 
 ---
 
@@ -304,7 +333,10 @@ Puis lancez :
 sudo nmap -sS scanme.nmap.org
 ```
 
-Observez les échanges SYN / SYN-ACK / RST et comparez avec le schéma de la partie 2. Pour les ports filtrés, notez ce que Wireshark affiche — ou n'affiche pas.
+#### Questions
+
+1. Retrouvez-vous les échanges SYN → SYN-ACK → RST décrits dans la partie 2 ?
+2. Pour un port filtré, que Wireshark affiche-t-il ?
 
 ---
 
