@@ -55,7 +55,7 @@ Durée estimée : 15–20 min
 {: .label .label-yellow }
 
 {: .highlight }
-> **Aucune installation requise.** Tout se fait depuis un navigateur web et le terminal Linux.
+> **Aucune installation requise.** Tout se fait depuis un navigateur web et le terminal Linux ou Windows.
 
 ### Qu'est-ce que l'OSINT ?
 
@@ -161,7 +161,7 @@ Durée estimée : 10 min
 
 Avant de lancer Nmap, il faut comprendre ce qu'il mesure réellement — et pour cela, comprendre comment TCP établit (ou n'établit pas) une connexion.
 
-### Le Three-Way Handshake TCP
+### Le Three-Way Handshake TCP (rappel de "Réseau 1" ) 
 
 Lorsqu'un client veut se connecter à un serveur, TCP utilise un mécanisme en 3 étapes :
 
@@ -289,6 +289,7 @@ Le flag `-A` combine la détection d'OS (`-O`), la détection de versions (`-sV`
 
 {: .note }
 > Comptez 3–5 minutes pour ce scan.
+> Alors, si vous êtes juste sur le temps, passez cet exercice et allez directement à l'exercice sur Wireshark. 
 
 #### Questions
 
@@ -318,8 +319,8 @@ En tant qu'administrateur de ce serveur : lequel de ces éléments vous inquiét
 ## Voir les paquets avec Wireshark
 
 {: .d-inline-block }
-Optionnel
-{: .label .label-blue }
+Durée estimée : 10-15 min
+{: .label .label-yellow }
 
 Ouvrez Wireshark sur votre interface réseau principale **avant** de lancer le scan. Appliquez ce filtre :
 
@@ -358,5 +359,4 @@ sudo nmap -sS scanme.nmap.org
 - [Nmap Tutorial — HackerTarget](https://hackertarget.com/nmap-tutorial/) — Tutoriel avec explication du Three-Way Handshake
 - [Shodan](https://www.shodan.io) — Moteur de recherche OSINT
 - [RFC 793 — TCP](https://www.rfc-editor.org/rfc/rfc793) — Spécification originale du handshake TCP
-- [scanme.nmap.org](https://scanme.nmap.org) — Cible officielle autorisée
-- Cheatsheet Nmap complète : [ressources/seance7/nmap-cheatsheet.md](../ressources/seance7/nmap-cheatsheet.md)
+- [scanme.nmap.org](http://scanme.nmap.org) — Cible officielle autorisée
