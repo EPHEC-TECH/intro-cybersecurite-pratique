@@ -61,7 +61,7 @@ Durée estimée : 15–20 min
 
 L'**Open Source Intelligence** (OSINT) désigne la collecte d'informations à partir de sources **publiquement accessibles** : DNS, WHOIS, moteurs de recherche spécialisés, réseaux sociaux, certificats TLS…
 
-L'idée clé : **avant même de toucher une cible, une quantité considérable d'informations la concernant est déjà publique**.
+Avant même de toucher une cible, une quantité considérable d'informations la concernant est déjà publique. C'est le point de départ de toute reconnaissance sérieuse.
 
 ---
 
@@ -69,13 +69,13 @@ L'idée clé : **avant même de toucher une cible, une quantité considérable d
 
 #### Étape 1 — Résolution DNS
 
-Depuis votre terminal Linux, utilisez `dig` (plus complet que `nslookup`) :
+Depuis votre terminal Linux :
 
 ```bash
 dig scanme.nmap.org
 ```
 
-La réponse se trouve dans la section `ANSWER SECTION` — cherchez la ligne avec `A` qui contient l'adresse IPv4.
+La réponse se trouve dans la section `ANSWER SECTION` — cherchez la ligne avec le type `A` qui contient l'adresse IPv4.
 
 Sur Windows (PowerShell ou CMD) :
 ```
@@ -83,53 +83,45 @@ nslookup scanme.nmap.org
 ```
 
 {: .note }
-> **Note :** `dig` et `nslookup` envoient une requête à votre résolveur DNS (souvent votre FAI ou 8.8.8.8), qui contacte ensuite les serveurs DNS de `nmap.org`. Vous n'envoyez rien *directement* à la cible, mais cette requête laisse des traces chez les intermédiaires. C'est ce qu'on appelle une reconnaissance "indirecte".
+> `dig` envoie une requête à votre résolveur DNS (souvent votre FAI ou 8.8.8.8), qui contacte ensuite les serveurs DNS de `nmap.org`. Vous n'envoyez rien *directement* à la cible, mais cette requête laisse des traces chez les intermédiaires — c'est une reconnaissance indirecte, pas totalement invisible.
 
-> ❓ Quelle est l'adresse IP de `scanme.nmap.org` ? Dans quel pays est-elle hébergée ? (vérifiez sur [https://ipinfo.io](https://ipinfo.io))
+Vérifiez dans quel pays est hébergée l'adresse IP obtenue : [https://ipinfo.io](https://ipinfo.io)
 
 ---
 
-#### Étape 2 — WHOIS : qui possède ce domaine ?
+#### Étape 2 — WHOIS
 
 Rendez-vous sur [https://whois.domaintools.com/nmap.org](https://whois.domaintools.com/nmap.org) (ou `whois nmap.org` dans le terminal).
 
-> ❓ Qui est l'organisation propriétaire du domaine `nmap.org` ? Depuis quand est-il enregistré ?
+Notez qui est l'organisation propriétaire du domaine et depuis quand il est enregistré.
 
 ---
 
-#### Étape 3 — Shodan : ce que l'internet sait déjà sur tout le monde
+#### Étape 3 — Shodan
 
-Avant de chercher votre cible, prenez 2 minutes pour mesurer la puissance de l'outil.
-
-Rendez-vous sur [https://www.shodan.io](https://www.shodan.io) et essayez ces recherches :
+Avant de chercher votre cible, prenez 2 minutes pour mesurer l'étendue de ce que Shodan indexe. Rendez-vous sur [https://www.shodan.io](https://www.shodan.io) et essayez :
 
 ```
-# Des caméras IP exposées en Belgique
 webcam country:BE
+```
 
-# Des serveurs web de l'EPHEC
+```
 org:EPHEC
 ```
 
-> ❓ Que trouvez-vous ? Y a-t-il des résultats surprenants ?
-
-Maintenant cherchez votre vraie cible :
+Cherchez ensuite votre cible :
 
 ```
 scanme.nmap.org
 ```
 
-> ❓ Quels ports et services Shodan a-t-il déjà indexés ?
->
-> ❓ Ces données correspondent-elles à ce que vous attendez d'un serveur de démonstration Nmap ?
-
 {: .note }
-> **Shodan en quelques mots :** C'est un moteur de recherche qui scanne en permanence l'ensemble d'Internet et indexe les services exposés (serveurs web, SSH, bases de données, caméras IP, IoT…). Il ne scanne pas à votre demande — il vous montre ce qu'il a **déjà collecté**. Vous n'envoyez rien vers la cible.
+> Shodan est un moteur de recherche qui scanne en permanence l'ensemble d'Internet et indexe les services exposés (serveurs web, SSH, bases de données, caméras IP, IoT…). Il ne scanne pas à votre demande — il vous montre ce qu'il a **déjà collecté**. Vous n'envoyez rien vers la cible.
 >
 > Source : [Shodan — The Search Engine for the Internet of Things](https://www.shodan.io/about/products)
 
 {: .warning }
-> Les données Shodan sur l'historique complet ne sont visibles qu'avec un compte payant. Avec le compte gratuit, vous voyez la dernière capture et les ports principaux — c'est suffisant pour ce TP.
+> L'historique complet n'est visible qu'avec un compte payant. Avec le compte gratuit, vous voyez la dernière capture et les ports principaux — c'est suffisant.
 
 ---
 
@@ -145,7 +137,7 @@ Complétez ce tableau **avant** de lancer Nmap :
 | Ports déjà connus (Shodan) | |
 | Services détectés (Shodan) | |
 
->  **Conclusion :** Sans envoyer le moindre paquet directement vers la cible, vous disposez déjà d'un profil partiel. Comparez ce tableau avec vos résultats Nmap à la fin du TP — que Nmap aura-t-il appris de plus ?
+Gardez ce tableau sous la main — vous le compléterez avec les résultats Nmap à la fin.
 
 ---
 
@@ -155,7 +147,7 @@ Complétez ce tableau **avant** de lancer Nmap :
 Durée estimée : 10 min
 {: .label .label-green }
 
-Avant d'utiliser Nmap, il faut comprendre **ce qu'il mesure** — et pour cela, comprendre comment TCP établit (ou n'établit pas) une connexion.
+Avant de lancer Nmap, il faut comprendre ce qu'il mesure réellement — et pour cela, comprendre comment TCP établit (ou n'établit pas) une connexion.
 
 ### Le Three-Way Handshake TCP
 
@@ -186,13 +178,13 @@ Nmap envoie un paquet **SYN** et analyse la réponse pour déterminer l'état du
 | `RST` (Reset) | **Fermé** | Rien n'écoute sur ce port |
 | Pas de réponse / `ICMP unreachable` | **Filtré** | Un pare-feu bloque le trafic |
 
-> ❓ Si un port est **filtré**, peut-on savoir avec certitude si un service écoute derrière ? Pourquoi ?
+Notez que l'état **filtré** ne permet pas de savoir si un service écoute derrière — c'est précisément l'intention d'un pare-feu bien configuré.
 
 ---
 
 ### Le Scan SYN (`-sS`) : la demi-connexion
 
-Le scan par défaut de Nmap (quand utilisé avec sudo) est le **SYN scan**, qui n'établit jamais la connexion TCP complète :
+Le scan par défaut de Nmap (avec sudo) est le **SYN scan**, qui n'établit jamais la connexion TCP complète :
 
 ```
 Nmap                      Serveur
@@ -201,12 +193,12 @@ Nmap                      Serveur
   |                          |
   |<------- SYN-ACK ---------|   (port ouvert détecté ✓)
   |                          |
-  |-------- RST ----------->|   Nmap interrompt ici — pas de connexion complète
+  |-------- RST ----------->|   Nmap interrompt ici
 ```
 
 **Ce que cela signifie concrètement :**
 - L'**application** serveur (Apache, SSH…) ne voit jamais de connexion établie — elle ne la loggue pas.
-- En revanche, le **système d'exploitation** du serveur et les **équipements réseau** (firewall, IDS) *voient* les SYN entrants et peuvent tout à fait les détecter et les alerter. Un SYN scan n'est donc pas invisible — il est simplement moins bruyant qu'une connexion complète.
+- En revanche, le **système d'exploitation** du serveur et les **équipements réseau** (firewall, IDS) voient les SYN entrants et peuvent les détecter. Un SYN scan n'est pas invisible — il est simplement moins bruyant qu'une connexion complète.
 
 > ⚠️ Le SYN scan nécessite **sudo** car il manipule directement les paquets réseau (raw sockets).
 
@@ -236,9 +228,7 @@ Durée estimée : 25–30 min
 nmap scanme.nmap.org
 ```
 
-> ❓ Quels ports sont **ouverts** ? Quels services leur sont associés (colonne `SERVICE`) ?
->
-> ❓ Combien de ports Nmap a-t-il scanné par défaut ? (lisez la ligne de résumé en bas)
+Observez la sortie : quels ports sont ouverts, quels services leur sont associés (colonne `SERVICE`), combien de ports ont été scannés au total (ligne de résumé en bas).
 
 ---
 
@@ -248,14 +238,10 @@ nmap scanme.nmap.org
 nmap -sV scanme.nmap.org
 ```
 
-> ❓ Quelle version du serveur SSH tourne ? (colonne `VERSION`)
->
-> ❓ Quelle version du serveur web ?
->
-> ❓ Y a-t-il un service dont la version n'a pas pu être déterminée ?
+Notez les versions des services détectés (colonne `VERSION`). Certaines peuvent être indéterminées.
 
 {: .note }
-> `-sV` établit de vraies connexions aux services ouverts et leur envoie des "sondes" pour identifier le logiciel. C'est plus lent et plus visible qu'un SYN scan simple. Comptez 1-3 minutes.
+> `-sV` établit de vraies connexions aux services ouverts et leur envoie des "sondes" pour identifier le logiciel et sa version. C'est plus lent et plus visible qu'un SYN scan simple. Comptez 1–3 minutes.
 
 ---
 
@@ -265,26 +251,20 @@ nmap -sV scanme.nmap.org
 sudo nmap -O scanme.nmap.org
 ```
 
-> ❓ Quel système d'exploitation Nmap identifie-t-il ?
->
-> ❓ Comment Nmap peut-il "deviner" l'OS sans y avoir accès ? *(Indice : il analyse les particularités de l'implémentation TCP/IP — TTL, taille de fenêtre, options TCP — qui varient selon les OS)*
->
-> ❓ Nmap est-il certain de sa réponse, ou propose-t-il plusieurs candidats ?
+Nmap tente d'identifier l'OS en analysant les particularités de l'implémentation TCP/IP de la cible : valeur du TTL, taille de la fenêtre TCP, options activées. Chaque système d'exploitation a ses propres "empreintes" dans ces paramètres. Nmap peut proposer plusieurs candidats avec un niveau de confiance variable.
 
 ---
 
-#### Étape 4 — Scan agressif (combiné)
+#### Étape 4 — Scan agressif
 
 ```bash
 sudo nmap -A scanme.nmap.org
 ```
 
-> ❓ Que combine le flag `-A` ? (observez la sortie : OS, versions, scripts, traceroute)
->
-> ❓ Quel est l'inconvénient du scan `-A` du point de vue de la discrétion ?
+Le flag `-A` combine la détection d'OS (`-O`), la détection de versions (`-sV`), les scripts NSE par défaut (`-sC`) et un traceroute. La sortie est plus riche mais le scan est nettement plus visible sur le réseau.
 
 {: .note }
-> Comptez 3-5 minutes pour ce scan.
+> Comptez 3–5 minutes pour ce scan.
 
 ---
 
@@ -300,41 +280,43 @@ Complétez ce tableau en croisant vos résultats OSINT et Nmap :
 | Ports ouverts (top 1000) | Nmap défaut | |
 | Version SSH | Nmap `-sV` | |
 | Version serveur web | Nmap `-sV` | |
-| Données déjà connues | Shodan | |
+| Données déjà connues avant le scan | Shodan | |
 
->  **Réflexion :** Imaginez être l'administrateur de ce serveur. Lequel de ces éléments vous inquiéterait le plus si un inconnu l'avait collecté ? Que feriez-vous pour limiter cette exposition ?
+En tant qu'administrateur de ce serveur : lequel de ces éléments vous inquiéterait le plus si un inconnu l'avait collecté ? Que feriez-vous pour limiter cette exposition ?
 
 ---
 
 ## Voir les paquets avec Wireshark
 
-Ouvrez Wireshark **avant** de lancer le scan, sur votre interface réseau principale.
+{: .d-inline-block }
+Optionnel
+{: .label .label-blue }
 
-Filtre à appliquer :
+Ouvrez Wireshark sur votre interface réseau principale **avant** de lancer le scan. Appliquez ce filtre :
+
 ```
 tcp and host scanme.nmap.org
 ```
 
-Lancez :
+Puis lancez :
+
 ```bash
 sudo nmap -sS scanme.nmap.org
 ```
 
-> ❓ Retrouvez-vous les échanges SYN → SYN-ACK → RST de la partie théorique ?
->
-> ❓ Pour un port **filtré**, que voyez-vous dans Wireshark ?
+Observez les échanges SYN / SYN-ACK / RST et comparez avec le schéma de la partie 2. Pour les ports filtrés, notez ce que Wireshark affiche — ou n'affiche pas.
 
 ---
 
 ## Questions de synthèse
 
-1. Quelle est la différence fondamentale entre la **reconnaissance passive** (OSINT) et le **scan actif** (Nmap) du point de vue de la détection par la cible ?
+1. Quelle est la différence fondamentale entre la reconnaissance passive (OSINT) et le scan actif (Nmap) du point de vue de la détection par la cible ?
 
-2. Un port est marqué **filtré** par Nmap. Cela signifie-t-il qu'aucun service n'écoute derrière ?
+2. Un port est marqué **filtré** par Nmap. Peut-on en déduire qu'aucun service n'écoute derrière ?
 
-3. Vous scannez un serveur et trouvez qu'il tourne **Apache 2.2.14** sur le port 80. Pourquoi cette information est-elle potentiellement dangereuse pour l'administrateur ?
+3. Vous scannez un serveur et relevez qu'il tourne Apache 2.2.14 sur le port 80. En quoi cette information est-elle problématique pour l'administrateur ?
 
-4. Vous êtes administrateur. Que pouvez-vous mettre en place pour **limiter les informations** qu'un scan Nmap révèle sur votre serveur ?
+4. Quelles mesures un administrateur peut-il mettre en place pour réduire les informations qu'un scan Nmap révèle sur son serveur ?
 
 ---
 
