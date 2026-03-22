@@ -139,7 +139,7 @@ scanme.nmap.org
 
 #### Synthèse OSINT
 
-Complétez ce tableau **avant** de lancer Nmap :
+Complétez ce tableau (dans un fichier texte temporaire) **avant** de lancer Nmap :
 
 | Champ | Valeur |
 |---|---|
@@ -289,6 +289,7 @@ Le flag `-A` combine la détection d'OS (`-O`), la détection de versions (`-sV`
 
 {: .note }
 > Comptez 3–5 minutes pour ce scan.
+>
 > Alors, si vous êtes juste sur le temps, passez cet exercice et allez directement à l'exercice sur Wireshark. 
 
 #### Questions
@@ -300,7 +301,7 @@ Le flag `-A` combine la détection d'OS (`-O`), la détection de versions (`-sV`
 
 ### Exercice 3 — La "fiche identité" de la cible
 
-Complétez ce tableau en croisant vos résultats OSINT et Nmap :
+Complétez ce tableau (dans votre fichier texte) en croisant vos résultats OSINT et Nmap :
 
 | Champ | Source | Valeur |
 |---|---|---|
