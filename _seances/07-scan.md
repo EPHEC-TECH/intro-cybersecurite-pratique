@@ -69,14 +69,21 @@ L'idée clé : **avant même de toucher une cible, une quantité considérable d
 
 #### Étape 1 — Résolution DNS
 
-Depuis votre terminal Linux :
+Depuis votre terminal Linux, utilisez `dig` (plus complet que `nslookup`) :
 
 ```bash
+dig scanme.nmap.org
+```
+
+La réponse se trouve dans la section `ANSWER SECTION` — cherchez la ligne avec `A` qui contient l'adresse IPv4.
+
+Sur Windows (PowerShell ou CMD) :
+```
 nslookup scanme.nmap.org
 ```
 
 {: .note }
-> **Note :** `nslookup` envoie une requête à votre résolveur DNS (souvent votre FAI ou 8.8.8.8), qui contacte ensuite les serveurs DNS de `nmap.org`. Vous n'envoyez rien *directement* à la cible, mais cette requête laisse des traces chez les intermédiaires. C'est ce qu'on appelle une reconnaissance "indirecte".
+> **Note :** `dig` et `nslookup` envoient une requête à votre résolveur DNS (souvent votre FAI ou 8.8.8.8), qui contacte ensuite les serveurs DNS de `nmap.org`. Vous n'envoyez rien *directement* à la cible, mais cette requête laisse des traces chez les intermédiaires. C'est ce qu'on appelle une reconnaissance "indirecte".
 
 > ❓ Quelle est l'adresse IP de `scanme.nmap.org` ? Dans quel pays est-elle hébergée ? (vérifiez sur [https://ipinfo.io](https://ipinfo.io))
 
