@@ -138,7 +138,7 @@ Complétez ce tableau **avant** de lancer Nmap :
 | Ports déjà connus (Shodan) | |
 | Services détectés (Shodan) | |
 
-> 💡 **Conclusion :** Sans envoyer le moindre paquet directement vers la cible, vous disposez déjà d'un profil partiel. Comparez ce tableau avec vos résultats Nmap à la fin du TP — que Nmap aura-t-il appris de plus ?
+>  **Conclusion :** Sans envoyer le moindre paquet directement vers la cible, vous disposez déjà d'un profil partiel. Comparez ce tableau avec vos résultats Nmap à la fin du TP — que Nmap aura-t-il appris de plus ?
 
 ---
 
@@ -295,15 +295,11 @@ Complétez ce tableau en croisant vos résultats OSINT et Nmap :
 | Version serveur web | Nmap `-sV` | |
 | Données déjà connues | Shodan | |
 
-> 💡 **Réflexion :** Imaginez être l'administrateur de ce serveur. Lequel de ces éléments vous inquiéterait le plus si un inconnu l'avait collecté ? Que feriez-vous pour limiter cette exposition ?
+>  **Réflexion :** Imaginez être l'administrateur de ce serveur. Lequel de ces éléments vous inquiéterait le plus si un inconnu l'avait collecté ? Que feriez-vous pour limiter cette exposition ?
 
 ---
 
-## Bonus — Voir les paquets avec Wireshark
-
-{: .d-inline-block }
-Optionnel — si Wireshark est disponible
-{: .label .label-blue }
+## Voir les paquets avec Wireshark
 
 Ouvrez Wireshark **avant** de lancer le scan, sur votre interface réseau principale.
 
