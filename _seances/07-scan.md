@@ -51,7 +51,7 @@ Cette phase se divise en deux grandes étapes :
 ## Partie 1 — OSINT : reconnaissance passive
 
 {: .note }
-> **Avant de commencer cette partie, assurez-vous de vous être inscrit sur [https://ipinfo.io](https://ipinfo.io) et [https://www.shodan.io](https://www.shodan.io). Un compte gratuit est suffisant pour les exercices de ce TP.**
+> **Avant de commencer les consignes de cette partie, assurez-vous de vous être inscrit sur [https://ipinfo.io](https://ipinfo.io) et [https://www.shodan.io](https://www.shodan.io). Un compte gratuit est suffisant pour les exercices de ce TP.**
 
 {: .d-inline-block }
 Durée estimée : 15–20 min
