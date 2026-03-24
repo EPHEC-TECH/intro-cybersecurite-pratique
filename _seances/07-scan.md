@@ -50,6 +50,9 @@ Cette phase se divise en deux grandes étapes :
 
 ## Partie 1 — OSINT : reconnaissance passive
 
+{: .note }
+> **Avant de commencer cette partie, assurez-vous de vous être inscrit sur [https://ipinfo.io](https://ipinfo.io) et [https://www.shodan.io](https://www.shodan.io). Un compte gratuit est suffisant pour les exercices de ce TP.**
+
 {: .d-inline-block }
 Durée estimée : 15–20 min
 {: .label .label-yellow }
@@ -210,7 +213,7 @@ Nmap                      Serveur
 
 **Ce que cela signifie concrètement :**
 - L'**application** serveur (Apache, SSH…) ne voit jamais de connexion établie — elle ne la loggue pas.
-- En revanche, le **système d'exploitation** du serveur et les **équipements réseau** (firewall, IDS) voient les SYN entrants et peuvent les détecter. Un SYN scan n'est pas invisible — il est simplement moins bruyant qu'une connexion complète.
+- En revanche, le **système d'exploitation** du serveur et les **équipements réseau** (firewall, IDS) voient les SYN entrants et peuvent les détecter. Bien que le SYN scan soit *moins bruyant* qu'une connexion complète, il n'est *pas invisible* et est facilement identifiable par les systèmes de détection modernes. La notion de "furtivité" est donc relative.
 
 > ⚠️ Le SYN scan nécessite **sudo** car il manipule directement les paquets réseau (raw sockets).
 
