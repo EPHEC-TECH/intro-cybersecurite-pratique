@@ -199,7 +199,7 @@ Notez que l'état **filtré** ne permet pas de savoir si un service écoute derr
 
 ### Le Scan SYN (`-sS`) : la demi-connexion
 
-Le scan par défaut de Nmap (avec sudo) est le **SYN scan**, qui n'établit jamais la connexion TCP complète :
+Le scan par défaut de Nmap (qui nécessite les droits root pour manipuler directement les paquets réseau) est le **SYN scan**. Bien que parfois qualifié de "furtif", il n'est plus invisible aux systèmes de détection modernes. Ce scan n'établit jamais la connexion TCP complète :
 
 ```
 Nmap                      Serveur
