@@ -46,6 +46,12 @@ Cette phase se divise en deux grandes étapes :
 >
 > Source : [https://scanme.nmap.org](https://scanme.nmap.org) — *"You are authorized to scan this machine with Nmap or other port scanners."*
 
+{: .warning }
+> **Note importante pour l'environnement scolaire :** Il est possible que `scanme.nmap.org` soit inaccessible depuis le réseau de l'école en raison de restrictions de pare-feu. Si vous rencontrez des problèmes de connectivité, vous pouvez utiliser les cibles alternatives suivantes pour les exercices de scan réseau (assurez-vous toujours d'avoir l'autorisation avant de scanner une cible) :
+> 
+> *   `http://demo.testfire.net/` (pour les scans web)
+> *   `https://hack-yourself-first.com/` (pour les scans web)
+
 ---
 
 ## Partie 1 — OSINT : reconnaissance passive
