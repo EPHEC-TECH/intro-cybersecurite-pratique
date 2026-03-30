@@ -1,9 +1,9 @@
 ---
 layout: default
 title: Bonus & Avenir
-order: 11
+order: 12
 description: IA, Hardware Hacking
-nav_order: 11
+nav_order: 12
 published: false
 ---
 
