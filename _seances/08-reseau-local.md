@@ -21,7 +21,7 @@ Le protocole ARP (Address Resolution Protocol) est essentiel pour la communicati
 
 **2. Configuration du TP (Topologie)**
 
-👉 [Télécharger le fichier Packet Tracer du TP (arp_spoofing.pkt)](../ressources/seance8/arp_spoofing.pkt)
+👉 [Télécharger le fichier Packet Tracer du TP (arp_spoofing.pkt)]({{ site.baseurl }}/ressources/seance8/arp_spoofing.pkt)
 
 Pour ce TP, utilisez un simulateur (Packet Tracer) avec la configuration suivante :
 
