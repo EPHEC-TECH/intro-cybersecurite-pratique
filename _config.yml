@@ -17,5 +17,9 @@ collections:
 aux_links:
   "Fiche EPHEC": "https://eperso.ephec.be/ProfFicheCoursHe/Visualiser/14794"
 
+# Activation du rendu Mermaid (diagrammes)
+mermaid:
+  version: "10.9.0"
+
 sass:
   style: compressed
