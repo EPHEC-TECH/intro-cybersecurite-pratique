@@ -1,22 +1,13 @@
-
-
 ---
 layout: default
 title: "TP Révision : L'Enquête Numérique"
 order: 14
 description: Synthèse pratique — séances 1, 2 et 7 à 10
 nav_order: 14
-published: true
+published: false
 ---
 
 # TP Révision : L'Enquête Numérique
-{: .no_toc }
-
-## Table des matières
-{: .no_toc .text-delta }
-
-1. TOC
-{:toc}
 
 ---
 
@@ -45,6 +36,8 @@ Dans votre navigateur (optionnel, pour confort) :
 
 {: .note }
 > Si `tshark` n'est pas installé : `sudo apt install tshark -y`. Cette commande est rapide et fiable (paquet standard Ubuntu).
+
+Sinon utilisez wireshark sur en interface graphique, il devrait être installé sur les PC ephec 
 
 ---
 
