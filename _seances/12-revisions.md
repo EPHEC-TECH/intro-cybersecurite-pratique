@@ -133,7 +133,7 @@ Un seul paquet apparaît : une requête `GET`. Faites un **clic droit dessus →
 4. **Décodez-la.** Sur la VM Ubuntu :
 
    ```bash
-   echo -n "LA_CHAINE_ICI" | base64 -d
+   echo -n "LA_CHAINE_ICI" | mettre_le_bon_outil_ici -d
    ```
 
    *(Indice : séance 1 — le caractère `=` en fin de chaîne, ça vous dit quelque chose ?)*
@@ -167,9 +167,9 @@ Vous voyez une chaîne de caractères apparemment incompréhensible. Mais vous c
 Décodez la note :
 
 ```bash
-base64 -d note_attaquant.txt
+base64 -<a_trouver_la_bonne_option> note_attaquant.txt
 ```
-
+hint: ```man base64``` devrait vous aider a trouver la bonne option 
 ### Questions
 
 1. Que dit la note ?
@@ -191,7 +191,7 @@ La note vous indique comment fabriquer la clé qui ouvrira l'archive : **le hash
 Calculez ce hash sur la VM :
 
 ```bash
-echo -n "le_mot_de_passe_intercepte" | md5sum
+echo -n "le_mot_de_passe_intercepte" | a_mettre_le_bon_outil_ici
 ```
 
 {: .warning }
