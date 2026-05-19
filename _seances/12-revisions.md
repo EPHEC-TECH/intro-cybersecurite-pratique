@@ -46,8 +46,9 @@ Durée : 5 min
 2. Décompressez l'archive (clic droit → *Extraire tout*). Vous obtenez un dossier `enquete/` contenant :
 
    ```
-   scan.txt           note_attaquant.txt
-   capture.pcap       archive.enc
+   scan.txt             note_attaquant.txt
+   capture_1.pcap       capture_2.pcap      
+   archive.enc
    ```
 
 3. **`capture.pcap` reste sur Windows** (on l'ouvrira avec Wireshark).
@@ -57,7 +58,6 @@ Durée : 5 min
      ```powershell
      scp scan.txt note_attaquant.txt archive.enc VOTRE_USER@IP_DE_LA_VM:~/
      ```
-   - **WinSCP** (si installé) : glisser-déposer les 3 fichiers vers le `home` de la VM.
 
 5. Connectez-vous en SSH à la VM et vérifiez :
 
