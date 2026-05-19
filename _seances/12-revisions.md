@@ -4,7 +4,7 @@ title: "TP Révision : L'Enquête Numérique"
 order: 14
 description: Synthèse pratique — séances 1, 2, 7, 8 et 9
 nav_order: 14
-published: false
+published: true
 ---
 
 # TP Révision : L'Enquête Numérique
@@ -53,7 +53,13 @@ Durée : 5 min
    ```
 
 3. **`capture.pcap` reste sur Windows** (on l'ouvrira avec Wireshark).
-4. **Les trois autres fichiers doivent être transférés vers la VM Ubuntu**. Utilisez WinSCP (ou `scp` depuis PowerShell) pour les copier dans votre dossier `home` sur la VM.
+4. **Les trois autres fichiers doivent être transférés vers la VM Ubuntu**, dans votre dossier `home`. Deux méthodes au choix :
+
+   - **PowerShell (le plus simple, intégré à Windows 10/11)** — depuis le dossier `enquete/` :
+     ```powershell
+     scp scan.txt note_attaquant.txt archive.enc VOTRE_USER@IP_DE_LA_VM:~/
+     ```
+   - **WinSCP** (si installé) : glisser-déposer les 3 fichiers vers le `home` de la VM.
 
 5. Connectez-vous en SSH à la VM et vérifiez :
 
@@ -87,7 +93,7 @@ Vous êtes l'administrateur de cette machine. Vous découvrez ce rapport sur le 
 
 ### Questions
 
-1. Combien de services sont exposés ? Lesquels ?
+1. Listez les services exposés (nom + version). Combien y en a-t-il ?
 2. **Repérez les 2 services qui devraient vous faire bondir.** Justifiez : pourquoi sont-ils particulièrement préoccupants ? *(Indice : pensez à la séance 9 — l'un d'eux a une histoire célèbre de backdoor introduite dans le code source officiel.)*
 3. Pour chacun, **citez une mesure concrète** qu'un administrateur aurait dû prendre pour réduire la surface d'attaque.
 
@@ -114,11 +120,11 @@ Dans la barre de filtre de Wireshark (au-dessus de la liste des paquets), tapez 
 arp
 ```
 
-Cliquez sur le premier paquet ARP et dépliez la section `Address Resolution Protocol` dans le volet du milieu.
+Examinez **les deux paquets ARP**. Pour chacun, cliquez dessus et dépliez la section `Address Resolution Protocol` dans le volet du milieu. Relevez les champs `Sender MAC address` et `Sender IP address`.
 
 #### Questions
 
-1. **Que prétend la machine `192.168.1.50` ?** Regardez l'IP qu'elle annonce comme étant la sienne (`Sender IP address`) et l'adresse MAC qu'elle associe à cette IP. À quel **type d'attaque** cela correspond-il dans le cours ? *(Indice : séance 8.)*
+1. **La même adresse MAC apparaît dans les deux paquets.** Pourtant, l'IP qu'elle annonce comme étant la sienne (`Sender IP address`) **change** entre le paquet 1 et le paquet 2. Notez ces deux IP. Laquelle est probablement la vraie ? Laquelle est un mensonge ? **À quel type d'attaque cela correspond-il dans le cours ?** *(Indice : séance 8.)*
 2. Pourquoi ces deux paquets ARP sont-ils une **condition nécessaire** pour que l'attaquant puisse intercepter le 3ème paquet (qui ne lui était pas destiné) ?
 
 ### Mission — Partie B : le paquet HTTP
