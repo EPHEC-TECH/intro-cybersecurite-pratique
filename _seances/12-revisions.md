@@ -51,7 +51,7 @@ Durée : 5 min
    archive.enc
    ```
 
-3. **`capture.pcap` reste sur Windows** (on l'ouvrira avec Wireshark).
+3. **Les deux fichiers `capture_*.pcap` restent sur Windows** (on les ouvrira avec Wireshark).
 4. **Les trois autres fichiers doivent être transférés vers la VM Ubuntu**, dans votre dossier `home`. Deux méthodes au choix :
 
    - **PowerShell (le plus simple, intégré à Windows 10/11)** — depuis le dossier `enquete/` :
@@ -103,29 +103,21 @@ Vous êtes l'administrateur de cette machine. Vous découvrez ce rapport sur le 
 Durée : 15 min
 {: .label .label-yellow }
 
-Le fichier `capture.pcap` contient quelques paquets qui ont été capturés sur le réseau de la victime au moment de l'intrusion. Vous allez l'ouvrir avec **Wireshark sur Windows**.
-
-### Mode d'emploi Wireshark
-
-1. Sur le bureau Windows, **double-cliquez** sur `capture.pcap`. Wireshark s'ouvre automatiquement et affiche les paquets.
-2. La capture ne contient que **3 paquets**. Lisez-les attentivement.
+Deux fichiers `capture_1.pcap` et `capture_2.pcap` contiennent des paquets capturés sur le réseau de la victime au moment de l'intrusion. Vous allez les ouvrir avec **Wireshark sur Windows** (double-cliquez sur le fichier).
 
 ### Mission — Partie A : Forensic d'une attaque
 
-
-
-Ouvrez la première capture:
- Quel type d'attaque est en cours dans la capture wireshark.  Quel élément vous a permis de déduire cela ?
+Ouvrez `capture_1.pcap`. Quel **type d'attaque** est en cours dans cette capture ? Quel élément vous a permis de le déduire ?
 
 ### Mission — Partie B : le paquet HTTP
 
-Effacez le filtre et tapez :
+Ouvrez maintenant `capture_2.pcap`. Dans la barre de filtre de Wireshark, tapez :
 
 ```
 http
 ```
 
-Un seul paquet apparaît : une requête `GET`. Faites un **clic droit dessus → Follow → HTTP Stream** : une fenêtre s'ouvre avec le contenu complet de la requête en clair.
+Repérez une requête `GET` envoyée par le client. Faites un **clic droit dessus → Follow → HTTP Stream** : une fenêtre s'ouvre avec le contenu complet de la requête en clair.
 
 #### Questions
 
@@ -184,7 +176,10 @@ hint: ```man base64``` devrait vous aider a trouver la bonne option
 Durée : 5 min
 {: .label .label-green }
 
-La note vous indique comment fabriquer la clé qui ouvrira l'archive : **le hash MD5 (en hexadécimal) du mot de passe intercepté dans le trafic.**
+La note (décodée à l'étape 3) vous indique comment fabriquer la clé qui ouvrira l'archive : **le hash MD5 (en hexadécimal) du mot de passe mentionné dans cette note.**
+
+{: .note }
+> Attention : ce mot de passe est **différent** de celui intercepté dans `capture_2.pcap`. La §2 et la §4 sont deux exercices indépendants.
 
 ### Mission
 
@@ -236,7 +231,7 @@ Remplacez `VOTRE_CLE_ICI` par les 32 caractères hexadécimaux calculés à l'é
 > Si openssl répond `bad decrypt`, c'est presque toujours dû à une clé incorrecte. Vérifiez :
 > - que vous avez utilisé `echo -n` à l'étape 4 (pas de saut de ligne) ;
 > - que vous n'avez pas copié le tiret ni des espaces dans la clé ;
-> - que vous avez bien intercepté **le mot de passe** (partie après `:`), pas le `admin:` complet.
+> - que vous avez bien utilisé le mot de passe **donné dans la note** (étape 3), pas celui intercepté dans le trafic.
 
 ### Questions
 
@@ -281,4 +276,4 @@ Vous avez réussi le TP si :
 - ✅ Vous pouvez expliquer **chaque commande** que vous avez tapée.
 - ✅ Votre synthèse (§6) lie chaque action de l'attaquant à une séance du cours.
 
-Si vous bloquez à une étape pendant plus de 5 minutes, **passez à la suivante** et revenez plus tard. Les questions des étapes 1, 2 (partie A), 3 et 6 peuvent être traitées indépendamment. Seule la chaîne **2B → 4 → 5** (récupérer le mot de passe → hasher → déchiffrer) est strictement séquentielle.
+Si vous bloquez à une étape pendant plus de 5 minutes, **passez à la suivante** et revenez plus tard. Toutes les étapes sont indépendantes les unes des autres, sauf la chaîne **3 → 4 → 5** (décoder la note → hasher le mot de passe qu'elle donne → déchiffrer l'archive), qui est strictement séquentielle.
