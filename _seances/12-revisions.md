@@ -2,12 +2,14 @@
 layout: default
 title: "TP Révision : L'Enquête Numérique"
 order: 14
-description: Synthèse pratique — séances 1, 2 et 7 à 10
+description: Synthèse pratique — séances 1, 2, 7, 8 et 9
 nav_order: 14
 published: false
 ---
 
 # TP Révision : L'Enquête Numérique
+
+{: .no_toc }
 
 ---
 
@@ -18,72 +20,56 @@ Une PME belge a été compromise la nuit dernière. L'attaquant a pris le large,
 Votre mission : **reconstituer le déroulé de l'attaque** et **récupérer le contenu de l'archive**. Aucune machine cible à compromettre — vous travaillez sur les seules traces laissées sur place. C'est exactement ce que ferait un analyste SOC le lendemain d'un incident.
 
 {: .important }
-> Cet exercice mobilise les notions des séances **1, 2, 7, 8, 9 et 10**. Toutes vos réponses peuvent être trouvées avec les outils déjà installés sur votre VM et un navigateur web. **Aucune installation requise.**
+> Cet exercice mobilise les notions des séances **1, 2, 7, 8 et 9**. Toutes les réponses peuvent être trouvées avec les outils déjà à votre disposition. **Aucune installation, aucun accès internet requis.**
 
 ---
 
-## Outils nécessaires
+## Environnement de travail
 
-Sur votre VM Linux (terminal uniquement) :
+Vous travaillez sur **deux machines** :
 
-- `base64`, `md5sum`, `openssl` (déjà présents sur toute distribution Ubuntu)
-- `tshark` ou `wireshark` pour lire les captures réseau
-- Un éditeur de texte (`nano`, `cat`)
-
-Dans votre navigateur (optionnel, pour confort) :
-
-- [CyberChef](https://gchq.github.io/CyberChef/) si vous préférez le visuel
+| Environnement | Rôle dans ce TP |
+|---|---|
+| **PC Windows de l'école** | Wireshark (interface graphique) pour analyser la capture réseau |
+| **VM Ubuntu (accès SSH)** | Outils CLI : `base64`, `md5sum`, `openssl`, `unzip`, `cat`, `nano` |
 
 {: .note }
-> Si `tshark` n'est pas installé : `sudo apt install tshark -y`. Cette commande est rapide et fiable (paquet standard Ubuntu).
-
-Sinon utilisez wireshark sur en interface graphique, il devrait être installé sur les PC ephec 
+> Tous ces outils sont déjà installés. **Ne lancez aucune commande `apt install`** : le pare-feu de l'école bloquerait la requête et vous perdriez du temps inutilement.
 
 ---
 
 ## 0. Récupération du dossier d'investigation
 
-Vous trouverez `enquete.zip` sur Moodle :  Téléchargez-le et décompressez-le dans votre dossier de travail :
-
-```bash
-cd ~
-unzip enquete.zip
-cd enquete
-ls
-```
-
-Vous devez voir quatre fichiers :
-
-```
-scan.txt           note_attaquant.txt
-capture.pcap       archive.enc
-```
-
----
-
-## 1. Phase de reconnaissance "live" (échauffement)
-
 {: .d-inline-block }
 Durée : 5 min
 {: .label .label-green }
 
-Avant de plonger dans les artefacts, échauffez-vous avec une recon active sur la seule cible publique autorisée pour ce TP :
+1. Sur le **PC Windows**, téléchargez [`enquete.zip`]({{ site.baseurl }}/ressources/tp12_revisions/enquete.zip) (également disponible sur Moodle) et placez-le sur votre **bureau**.
+2. Décompressez l'archive (clic droit → *Extraire tout*). Vous obtenez un dossier `enquete/` contenant :
 
-```bash
-nmap -sV scanme.nmap.org
-```
+   ```
+   scan.txt           note_attaquant.txt
+   capture.pcap       archive.enc
+   ```
 
-### Questions
+3. **`capture.pcap` reste sur Windows** (on l'ouvrira avec Wireshark).
+4. **Les trois autres fichiers doivent être transférés vers la VM Ubuntu**. Utilisez WinSCP (ou `scp` depuis PowerShell) pour les copier dans votre dossier `home` sur la VM.
 
-1. Quels ports sont ouverts ? Quel rôle joue cette machine ?
-2. Quelle est la **différence fondamentale** entre ce que vous venez de faire (recon active) et l'analyse des artefacts que vous allez faire dans la suite (recon passive sur traces) ?
+5. Connectez-vous en SSH à la VM et vérifiez :
 
-{: .highlight }
-> **Pas le temps ?** Cette étape est optionnelle. Si vous êtes serrés, passez directement au point 2.
+   ```bash
+   cd ~
+   ls scan.txt note_attaquant.txt archive.enc
+   ```
+
+   Les trois fichiers doivent être listés sans erreur.
+
+{: .warning }
+> Avant de continuer, vérifiez que les fichiers font bien la même taille sur la VM que sur Windows (`ls -l` côté VM vs propriétés du fichier côté Windows). Un transfert tronqué ferait échouer le déchiffrement final.
 
 ---
 
-## 2. Lecture du rapport de reconnaissance
+## 1. Lecture du rapport de reconnaissance
 
 {: .d-inline-block }
 Durée : 10 min
@@ -102,44 +88,62 @@ Vous êtes l'administrateur de cette machine. Vous découvrez ce rapport sur le 
 ### Questions
 
 1. Combien de services sont exposés ? Lesquels ?
-2. **Repérez les 2 services qui devraient vous faire bondir.** Justifiez : pourquoi sont-ils particulièrement préoccupants ? (Indice : pensez à la séance d'exploitation — l'un d'eux a une histoire célèbre.)
+2. **Repérez les 2 services qui devraient vous faire bondir.** Justifiez : pourquoi sont-ils particulièrement préoccupants ? *(Indice : pensez à la séance 9 — l'un d'eux a une histoire célèbre de backdoor introduite dans le code source officiel.)*
 3. Pour chacun, **citez une mesure concrète** qu'un administrateur aurait dû prendre pour réduire la surface d'attaque.
 
 ---
 
-## 3. Anatomie du trafic intercepté
+## 2. Anatomie du trafic intercepté
 
 {: .d-inline-block }
 Durée : 15 min
 {: .label .label-yellow }
 
-Le fichier `capture.pcap` contient quelques paquets qui ont été capturés sur le réseau de la victime au moment de l'intrusion.
+Le fichier `capture.pcap` contient quelques paquets qui ont été capturés sur le réseau de la victime au moment de l'intrusion. Vous allez l'ouvrir avec **Wireshark sur Windows**.
 
-```bash
-tshark -r capture.pcap
-(ou wireshark dans votre Windows) 
+### Mode d'emploi Wireshark
+
+1. Sur le bureau Windows, **double-cliquez** sur `capture.pcap`. Wireshark s'ouvre automatiquement et affiche les paquets.
+2. La capture ne contient que **3 paquets**. Lisez-les attentivement.
+
+### Mission — Partie A : les deux paquets ARP
+
+Dans la barre de filtre de Wireshark (au-dessus de la liste des paquets), tapez :
+
+```
+arp
 ```
 
-Pour un affichage plus détaillé :
+Cliquez sur le premier paquet ARP et dépliez la section `Address Resolution Protocol` dans le volet du milieu.
 
-```bash
-tshark -r capture.pcap -V
-(ou wireshark dans votre Windows) 
+#### Questions
+
+1. **Que prétend la machine `192.168.1.50` ?** Regardez l'IP qu'elle annonce comme étant la sienne (`Sender IP address`) et l'adresse MAC qu'elle associe à cette IP. À quel **type d'attaque** cela correspond-il dans le cours ? *(Indice : séance 8.)*
+2. Pourquoi ces deux paquets ARP sont-ils une **condition nécessaire** pour que l'attaquant puisse intercepter le 3ème paquet (qui ne lui était pas destiné) ?
+
+### Mission — Partie B : le paquet HTTP
+
+Effacez le filtre et tapez :
+
+```
+http
 ```
 
-### Mission
+Un seul paquet apparaît : une requête `GET`. Faites un **clic droit dessus → Follow → HTTP Stream** : une fenêtre s'ouvre avec le contenu complet de la requête en clair.
 
-Trois paquets seulement. Lisez-les attentivement.
+#### Questions
 
-### Questions
+3. Trouvez la ligne `Authorization: Basic ...`. Que représente la longue chaîne après le mot `Basic` ?
+4. **Décodez-la.** Sur la VM Ubuntu :
 
-1. **Les deux premiers paquets** sont du protocole **ARP**. Regardez le contenu : que prétend la machine `192.168.1.50` ? Quel type d'attaque cela évoque-t-il dans le cours ? *(Indice : séance 8.)*
-2. Pourquoi ces deux paquets ARP sont-ils une condition nécessaire pour pouvoir intercepter le 3ème paquet ?
-3. **Le troisième paquet** est une requête HTTP. Affichez son contenu complet (`-V` ou `-x`) et trouvez la ligne `Authorization: Basic ...`. Que représente cette chaîne mystérieuse à la fin ?
-4. **Décodez-la.** Avec quelle commande ? *(Indice : séance 1 — `=` en fin de chaîne, ça vous dit quelque chose ?)*
+   ```bash
+   echo -n "LA_CHAINE_ICI" | base64 -d
+   ```
+
+   *(Indice : séance 1 — le caractère `=` en fin de chaîne, ça vous dit quelque chose ?)*
 
 {: .warning }
-> Notez précieusement le **mot de passe** que vous venez de récupérer. Il va vous servir dans la suite.
+> Notez précieusement le **mot de passe** que vous venez de récupérer (la partie après le `:`). Il va vous servir dans la suite.
 
 ### Pour réfléchir
 
@@ -148,7 +152,7 @@ Trois paquets seulement. Lisez-les attentivement.
 
 ---
 
-## 4. Le message du complice
+## 3. Le message du complice
 
 {: .d-inline-block }
 Durée : 5 min
@@ -160,11 +164,11 @@ L'attaquant a laissé une note sur la machine, mais l'a "protégée" à sa faço
 cat note_attaquant.txt
 ```
 
-Vous voyez une longue chaîne de caractères apparemment incompréhensible. Mais vous connaissez maintenant ce format.
+Vous voyez une chaîne de caractères apparemment incompréhensible. Mais vous connaissez maintenant ce format.
 
 ### Mission
 
-Décodez la note.
+Décodez la note :
 
 ```bash
 base64 -d note_attaquant.txt
@@ -178,7 +182,7 @@ base64 -d note_attaquant.txt
 
 ---
 
-## 5. La clé du coffre-fort
+## 4. La clé du coffre-fort
 
 {: .d-inline-block }
 Durée : 5 min
@@ -188,24 +192,32 @@ La note vous indique comment fabriquer la clé qui ouvrira l'archive : **le hash
 
 ### Mission
 
-Calculez ce hash. La commande est simple :
+Calculez ce hash sur la VM :
 
 ```bash
 echo -n "le_mot_de_passe_intercepte" | md5sum
 ```
 
 {: .warning }
-> Le `-n` est **crucial** : sans lui, `echo` ajoute un saut de ligne, et le hash sera complètement différent. Si votre déchiffrement échoue à l'étape suivante, c'est probablement ça.
+> Le `-n` est **crucial** : sans lui, `echo` ajoute un saut de ligne invisible, et le hash sera complètement différent. Si votre déchiffrement échoue à l'étape suivante, c'est probablement ça.
+
+La sortie ressemble à ceci :
+
+```
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -
+```
+
+La clé est constituée des **32 caractères hexadécimaux** au début. Le tiret et les espaces qui suivent ne font **pas** partie de la clé.
 
 ### Questions
 
-1. Notez le hash obtenu (les 32 caractères hexadécimaux, sans le `-` à la fin).
-2. Est-ce qu'il serait possible, à partir de ce hash, de **retrouver le mot de passe d'origine** par un calcul direct ? Pourquoi ?
+1. Notez la clé obtenue (les 32 caractères hex).
+2. Serait-il possible, à partir de ce hash, de **retrouver le mot de passe d'origine** par un calcul mathématique direct ? Pourquoi ?
 3. Et pourtant, en pratique, des sites comme CrackStation retrouvent en quelques secondes le mot de passe correspondant à de très nombreux hashs MD5. **Comment font-ils ?** *(Indice : séance 2, principe du dictionnaire.)*
 
 ---
 
-## 6. Ouverture du coffre-fort
+## 5. Ouverture du coffre-fort
 
 {: .d-inline-block }
 Durée : 5 min
@@ -215,49 +227,53 @@ Vous avez la clé. Il ne reste qu'à ouvrir l'archive, qui a été chiffrée en 
 
 ### Mission
 
+Sur la VM :
+
 ```bash
-openssl enc -aes-256-cbc -pbkdf2 -d -in archive.enc -out flag.txt -k "VOTRE_HASH_ICI"
+openssl enc -aes-256-cbc -pbkdf2 -d -in archive.enc -out flag.txt -k "VOTRE_CLE_ICI"
 cat flag.txt
 ```
 
-Remplacez `VOTRE_HASH_ICI` par le hash calculé à l'étape 5 (les 32 caractères hex, entre guillemets).
+Remplacez `VOTRE_CLE_ICI` par les 32 caractères hexadécimaux calculés à l'étape 4 (entre guillemets droits, sans espace).
+
+{: .note }
+> Si openssl répond `bad decrypt`, c'est presque toujours dû à une clé incorrecte. Vérifiez :
+> - que vous avez utilisé `echo -n` à l'étape 4 (pas de saut de ligne) ;
+> - que vous n'avez pas copié le tiret ni des espaces dans la clé ;
+> - que vous avez bien intercepté **le mot de passe** (partie après `:`), pas le `admin:` complet.
 
 ### Questions
 
 1. Quel est le contenu du fichier ? Notez-le précieusement — c'est votre **preuve de résolution** du TP.
-2. Pourquoi AES est-il dit **symétrique** ? Quelle est la différence avec RSA ?
+2. AES est un chiffrement **symétrique**. Qu'est-ce que cela signifie concrètement (par rapport à la clé) ?
 3. Si l'attaquant avait utilisé un mot de passe **fort** (long, aléatoire, jamais réutilisé), même en connaissant la méthode de chiffrement (AES-256), auriez-vous pu déchiffrer l'archive avec votre approche ? Pourquoi ?
 
 ---
 
-## 7. Rapport d'incident
+## 6. Synthèse — le rapport d'incident
 
 {: .d-inline-block }
-Durée : 15 min
+Durée : 10 min
 {: .label .label-yellow }
 
-C'est l'étape la plus importante du TP. Vous êtes maintenant l'analyste qui doit rendre son rapport à la direction de la PME.
+C'est l'étape la plus importante du TP. Répondez **par écrit** (dans un fichier texte ou sur papier) aux questions suivantes — vos réponses constituent votre rapport.
 
-### Mission
+### A. Chronologie de l'attaque
 
-Rédigez un **bref rapport d'incident** (dans un fichier `rapport.md`) structuré ainsi :
+Reconstituez en **4 étapes courtes** (1 phrase chacune) ce que l'attaquant a fait, dans l'ordre. Pour chaque étape, indiquez la **séance du cours** correspondante :
 
-#### A. Chronologie de l'attaque
-
-Reconstituez les étapes que l'attaquant a probablement suivies, dans l'ordre. Pour chaque étape, indiquez la **séance du cours** à laquelle elle se rapporte. Au minimum :
-
-1. Phase de reconnaissance — comment l'attaquant a-t-il découvert la cible et ses services ?
+1. Phase de reconnaissance — comment a-t-il découvert la cible et ses services ?
 2. Positionnement réseau — comment s'est-il mis en mesure d'intercepter le trafic ?
 3. Récolte d'identifiants — qu'a-t-il intercepté, et pourquoi est-ce arrivé si facilement ?
-4. Accès au système — qu'a-t-il fait des identifiants récupérés ?
+4. Récupération du contenu chiffré — quelle faiblesse a rendu le déchiffrement possible *pour vous* (et donc pour lui s'il avait été plus rapide) ?
 
-#### B. Recommandations défensives
+### B. Défenses
 
-Pour **chacune** des 4 étapes ci-dessus, citez **une mesure concrète** qui aurait stoppé ou ralenti significativement l'attaquant. Soyez précis : pas "améliorer la sécurité", mais par exemple "activer le DHCP Snooping sur les switches" ou "imposer HTTPS avec HSTS".
+Choisissez **deux** des quatre étapes ci-dessus et citez, pour chacune, **une mesure concrète** qui aurait stoppé ou ralenti significativement l'attaquant. Soyez précis : pas « améliorer la sécurité », mais par exemple « activer le DHCP Snooping et la Dynamic ARP Inspection sur les switches » ou « imposer HTTPS au lieu de HTTP ».
 
-#### C. Question ouverte
+### C. Question de fond
 
-L'attaquant aurait également pu utiliser une attaque de type **Rogue DHCP** (séance 9) pour se positionner en Man-in-the-Middle. **Quelle aurait été la différence** par rapport à l'attaque ARP réellement utilisée ? Donnez un avantage et un inconvénient de chaque approche du point de vue de l'attaquant.
+Si l'attaquant avait utilisé exactement le **même mot de passe** intercepté pour chiffrer son archive (sans le passer dans MD5), votre attaque aurait-elle quand même fonctionné ? Qu'est-ce que l'étape MD5 ajoute (ou n'ajoute pas) en termes de sécurité ?
 
 ---
 
@@ -266,19 +282,7 @@ L'attaquant aurait également pu utiliser une attaque de type **Rogue DHCP** (s�
 Vous avez réussi le TP si :
 
 - ✅ Vous avez ouvert l'archive et récupéré le flag.
-- ✅ Vous pouvez expliquer **chaque commande** que vous avez tapée (un examen oral pourrait vous le demander).
-- ✅ Votre rapport d'incident lie chaque action de l'attaquant à une séance du cours **et** à une défense concrète.
+- ✅ Vous pouvez expliquer **chaque commande** que vous avez tapée.
+- ✅ Votre synthèse (§6) lie chaque action de l'attaquant à une séance du cours.
 
-Si vous bloquez à une étape pendant plus de 10 minutes, **passez à la suivante** et revenez plus tard. Toutes les étapes sont indépendantes pour les questions, seule la chaîne de récupération du flag (étapes 3 → 5 → 6) est strictement séquentielle.
-
----
-
-## Pour aller plus loin (hors TP)
-
-{: .d-inline-block }
-Optionnel
-{: .label .label-blue }
-
-- **Refaire l'attaque "live"** : montez DVWA dans une VM, repérez le formulaire, capturez le trafic avec Wireshark sur votre propre interface, et reconstituez la chaîne complète vous-même.
-- **Pousser le pcap** : ouvrez `capture.pcap` dans **Wireshark** (interface graphique) et explorez les paquets ARP en détail. Repérez le champ `opcode = 2` (gratuitous ARP) et comprenez pourquoi un switch sans DAI ne peut pas s'en protéger.
-- **Tester la solidité de votre propre mot de passe** : `echo -n "votre_mot_de_passe" | md5sum`, puis collez le résultat dans CrackStation. Si vous le retrouvez en clair, changez-le.
+Si vous bloquez à une étape pendant plus de 5 minutes, **passez à la suivante** et revenez plus tard. Les questions des étapes 1, 2 (partie A), 3 et 6 peuvent être traitées indépendamment. Seule la chaîne **2B → 4 → 5** (récupérer le mot de passe → hasher → déchiffrer) est strictement séquentielle.
