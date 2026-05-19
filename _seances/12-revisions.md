@@ -33,8 +33,6 @@ Vous travaillez sur **deux machines** :
 | **PC Windows de l'école** | Wireshark (interface graphique) pour analyser la capture réseau |
 | **VM Ubuntu (accès SSH)** | Outils CLI : `base64`, `md5sum`, `openssl`, `unzip`, `cat`, `nano` |
 
-{: .note }
-> Tous ces outils sont déjà installés. **Ne lancez aucune commande `apt install`** : le pare-feu de l'école bloquerait la requête et vous perdriez du temps inutilement.
 
 ---
 
@@ -112,20 +110,12 @@ Le fichier `capture.pcap` contient quelques paquets qui ont été capturés sur 
 1. Sur le bureau Windows, **double-cliquez** sur `capture.pcap`. Wireshark s'ouvre automatiquement et affiche les paquets.
 2. La capture ne contient que **3 paquets**. Lisez-les attentivement.
 
-### Mission — Partie A : les deux paquets ARP
+### Mission — Partie A : Forensic d'une attaque
 
-Dans la barre de filtre de Wireshark (au-dessus de la liste des paquets), tapez :
 
-```
-arp
-```
 
-Examinez **les deux paquets ARP**. Pour chacun, cliquez dessus et dépliez la section `Address Resolution Protocol` dans le volet du milieu. Relevez les champs `Sender MAC address` et `Sender IP address`.
-
-#### Questions
-
-1. **La même adresse MAC apparaît dans les deux paquets.** Pourtant, l'IP qu'elle annonce comme étant la sienne (`Sender IP address`) **change** entre le paquet 1 et le paquet 2. Notez ces deux IP. Laquelle est probablement la vraie ? Laquelle est un mensonge ? **À quel type d'attaque cela correspond-il dans le cours ?** *(Indice : séance 8.)*
-2. Pourquoi ces deux paquets ARP sont-ils une **condition nécessaire** pour que l'attaquant puisse intercepter le 3ème paquet (qui ne lui était pas destiné) ?
+Ouvrez la première capture:
+ Quel type d'attaque est en cours dans la capture wireshark.  Quel élément vous a permis de déduire cela ?
 
 ### Mission — Partie B : le paquet HTTP
 
@@ -153,8 +143,8 @@ Un seul paquet apparaît : une requête `GET`. Faites un **clic droit dessus →
 
 ### Pour réfléchir
 
-5. Cette authentification HTTP Basic est très répandue. Le mot de passe est-il **chiffré** ? Si non, qu'est-il alors ? Quelle est la différence ?
-6. Comment l'attaquant a-t-il probablement deviné ce mot de passe au départ ? *(Indice : séance 2.)*
+ Cette authentification HTTP Basic est très répandue. Le mot de passe est-il **chiffré** ? Si non, qu'est-il alors ? Quelle est la différence ?
+
 
 ---
 
