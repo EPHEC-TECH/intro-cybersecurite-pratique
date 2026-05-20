@@ -241,30 +241,41 @@ Remplacez `VOTRE_CLE_ICI` par les 32 caractères hexadécimaux calculés à l'é
 
 ---
 
-## 6. Synthèse — le rapport d'incident
+## 6. Synthèse — prendre du recul
 
 {: .d-inline-block }
 Durée : 10 min
 {: .label .label-yellow }
 
-C'est l'étape la plus importante du TP. Répondez **par écrit** (dans un fichier texte ou sur papier) aux questions suivantes — vos réponses constituent votre rapport.
+{: .note }
+> Ce type de synthèse (« rapport d'incident ») **ne fait pas partie de la matière d'examen**. Mais maintenant que vous avez résolu chaque étape isolément, c'est l'occasion utile de faire un pas en arrière et d'observer l'enchaînement dans son ensemble — c'est ce regard global qui distingue un technicien d'un analyste.
+
+Répondez (par écrit, ou en discussion avec un binôme) aux questions ci-dessous.
 
 ### A. Chronologie de l'attaque
 
 Reconstituez en **4 étapes courtes** (1 phrase chacune) ce que l'attaquant a fait, dans l'ordre. Pour chaque étape, indiquez la **séance du cours** correspondante :
 
 1. Phase de reconnaissance — comment a-t-il découvert la cible et ses services ?
-2. Positionnement réseau — comment s'est-il mis en mesure d'intercepter le trafic ?
-3. Récolte d'identifiants — qu'a-t-il intercepté, et pourquoi est-ce arrivé si facilement ?
-4. Récupération du contenu chiffré — quelle faiblesse a rendu le déchiffrement possible *pour vous* (et donc pour lui s'il avait été plus rapide) ?
+2. Positionnement réseau — comment s'est-il mis en mesure d'intercepter le trafic local ?
+3. Récolte d'identifiants — qu'a-t-il intercepté dans le trafic, et pourquoi cette information circulait-elle si facilement ?
+4. Erreur opérationnelle — il a chiffré son butin dans `archive.enc`, mais a laissé sur la machine une **note** (en base64 trivialement décodable) révélant le mot de passe nécessaire pour la rouvrir. C'est cette négligence qui vous a permis d'ouvrir le coffre.
 
 ### B. Défenses
 
-Choisissez **deux** des quatre étapes ci-dessus et citez, pour chacune, **une mesure concrète** qui aurait stoppé ou ralenti significativement l'attaquant. Soyez précis : pas « améliorer la sécurité », mais par exemple « activer le DHCP Snooping et la Dynamic ARP Inspection sur les switches » ou « imposer HTTPS au lieu de HTTP ».
+Choisissez **deux** des trois premières étapes ci-dessus et citez, pour chacune, **une mesure concrète** qui aurait stoppé ou ralenti significativement l'attaquant. Soyez précis : pas « améliorer la sécurité », mais par exemple « activer le DHCP Snooping et la Dynamic ARP Inspection sur les switches » ou « imposer HTTPS au lieu de HTTP ».
 
 ### C. Question de fond
 
-Si l'attaquant avait utilisé exactement le **même mot de passe** intercepté pour chiffrer son archive (sans le passer dans MD5), votre attaque aurait-elle quand même fonctionné ? Qu'est-ce que l'étape MD5 ajoute (ou n'ajoute pas) en termes de sécurité ?
+Dans ce TP, **deux mots de passe distincts** apparaissent :
+- l'un intercepté dans `capture_2.pcap` (§2),
+- l'autre révélé par la note de l'attaquant (§3 → §4 → §5).
+
+L'attaquant a "caché" son mot de passe d'archive en l'écrivant en **base64** dans la note, et il a dérivé sa clé AES via **MD5** de ce mot de passe.
+
+1. Le base64 employé dans la note constitue-t-il une protection ? Pourquoi ?
+2. L'étape MD5 (utilisée comme dérivation de clé) apporte-t-elle, en soi, de la sécurité supplémentaire face à un attaquant qui *connaîtrait déjà* le mot de passe ?
+3. Quelle approche aurait réellement protégé ce secret si l'attaquant avait voulu être discret ?
 
 ---
 
