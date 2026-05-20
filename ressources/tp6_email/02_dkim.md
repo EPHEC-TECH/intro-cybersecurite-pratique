@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # DKIM (DomainKeys Identified Mail)
 
 **Sources** : Proofpoint Threat Reference, dmarcian.com, RFC 6376

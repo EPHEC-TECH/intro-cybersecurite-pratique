@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # MXToolbox — Documentation des outils
 
 **URL** : https://mxtoolbox.com

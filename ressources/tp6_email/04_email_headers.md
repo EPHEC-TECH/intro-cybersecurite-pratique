@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # Guide des En-têtes Email (Email Headers)
 
 **Sources** : mailtrap.io, Microsoft Learn, RFC 5322, RFC 7001

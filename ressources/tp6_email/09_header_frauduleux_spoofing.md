@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # Exemples d'en-têtes frauduleux — Techniques de spoofing et phishing
 
 Recueil de plusieurs scénarios d'attaque réels ou réalistes, avec analyse des indicateurs de compromission.

@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # Exemple d'en-tête légitime — Email envoyé via Microsoft 365
 
 **Scénario** : Un email légitime envoyé depuis un domaine corporate utilisant Microsoft 365 (contoso.com) vers un destinataire Office 365.

@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # SPF (Sender Policy Framework)
 
 **Sources** : Proofpoint Threat Reference, dmarcian.com, RFC 7208

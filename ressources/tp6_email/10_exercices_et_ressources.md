@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # Exercices et Ressources pédagogiques — Sécurité Email
 
 ---

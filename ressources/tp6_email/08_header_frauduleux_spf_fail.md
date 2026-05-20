@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # Exemple d'en-tête frauduleux — Phishing BNP Paribas (SPF fail + DMARC fail)
 
 **Scénario** : Un attaquant envoie un email de phishing en usurpant l'identité de BNP Paribas pour voler les identifiants bancaires d'une victime. Il utilise un faux serveur mail qui n'est pas autorisé par le SPF de bnpparibas.fr.

@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # Exemple d'en-tête légitime — Email envoyé via Gmail
 
 **Scénario** : Alice (alice@example.com, domaine hébergé sur Google Workspace) envoie un email à Bob (bob@gmail.com).
